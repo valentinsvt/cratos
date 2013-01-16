@@ -1,0 +1,34 @@
+.box_img {
+    width        : 32px;
+    height       : 32px;
+    display      : inline-block;
+    margin-right : 10px;
+}
+
+.box_alert {
+    background : url(images/hd_comment.png);
+}
+
+.box_error {
+    background : url(images/hd_error.png);
+}
+
+.box_info {
+    background : url(images/hd_info.png);
+}
+
+.box_question {
+    background : url(images/hd_alert.png);
+}
+
+.box_warning {
+    background : url(images/hd_remove.png);
+}
+
+.box_pregunta {
+    background : url(images/dialog-warning.png);
+}
+
+.box_loading {
+    background : url(images/loading_bg.gif);
+}

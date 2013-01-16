@@ -1,0 +1,171 @@
+.hasCountdown {
+    background   : none;
+    border       : none;
+    font-size    : 20px;
+    margin-right : 10px;
+    margin-top   : 5px;
+}
+
+.ui-autocomplete {
+    max-height    : 200px;
+    overflow-y    : auto;
+    /* prevent horizontal scrollbar */
+    overflow-x    : hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right : 20px;
+}
+
+/* IE 6 doesn't support max-height
+* we use height instead, but this forces the menu to always be this tall
+*/
+* html .ui-autocomplete {
+    height : 200px;
+}
+
+body {
+    font : 70% "Trebuchet MS", sans-serif;
+    /*margin : 0;*/
+}
+
+.small {
+    font-size : 12px;
+}
+
+.titulo {
+    padding        : 4px;
+    margin-bottom  : 10px;
+    font           : 15px Arial, sans-serif;
+    letter-spacing : 0;
+    font-weight    : bold;
+}
+
+.banner {
+    height     : 75px;
+    background : #333;
+    color      : #F67B26;
+}
+
+.contenedor {
+    height   : 650px;
+    overflow : auto;
+}
+
+.botones {
+    padding    : 5px;
+    text-align : right;
+}
+
+.navegacion {
+    padding    : 5px;
+    text-align : left;
+    margin     : 10px;
+}
+
+.linkButton {
+    color       : #666 !important;
+    font-weight : normal !important;
+}
+
+.ico {
+    width  : 16px;
+    height : 16px;
+    float  : left;
+}
+
+.msg {
+    float : left;
+}
+
+.invalid {
+    padding       : 0.2em;
+    margin-bottom : 1em;
+    border        : 2px solid #fbc2c4;
+    background    : #fbe3e4;
+    color         : #8a1f11;
+}
+
+.field {
+    width : 155px;
+}
+
+.datepicker {
+    background    : url(../images/img/calendar_2.png) no-repeat right;
+    padding-right : 20px;
+    width         : 140px;
+}
+
+select.field {
+    width : 168px;
+}
+
+input.error, select.error {
+    padding : 2px 4px !important;
+}
+
+input.required, select.required {
+    border-right : solid 2px #64C950 !important;
+}
+
+label.error {
+    background    : none !important;
+    border        : none !important;
+    padding       : 0 !important;
+    margin-bottom : 5px !important;
+    color         : inherit !important;
+}
+
+/*
+fieldset, .property-list {
+    margin  : 0;
+    padding : 0;
+}
+*/
+
+.fright {
+    float : right;
+}
+
+.miniButton {
+    font-size : 10px;
+    /*height    : 19px;*/
+}
+
+.miniButton .ui-icon {
+    margin-top : -10px;
+}
+
+.miniButton .ui-button-text {
+    padding-top    : 1px;
+    padding-bottom : 1px;
+    height         : 14px;
+}
+
+.message {
+    font-size : 11px;
+}
+
+.field {
+    width : 150px;
+}
+
+select.field {
+    width : 160px;
+}
+
+input.required, select.required {
+    border-right : solid 2px #FFA100;
+}
+
+.disabled {
+    color      : #555;
+    background : #dedede;
+}
+
+.disabled:hover {
+    color      : #555;
+    background : #dedede !important;
+}
+
+a{
+    color:white;
+}

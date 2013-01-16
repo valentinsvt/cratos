@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <script type="text/javascript" src="../../../js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="../../../js/jquery-ui-1.8.16.custom.min.js"></script>
+        <link rel="stylesheet" href="../../../css/grails/jquery-ui-1.8.16.custom.css" type="text/css">
+
+        <script type="text/javascript" src="../js/jquery.luz.box.js"></script>
+        <link rel="stylesheet" href="../css/jquery.luz.box.css" type="text/css">
+
+        <title>Demo</title>
+    </head>
+
+    <body>
+
+        <button id="alert">Test alert</button>
+        <button id="confirm">Test confirm</button>
+        <button id="prompt">Test prompt</button>
+        <button id="prompt2">Test 2 prompt</button>
+        <button id="prompt3">Test 3 prompt</button>
+        <button id="cont">Test contenido</button>
+        <button id="remote">Test remote</button>
+        <br/><br/>
+
+        <div id="testCont" class="ui-corner-all" style="background: #e6e6fa; width: 300px; padding: 5px;">
+            <form>
+                <label>Nombre?</label>
+                <input name="nombre"/><br/>
+                <label>Apellido?</label>
+                <input name="apellido">
+            </form>
+        </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#alert").click(function () {
+                    $.box({
+                        dialog: {
+                            resizable: false,
+                            buttons  : {}
+                        }
+                    });
+                });
+
+                var i = 0;
+                $("#confirm").click(function () {
+                    $.box({
+                        imageClass: "box_info",
+                        text      : "Aumentar el contador?",
+                        title     : "Confirme",
+                        iconClose : false,
+                        dialog    : {
+                            resizable    : false,
+                            draggable    : false,
+                            closeOnEscape: false,
+                            open         : function (event, ui) {
+                                console.log("!!!!");
+                            },
+                            buttons      : {
+                                "Aceptar" : function () {
+                                    console.log(i);
+                                    i++;
+                                },
+                                "Cancelar": function () {
+                                }
+                            },
+                            resizable    : false
+                        }
+                    });
+                });
+
+                $("#prompt").click(function () {
+                    $.box({
+                        imageClass: "box_alert",
+                        input     : "<input type='text' name='test' id='test' />",
+                        type      : "prompt",
+                        title     : "Nombre",
+                        text      : "Ingrese su nombre",
+                        dialog    : {
+                            buttons: {
+                                "OK": function (r) {
+                                    console.log(r);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                $("#prompt2").click(function () {
+                    $.box({
+                        imageClass: false,
+                        input     : "<select><option>1<option><option>2<option><option>3<option></select>",
+                        type      : "prompt",
+                        title     : "Numero",
+                        text      : "Seleccione un numero",
+                        dialog    : {
+                            buttons: {
+                                "OK": function (r) {
+                                    console.log(r);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                $("#prompt3").click(function () {
+                    $.box({
+                        imageClass: false,
+                        input     : "<textarea rows='4' cols='20'>",
+                        type      : "prompt",
+                        title     : "Texto",
+                        text      : "Escriba un texto",
+                        dialog    : {
+                            buttons: {
+                                "OK": function (r) {
+                                    console.log(r);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                $("#cont").click(function () {
+                    $.box({
+                        imageClass: false,
+                        html      : $("#testCont"),
+                        type      : "prompt",
+                        title     : "Texto",
+                        text      : "Escriba un texto",
+                        dialog    : {
+                            buttons: {
+                                "OK": function (r) {
+                                    console.log(r);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                $("#remote").click(function () {
+                    $.ajax({
+                        type   : "POST",
+                        url    : "remote.html",
+                        success: function (msg) {
+                            console.log(msg);
+                        }
+                    });
+
+                    $.box({
+                        imageClass: false,
+                        url       : "remote.html",
+                        title     : "Texto",
+                        text      : "Escriba un texto",
+                        dialog    : {
+                            buttons: {
+                                "OK": function (r) {
+                                    console.log(r);
+                                }
+                            }
+                        }
+                    });
+                });
+
+            });
+        </script>
+
+    </body>
+</html>

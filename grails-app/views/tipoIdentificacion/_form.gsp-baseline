@@ -1,0 +1,28 @@
+<%@ page import="cratos.TipoIdentificacion" %>
+
+
+
+<div class="fieldcontain ${hasErrors(bean: tipoIdentificacionInstance, field: 'tipoAnexo', 'error')} required">
+	<label for="tipoAnexo">
+		<g:message code="tipoIdentificacion.tipoAnexo.label" default="Tipo Anexo" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="tipoAnexo" name="tipoAnexo.id" from="${cratos.TipoAnexo.list()}" optionKey="id" class="many-to-one field ui-widget-content ui-corner-all required" value="${tipoIdentificacionInstance?.tipoAnexo?.id}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: tipoIdentificacionInstance, field: 'codigo', 'error')} required">
+	<label for="codigo">
+		<g:message code="tipoIdentificacion.codigo.label" default="Codigo" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:textField name="codigo" maxlength="4" class="field ui-widget-content ui-corner-all required" value="${tipoIdentificacionInstance?.codigo}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: tipoIdentificacionInstance, field: 'descripcion', 'error')} required">
+	<label for="descripcion">
+		<g:message code="tipoIdentificacion.descripcion.label" default="Descripcion" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:textField name="descripcion" maxlength="63" class="field ui-widget-content ui-corner-all required" value="${tipoIdentificacionInstance?.descripcion}"/>
+</div>
+

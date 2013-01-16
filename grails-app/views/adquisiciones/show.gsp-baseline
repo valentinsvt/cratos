@@ -1,0 +1,436 @@
+<%@ page import="cratos.Adquisiciones" %>
+<!doctype html>
+<html>
+<head>
+
+    <meta name="layout" content="main">
+    <g:set var="entityName" value="${message(code: 'adquisiciones.label', default: 'Adquisiciones')}"/>
+    <title>Ver Adquisiciones</title>
+
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'funciones.js')}"></script>
+
+    <script type="text/javascript"
+            src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
+    <link type="text/css" href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}"
+          rel="stylesheet"/>
+
+    <style type="text/css">
+
+    .label {
+        font-weight: bold;
+    }
+
+    .hover {
+        background: #ffd125 !important;
+        cursor: pointer;
+    }
+
+    .selected {
+        border: #FF8010 solid 2px !important;
+        background: #F7E7D9 !important;
+    }
+
+
+
+
+    </style>
+
+</head>
+
+<body>
+<a href="#show-adquisiciones" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
+                                                                    default="Skip to content&hellip;"/></a>
+
+<div id="show-adquisiciones" class="content scaffold-show" role="main">
+<div class="ui-widget-header ui-corner-all nav navegacion">
+    <ul style="margin-bottom:0;">
+        <li><g:link class="list linkButton" action="list">Lista</g:link></li>
+        <li><g:link class="create linkButton" action="create">Crear Adquisiciones</g:link></li>
+    </ul>
+</div>
+
+<div class="contenedor" style="height: 650px; width: 900px">
+<h1>Detalle Adquisiciones</h1>
+<g:if test="${flash.message}">
+    <div class="message ${flash.clase}" role="status"><span
+            class="ss_sprite ${flash.ico}">&nbsp;</span>${flash.message}
+    </div>
+</g:if>
+<fieldset style="margin: 20px">
+    <legend>Adquisiciones</legend>
+
+    <div class="container span-15">
+
+        <div class="fila span-20">
+
+            <g:if test="${adquisicionesInstance?.factura}">
+
+                <div class="span-3 label">
+                    Factura
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance}" field="factura"/>
+
+                </div>
+
+            </g:if>
+
+
+            <g:if test="${adquisicionesInstance?.fecha}">
+
+                <div class="span-3 prepend-1 label">
+                    Fecha
+                </div>
+
+                <div class="span-6">
+
+                    <g:formatDate date="${adquisicionesInstance?.fecha}" format="dd-MM-yyyy"/>
+
+                </div>
+
+            </g:if>
+
+        </div>
+
+        <div class="fila span-20">
+
+            <g:if test="${adquisicionesInstance?.empresa}">
+
+                <div class="span-3 label">
+                    Empresa
+                </div>
+
+                <div class="span-6">
+                    <g:fieldValue bean="${adquisicionesInstance.empresa}" field="nombre"></g:fieldValue>
+                    %{--<g:link controller="empresa" action="show"--}%
+                    %{--id="${adquisicionesInstance?.empresa?.id}">${adquisicionesInstance?.empresa?.encodeAsHTML()}</g:link>--}%
+
+                </div>
+
+            </g:if>
+
+
+            <g:if test="${adquisicionesInstance?.fechaPago}">
+                <div class="span-3 prepend-1 label">
+                    Fecha Pago
+                </div>
+
+                <div class="span-6">
+
+                    <g:formatDate date="${adquisicionesInstance?.fechaPago}" format="dd-MM-yyyy"/>
+
+                </div>
+            </g:if>
+
+        </div>
+
+        <div class="fila span-20">
+
+            <g:if test="${adquisicionesInstance?.proveedor}">
+
+                <div class="span-3 label">
+                    Proveedor
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance?.proveedor}" field="nombreContacto"></g:fieldValue>
+
+                </div>
+
+            </g:if>
+
+            <g:if test="${adquisicionesInstance?.tipoPago}">
+
+                <div class="span-3 prepend-1 label">
+                    Tipo Pago
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance?.tipoPago}" field="descripcion"></g:fieldValue>
+
+                </div>
+
+            </g:if>
+
+        </div>
+
+        %{--<div class="fila span-20">--}%
+        %{--<g:if test="${adquisicionesInstance?.estado}">--}%
+
+        %{--<div class="span-3 label">--}%
+        %{--Estado--}%
+        %{--</div>--}%
+
+        %{--<div class="span-6">--}%
+
+        %{--<g:fieldValue bean="${adquisicionesInstance}" field="estado"/>--}%
+
+        %{--</div>--}%
+
+        %{--</g:if>--}%
+
+
+        %{--<g:if test="${adquisicionesInstance?.registro}">--}%
+        %{--<div class="span-3 prepend-1 label">--}%
+        %{--Registro--}%
+        %{--</div>--}%
+
+        %{--<div class="span-6">--}%
+
+        %{--<g:fieldValue bean="${adquisicionesInstance}" field="registro"/>--}%
+
+        %{--</div>--}%
+
+        %{--</g:if>--}%
+
+
+        %{--</div>--}%
+
+        <div class="fila span-20">
+
+            <g:if test="${adquisicionesInstance?.cheque}">
+
+                <div class="span-3 label">
+                    Cheque
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance}" field="cheque"/>
+
+                </div>
+
+            </g:if>
+
+        </div>
+
+        <div class="fila span-20">
+            <g:if test="${adquisicionesInstance?.estadoCheque}">
+
+                <div class="span-3 label">
+                    Estado Cheque
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance}" field="estadoCheque"/>
+
+                </div>
+
+            </g:if>
+
+        </div>
+
+        <div class="fila span-20">
+
+            <g:if test="${adquisicionesInstance?.observaciones}">
+
+                <div class="span-3">
+                    Observaciones
+                </div>
+
+                <div class="span-6">
+
+                    <g:fieldValue bean="${adquisicionesInstance}" field="observaciones"/>
+
+                </div>
+
+            </g:if>
+
+        </div>
+
+    </div>
+</fieldset>
+
+<fieldset style="margin: 20px;">
+    <legend>Productos</legend>
+
+    <table id="tblItems" border="1" style="border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th width="50" class="cantidad">
+                Cantidad
+            </th>
+            <th width="100">
+                Código
+            </th>
+            <th width="300">
+                Item
+            </th>
+            <th width="100" class="precioUnitario">
+                Precio Unitario
+            </th>
+            %{--<th width="80" class="descuento">--}%
+            %{--Descuento--}%
+            %{--</th>--}%
+            <th width="80" class="subtotal">
+                Subtotal
+            </th>
+            <th width="200">
+                Observaciones
+            </th>
+            %{--<th>--}%
+                %{--Bodega--}%
+
+            %{--</th>--}%
+        </tr>
+        </thead>
+        <tbody id="tbItems">
+        <g:each in="${cratos.DetalleAdquisicion.findAllByAdquisiciones(adquisicionesInstance)}" var="item">
+            <tr>
+                <td>${item.cantidad}</td>
+                <td>${item.item.codigo}</td>
+                <td>${item.item.nombre}</td>
+                <td>${item.precioUnitario}</td>
+                %{--<td>${item.item.descuento}</td>--}%
+                <td>
+                    <g:set var="total"
+                           value="${(item.cantidad * item.precioUnitario) - (item.cantidad * item.precioUnitario)}"/>
+                    ${item.subtotal}
+                </td>
+                <td>${item.item.observaciones}</td>
+                %{--<td>--}%
+
+                    %{--<div class="ui-widget-header buttons" id="buscar">--}%
+
+                        %{--<a href="#" class="btnEnvio" id="${item.id}">Enviar</a>--}%
+                    %{--</div>--}%
+
+                %{--</td>--}%
+
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+
+    <br/>
+
+    <div class="span-5">
+        <table border="1" style="border-collapse: collapse;">
+            <tr>
+                <th>Subtotal</th>
+                <td id="tdSubtotalFin" style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+                <th>Descuentos</th>
+                <td id="tdDescuentosFin" style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+                <th>Tarifa IVA ${iva}%</th>
+                <td id="tdIva12Fin" style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+                <th>Tarifa IVA 0%</th>
+                <td id="tdIva0Fin" style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+                <th>IVA (${iva}%)</th>
+                <td id="tdIvaFin" style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+                <th>TOTAL</th>
+                <td id="tdTotalFin" style="text-align: right;">0.00</td>
+            </tr>
+        </table>
+    </div>
+</fieldset>
+
+</div>
+
+<div class="ui-widget-header buttons" style="padding: 5px; text-align:right;">
+    %{--<g:link class="delete linkButton">Eliminar</g:link>--}%
+    %{--<g:link class="edit linkButton" action="edit" id="${adquisicionesInstance?.id}">Editar</g:link>--}%
+</div>
+</div>
+
+<div id="busqueda">
+</div>
+
+%{--<script type="text/javascript">--}%
+    %{--$(function () {--}%
+        %{--$(".delete").click(function () {--}%
+            %{--$.box({--}%
+                %{--imageClass:"box_warning",--}%
+                %{--text:"",--}%
+                %{--title:"Confirmación",--}%
+                %{--iconClose:false,--}%
+                %{--dialog:{--}%
+                    %{--resizable:false,--}%
+                    %{--draggable:false,--}%
+                    %{--closeOnEscape:false,--}%
+                    %{--buttons:{--}%
+                        %{--"Aceptar":function () {--}%
+                            %{--location.href = "${createLink(action: 'delete', id: adquisicionesInstance?.id)}";--}%
+                        %{--},--}%
+                        %{--"Cancelar":function () {--}%
+                            %{--return false;--}%
+                        %{--}--}%
+                    %{--}--}%
+                %{--}--}%
+            %{--});--}%
+            %{--return false;--}%
+        %{--});--}%
+    %{--});--}%
+
+    %{--$(function () {--}%
+
+        %{--$("#busqueda").dialog({--}%
+            %{--autoOpen:false,--}%
+            %{--modal:true,--}%
+            %{--width:450,--}%
+            %{--position:["center", "top"],--}%
+            %{--open:function () {--}%
+                %{--$("#busqueda").html("");--}%
+
+            %{--},--}%
+            %{--buttons:{--}%
+                %{--"Aceptar":function () {--}%
+
+
+                %{--},--}%
+
+                %{--"Cancelar":function () {--}%
+                    %{--$("#busqueda").dialog("close");--}%
+
+                %{--}--}%
+            %{--}--}%
+        %{--});--}%
+
+
+        %{--$(".btnEnvio").button({--}%
+            %{--icons:{--}%
+                %{--primary:"ui-icon-plusthick"--}%
+            %{--},--}%
+            %{--text:false--}%
+        %{--}).click(function () {--}%
+                    %{--var id = $(this).attr("id");--}%
+
+
+                    %{--$.ajax({--}%
+                        %{--type:"POST",--}%
+                        %{--url:"${createLink(action: 'loadBodegas')}",--}%
+                        %{--data:{--}%
+                            %{--id:id--}%
+                        %{--},--}%
+                        %{--success:function (msg) {--}%
+                            %{--$("#busqueda").html(msg);--}%
+
+                        %{--}--}%
+                    %{--});--}%
+
+                    %{--$("#busqueda").dialog("open");--}%
+
+
+                %{--});--}%
+
+
+    %{--});--}%
+
+%{--</script>--}%
+
+</body>
+</html>
