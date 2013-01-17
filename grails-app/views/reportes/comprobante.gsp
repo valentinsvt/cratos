@@ -132,10 +132,10 @@
                 </td>
 
                 <td align="right">
-                    ${totalHaber}
+                    ${totalHaber.toDouble().round(2)}
                 </td>
                 <td align="right">
-                    ${totalDebe}
+                    ${totalDebe.toDouble().round(2)}
                 </td>
             </tr>
 

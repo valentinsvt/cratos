@@ -9,6 +9,11 @@
                 Registrar comprobante
             </a>
         </g:if>
+        <g:else>
+            <a href="#" class="btn ui-corner-all" id="imprimir" iden="${comp?.proceso?.id}" style="margin-bottom: 10px;">
+                Imprimir
+            </a>
+        </g:else>
         <br>
 
         <div class="etiqueta">Descripción:</div> ${comp?.descripcion}     <br>
@@ -186,6 +191,14 @@
     var loading = $('<img src="' + urlLoading + '" alt="Cargando...."/>');
     $(function () {
         $(".btn").button()
+
+        $("#imprimir").click(function(){
+
+            var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/"+$(this).attr("iden")
+            location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+
+        }) ;
+
 
         $(".guardarDatos").click(function () {
             var vd = $("#vald_" + $(this).attr("posicion")).val()
