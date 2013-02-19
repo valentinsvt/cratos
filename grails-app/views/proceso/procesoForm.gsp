@@ -46,7 +46,6 @@
                 Cancelar
             </g:link>
         </div>
-
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
         <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
         <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
@@ -80,18 +79,18 @@
 
     </div>
 
-        <div id="dlgBuscar" style="width: 500px;height: 450px;">
-            <div style="width: 450px;height: 30px;margin-bottom: 15px">
-                <select id="tipoPar" style="margin-right: 5px;" class="ui-corner-all">
-                    <option value="1">RUC</option>
-                    <option value="2">Nombre</option>
-                </select>
-                <input type="text" id="parametro" class="ui-corner-all" style="margin-right: 10px;">
-                <a href="#" id="buscar" class="btn">Buscar</a>
-            </div>
-            <div style="width: 450px;height: 300px;overflow-y: auto;" id="resultados"></div>
-
+    <div id="dlgBuscar" style="width: 500px;height: 450px;">
+        <div style="width: 450px;height: 30px;margin-bottom: 15px">
+            <select id="tipoPar" style="margin-right: 5px;" class="ui-corner-all">
+                <option value="1">RUC</option>
+                <option value="2">Nombre</option>
+            </select>
+            <input type="text" id="parametro" class="ui-corner-all" style="margin-right: 10px;">
+            <a href="#" id="buscar" class="btn">Buscar</a>
         </div>
+        <div style="width: 450px;height: 300px;overflow-y: auto;" id="resultados"></div>
+
+    </div>
 
 
 </g:form>
@@ -106,7 +105,7 @@
 
 
         $("#btn_buscar").click(function(){
-             $("#dlgBuscar").dialog("open")
+            $("#dlgBuscar").dialog("open")
         })
 
         $("#buscar").click(function(){
@@ -161,19 +160,19 @@
 </script>
 
 
-<g:if test="${registro}">
+<g:if test="${proceso}">
     <script type="text/javascript">
+      console.log("entro")
 
-        $(function() {
-            $.ajax({
-                type: "POST",
-                url: "${g.createLink(action: 'cargaComprobantes')}",
-                data: "proceso=" + $("#idProceso").val(),
-                success: function(msg) {
-                    $("#registro").html(msg).show("slide");
-                }
-            });
+        $.ajax({
+            type: "POST",
+            url: "${g.createLink(action: 'cargaComprobantes')}",
+            data: "proceso=" + $("#idProceso").val(),
+            success: function(msg) {
+                $("#registro").html(msg).show("slide");
+            }
         });
+
     </script>
 </g:if>
 </body>

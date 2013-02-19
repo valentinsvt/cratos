@@ -22,11 +22,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-            //println "registor "+registro
+            println "registro "+registro
             render(view: "procesoForm", model: [proceso: proceso, registro: registro])
         }
         else
-            render(view: "procesoForm", model: [registro: true])
+            render(view: "procesoForm", model: [registro: false])
     }
 
     def save = {
@@ -171,7 +171,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.id)
         def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
         println "registro "+registro
-        if (!registro)
+        if (registro)
             [proceso: proceso, registro: registro]
         else
             render(view: "procesoForm", model: [proceso: proceso, registro: registro])
