@@ -20,7 +20,18 @@ class PeriodoController extends cratos.seguridad.Shield  {
     }
 
     def save() {
+        println "save epriodo "+params
+        if (params.fechaFin) {
+            params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
+
+        }
+        if (params.fechaInicio) {
+            params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
+
+        }
         def periodoInstance = new Periodo(params)
+
+
 
         if (params.id) {
             periodoInstance = Periodo.get(params.id)
