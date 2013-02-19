@@ -167,7 +167,7 @@
         $(function() {
             $.ajax({
                 type: "POST",
-                url: "../cargaComprobantes",
+                url: "${g.createLink(action: 'cargaComprobantes')}",
                 data: "proceso=" + $("#idProceso").val(),
                 success: function(msg) {
                     $("#registro").html(msg).show("slide");
