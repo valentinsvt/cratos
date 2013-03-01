@@ -253,5 +253,34 @@
     </li>
 </g:if>
 
+<g:if test="${proveedorInstance?.autorizacionSri}">
+    <li class="fieldcontain">
+        <span id="observaciones-label" class="property-label"># Autorización Sri</span>
+
+        <span class="property-value" aria-labelledby="observaciones-label"><g:fieldValue bean="${proveedorInstance}"
+                                                                                         field="autorizacionSri"/></span>
+
+    </li>
+</g:if>
+<g:if test="${proveedorInstance?.fechaCaducidad}">
+    <li class="fieldcontain">
+        <span id="observaciones-label" class="property-label">Fecha caducidad</span>
+
+        <span class="property-value" aria-labelledby="observaciones-label"><g:fieldValue bean="${proveedorInstance}"
+                                                                                         field="fechaCaducidad"/></span>
+
+    </li>
+</g:if>
+<g:if test="${proveedorInstance?.observaciones}">
+    <li class="fieldcontain">
+        <span id="observaciones-label" class="property-label"><g:message code="proveedor.observaciones.label"
+                                                                         default="Observaciones"/></span>
+
+        <span class="property-value" aria-labelledby="observaciones-label"><g:fieldValue bean="${proveedorInstance}"
+                                                                                         field="observaciones"/></span>
+
+    </li>
+</g:if>
+
 </ol>
 

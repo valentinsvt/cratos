@@ -488,7 +488,8 @@ order by rplnnmro
             }
 
 
-
+            return [contabilidad: contabilidad, periodo: periodo, proceso: proceso, cuenta: cuenta, asiento:
+                    asiento, saldo: saldo, saldoMensual: saldoMensual, saldoInicial: saldoInicial]
 
         } else {
 

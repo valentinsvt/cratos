@@ -346,7 +346,41 @@
         </div>
     </div>
 </div>
+<div class="fila span-20">
+    <div class="${hasErrors(bean: proveedorInstance, field: 'autorizacionSri', 'error')} required">
+        <div class="span-3">
+            <label for="ruc">
+                # Autorizacion Sri
+            </label>
+        </div>
 
+        <div class="span-6">
+            <g:textField class="field    ui-corner-all number" id="autorizacionSri" name="autorizacionSri" maxlength="30"
+                         minlength="10" style="width: 150px"
+                         value="${proveedorInstance?.autorizacionSri}"/>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="fila span-20">
+
+    <div class="${hasErrors(bean: proveedorInstance, field: 'fechaCaducidad', 'error')} ">
+        <div class="span-3">
+            <label for="fecha">
+                Fecha caducidad
+            </label>
+        </div>
+
+        <div class="span-6">
+            <elm:datePicker format="yyyy-MM-dd" class="field ui-corner-all" id="fechaCaducidad" style="width: 80px"
+                           name="fechaCaducidad" title="fecha" value="${proveedorInstance?.fechaCaducidad}"/>
+
+        </div>
+    </div>
+</div>
 
 <div class="fila span-20">
 

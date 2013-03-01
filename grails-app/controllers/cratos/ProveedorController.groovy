@@ -47,79 +47,59 @@ class ProveedorController extends cratos.seguridad.Shield {
     }
 
     def save() {
-        def proveedorInstance = new Proveedor()
+        def proveedorInstance
         def ci = params.ruc
 
         def persona
 
-        println("cedula:" + ci)
+
+        //save
+
+        if (params.fecha) {
+
+            params.fecha = new Date().parse("yyyy-MM-dd", params.fecha)
+
+        }
+        if (params.fechaCaducidad) {
+
+           params.fechaCaducidad = new Date().parse("yyyy-MM-dd", params.fechaCaducidad)
+
+        }
 
 
-        if (Proveedor.findByRuc(ci) == null) {
+        if (params.id) {
 
-            println("No existe ese RUC")
+            proveedorInstance = Proveedor.get(params.id)
+            proveedorInstance.properties = params
 
-            //save
 
-            if (params.fecha) {
-
-                proveedorInstance.fecha = new Date().parse("yyyy-MM-dd", params.fecha)
-                params.remove("fecha")
-
-            }
+        }else{
+            proveedorInstance = new Proveedor()
             proveedorInstance.properties = params
             proveedorInstance.estado = '1'
             proveedorInstance.empresa = session.empresa
-
-            if (params.id) {
-
-                proveedorInstance = Proveedor.get(params.id)
-                if (params.fecha) {
-
-                    proveedorInstance.fecha = new Date().parse("yyyy-MM-dd", params.fecha)
-                    params.remove("fecha")
-                    println "params " + params
-
-                }
-                proveedorInstance.properties = params
-
-
-            }
-
-
-            if (!proveedorInstance.save(flush: true)) {
-                println proveedorInstance.errors
-                if (params.id) {
-//                    render(view: "edit", model: [proveedorInstance: proveedorInstance])
-                } else {
-//                    render(view: "create", model: [proveedorInstance: proveedorInstance])
-                }
-                return
-            }
-
-            if (params.id) {
-                flash.message = "Proveedor actualizado"
-                flash.clase = "success"
-                flash.ico = "ss_accept"
-            } else {
-                flash.message = "Proveedor creado"
-                flash.clase = "success"
-                flash.ico = "ss_accept"
-            }
-//            redirect(action: "show", id: proveedorInstance.id)
-            render "OK"
-
-        } else {
-            println("Si existe ese RUC")
-            persona = Proveedor.findByRuc(params.ruc).ruc
-            flash.message = "Ya existe ese RUC"
-            flash.clase = "error"
-            flash.ico = "ss_delete"
-//            redirect(action: "list")
-            render "NO"
-
-
         }
+
+
+        if (!proveedorInstance.save(flush: true)) {
+            println proveedorInstance.errors
+
+            return
+        }
+
+        if (params.id) {
+            flash.message = "Proveedor actualizado"
+            flash.clase = "success"
+            flash.ico = "ss_accept"
+        } else {
+            flash.message = "Proveedor creado"
+            flash.clase = "success"
+            flash.ico = "ss_accept"
+        }
+//            redirect(action: "show", id: proveedorInstance.id)
+        render "OK"
+
+
 
         println("per:" + persona)
 

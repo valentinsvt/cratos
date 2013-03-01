@@ -21,6 +21,8 @@ class Proveedor {
     String email
     String pais
     String nombreCheque
+    String autorizacionSri
+    Date fechaCaducidad
 
     static auditable = [ignore: ['lugar', 'tipoProveedor']]
 
@@ -55,6 +57,8 @@ class Proveedor {
             email column: 'prvemail'
             pais column: 'prvepais'
             nombreCheque column: 'prvenmch'
+            autorizacionSri column: 'autr_sri'
+            fechaCaducidad column: 'fchacdcd'
         }
     }
     static constraints = {
@@ -67,7 +71,7 @@ class Proveedor {
         empresa(blank: true, nullable: true)
         canton(blank: true, nullable: true)
 
-        ruc(size: 1..13, blank: false, attributes: [title: 'ruc'])
+        ruc(size: 1..13, blank: false, attributes: [title: 'ruc'],unique: true)
         nombre(blank: true, nullable: true, maxSize: 63, attributes: [title: 'nombre'])
         direccion(maxSize: 127, blank: true, nullable: true, attributes: [title: 'direccion'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
@@ -86,6 +90,8 @@ class Proveedor {
         email(blank: true, attributes: [title: 'email'])
         pais(blank: true, attributes: [title: 'pais'])
         nombreCheque(blank: true, attributes: [title: 'nombreCheque'])
+        autorizacionSri(blank: true,nullable: true,size: 1..40)
+        fechaCaducidad(blank:true,nullable: true)
     }
 
     String toString() {

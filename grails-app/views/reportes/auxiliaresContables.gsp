@@ -52,22 +52,26 @@
 
 <h1 style="font-weight: 200;" align="center">Auxiliar Contable</h1>
 
-<h2>Periodo: Desde:<g:formatDate date="${periodo.fechaInicio}" format="dd-MM-yyyy"/>
+<h2>
+    Periodo: Desde:<g:formatDate date="${periodo?.fechaInicio}" format="dd-MM-yyyy"/>
 
-Hasta:<g:formatDate date="${periodo.fechaFin}" format="dd-MM-yyyy"/> </h2>
+    Hasta:<g:formatDate date="${periodo?.fechaFin}" format="dd-MM-yyyy"/>
+</h2>
 
-<h2>Cuenta: ${cuenta.numero} ${cuenta.descripcion}</h2>
+<h2>
+    Cuenta: ${cuenta.numero} ${cuenta.descripcion}
+</h2>
 
 <div>
 
     <table>
-           <g:if test="${saldoMensual != null}">
-   <td>  Saldo Inicial:<g:formatNumber number="${saldoMensual.saldoInicial}" minFractionDigits="2" maxFractionDigits="2" type="number"/> </td>
-               <td> Saldo Final: <g:formatNumber number="${saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/> </td>
-           </g:if>
+        <g:if test="${saldoMensual != null}">
+            <td>  Saldo Inicial:<g:formatNumber number="${saldoMensual.saldoInicial}" minFractionDigits="2" maxFractionDigits="2" type="number"/> </td>
+            <td> Saldo Final: <g:formatNumber number="${saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/> </td>
+        </g:if>
         <g:else>
-            <td>  Saldo Inicial: 0.0 </td> <td> Saldo Final: <g:formatNumber number="${saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/> </td>
-
+            <td>  Saldo Inicial: 0.0 </td>
+            <td> Saldo Final: <g:formatNumber number="${saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/> </td>
         </g:else>
     </table>
 
@@ -94,64 +98,64 @@ Hasta:<g:formatDate date="${periodo.fechaFin}" format="dd-MM-yyyy"/> </h2>
 
         <tbody>
 
-            <g:each in="${asiento}" var="asientos" status="j">
+        <g:each in="${asiento}" var="asientos" status="j">
 
 
-                <tr class="${j % 2 == 0 ? 'even2' : 'odd2'}">
+            <tr class="${j % 2 == 0 ? 'even2' : 'odd2'}">
 
 
-                    <td class="procesoFecha" align="center">
+                <td class="procesoFecha" align="center">
 
-                       <g:formatDate date="${asientos.comprobante.proceso.fechaEmision}" format="dd-MM-yyyy"/>
+                    <g:formatDate date="${asientos.comprobante.proceso.fechaEmision}" format="dd-MM-yyyy"/>
 
-                    </td>
+                </td>
 
-                    <td class="procesoId" align="center">
-                        ${asientos.comprobante.proceso.id}
+                <td class="procesoId" align="center">
+                    ${asientos.comprobante.proceso.id}
 
-                    </td>
+                </td>
 
-                    <td class="numero" align="center">
+                <td class="numero" align="center">
 
-                        ${asientos.comprobante.numero}
-                    </td>
+                    ${asientos.comprobante.numero}
+                </td>
 
-                    <td class="tipo" align="center">
+                <td class="tipo" align="center">
 
-                        ${asientos.comprobante.tipo.codigo}
+                    ${asientos.comprobante.tipo.codigo}
 
-                    </td>
+                </td>
 
-                    <td class="procesoDesc" align="center">
-                        ${asientos.comprobante.proceso.descripcion}
+                <td class="procesoDesc" align="center">
+                    ${asientos.comprobante.proceso.descripcion}
 
-                    </td>
+                </td>
 
-                    <td class="debe" align="center">
+                <td class="debe" align="center">
 
-                        <g:formatNumber number="${asientos.debe}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
-                        %{--${asientos?.debe}--}%
-                    </td>
-                    <td class="haber" align="center">
-                        <g:formatNumber number="${asientos.haber}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
-                        %{--${asientos?.haber}--}%
+                    <g:formatNumber number="${asientos.debe}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    %{--${asientos?.debe}--}%
+                </td>
+                <td class="haber" align="center">
+                    <g:formatNumber number="${asientos.haber}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    %{--${asientos?.haber}--}%
 
-                    </td>
+                </td>
 
-                    <td class="saldo" align="center">
+                <td class="saldo" align="center">
 
-                        <g:formatNumber number="${saldo[j]}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    <g:formatNumber number="${saldo[j]}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 
-                       %{--${saldo[j]}--}%
+                    %{--${saldo[j]}--}%
 
-                    </td>
-
-
+                </td>
 
 
-                </tr>
 
-            </g:each>
+
+            </tr>
+
+        </g:each>
 
 
 
