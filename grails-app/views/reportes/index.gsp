@@ -369,7 +369,7 @@
 
     <div id="divCuenta3">
         Cuenta:
-        <g:select name="cnta3" from="${cratos.Cuenta.findAllByEmpresa(session.empresa, [sort: 'descripcion'])}"
+        <g:select name="cnta3" from="${cratos.Cuenta.findAllByEmpresa(session.empresa, [sort: 'numero'])}"
                   optionKey="id" style="width: 750px;" noSelection="['-1': 'Todas las cuentas']"
                   class="ui-widget-content ui-corner-all"/>
 

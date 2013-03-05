@@ -84,15 +84,15 @@
     <table>
 
         <thead>
-        <tr>
+        <tr style="font-size: 11px">
+            <th align="center" >#</th>
             <th align="center">Fecha</th>
-            <th align="center" style="padding-left: 20px;">Proceso</th>
-            <th align="center" style="padding-left: 20px">Comprobante</th>
-            <th align="center" style="padding-left: 20px">Tipo</th>
-            <th align="center" style="width: 700px;">Descripción</th>
+            <th align="center" style="">Comprobante</th>
+            <th align="center" style="width: 40px;">Tipo</th>
+            <th align="center" style="width: 500px;">Descripción</th>
             <th align="center">Debe</th>
-            <th align="center" style="padding-left: 10px">Haber</th>
-            <th align="center" style="padding-left: 10px">Saldo</th>
+            <th align="center" style="">Haber</th>
+            <th align="center" style="">Saldo</th>
         </tr>
         </thead>
 
@@ -101,26 +101,26 @@
         <g:each in="${asiento}" var="asientos" status="j">
 
 
-            <tr class="${j % 2 == 0 ? 'even2' : 'odd2'}">
-
-
-                <td class="procesoFecha" align="center">
-
-                    <g:formatDate date="${asientos.comprobante.proceso.fechaEmision}" format="dd-MM-yyyy"/>
-
-                </td>
+            <tr class="${j % 2 == 0 ? 'even2' : 'odd2'}" style="font-size: 10px;">
 
                 <td class="procesoId" align="center">
                     ${asientos.comprobante.proceso.id}
 
                 </td>
+                <td class="procesoFecha" align="center">
+
+                    <g:formatDate date="${asientos.comprobante.proceso.fecha}" format="dd-MM-yyyy hh:mm"/>
+
+                </td>
+
+
 
                 <td class="numero" align="center">
 
                     ${asientos.comprobante.numero}
                 </td>
 
-                <td class="tipo" align="center">
+                <td class="tipo" align="center" style="width: 40px;">
 
                     ${asientos.comprobante.tipo.codigo}
 
@@ -131,18 +131,18 @@
 
                 </td>
 
-                <td class="debe" align="center">
+                <td class="debe" style="text-align: right">
 
                     <g:formatNumber number="${asientos.debe}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
                     %{--${asientos?.debe}--}%
                 </td>
-                <td class="haber" align="center">
+                <td class="haber" style="text-align: right">
                     <g:formatNumber number="${asientos.haber}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
                     %{--${asientos?.haber}--}%
 
                 </td>
 
-                <td class="saldo" align="center">
+                <td class="saldo" style="text-align: right">
 
                     <g:formatNumber number="${saldo[j]}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 

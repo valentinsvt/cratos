@@ -205,6 +205,7 @@ class CuentaController extends cratos.seguridad.Shield {
             cuentaInstance = Cuenta.get(params.id)
             cuentaInstance.properties = params
         }
+        cuentaInstance.empresa=Empresa.get(session.empresa.id)
 
         if (!cuentaInstance.save(flush: true)) {
             println cuentaInstance.errors
@@ -225,6 +226,8 @@ class CuentaController extends cratos.seguridad.Shield {
             cuentaInstance = Cuenta.get(params.id)
             cuentaInstance.properties = params
         }
+
+        cuentaInstance.empresa=Empresa.get(session.empresa.id)
 
         if (!cuentaInstance.save(flush: true)) {
             if (params.id) {
