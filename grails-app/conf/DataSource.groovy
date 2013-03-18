@@ -14,7 +14,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.3:5432/contabilidad"
+            url = "jdbc:postgresql://10.0.0.3:5432/cratos_aso"
             username = "postgres"
             password = "postgres"
         }
@@ -22,7 +22,7 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://127.0.0.1:5432/finix"
+            url = "jdbc:postgresql://127.0.0.1:5432/cratos_aso"
             username = "postgres"
             password = "postgres"
         }

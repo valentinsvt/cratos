@@ -85,10 +85,11 @@
 
         <thead>
         <tr style="font-size: 11px">
-            <th align="center" >#</th>
+            <th align="center" >Id</th>
             <th align="center">Fecha</th>
-            <th align="center" style="">Comprobante</th>
             <th align="center" style="width: 40px;">Tipo</th>
+            <th align="center" style="">#</th>
+            <th align="center" style="width: 150px;">Proveedor</th>
             <th align="center" style="width: 500px;">Descripción</th>
             <th align="center">Debe</th>
             <th align="center" style="">Haber</th>
@@ -113,16 +114,21 @@
 
                 </td>
 
+                <td class="tipo" align="center" style="width: 40px;">
 
+                    ${asientos.comprobante.tipo.codigo}
+
+                </td>
 
                 <td class="numero" align="center">
 
                     ${asientos.comprobante.numero}
                 </td>
 
-                <td class="tipo" align="center" style="width: 40px;">
 
-                    ${asientos.comprobante.tipo.codigo}
+                <td class="tipo" align="center" style="width: 150px;text-align: left">
+
+                    ${asientos.comprobante.proceso.proveedor}
 
                 </td>
 
