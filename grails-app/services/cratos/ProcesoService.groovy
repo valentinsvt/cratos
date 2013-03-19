@@ -138,7 +138,7 @@ class ProcesoService {
                         def tot = (proceso.valor+proceso.impuesto).toDouble().round(2)
                         haber=(tot-haber).toDouble().round(2)
                         debe=(tot-debe).toDouble().round(2)
-                        println "cuadra ?"+debe+"  "+haber
+                        println "cuadra ? "+debe+"  "+haber
                         if(Math.abs(haber)>=0.01){
                             cuadrado=false
                             println "mayor haber "+datosAsientos[indice].haber+"  indice "+indice

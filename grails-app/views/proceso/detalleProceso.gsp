@@ -15,7 +15,7 @@
             </a>
         </g:else>
         <br>
-
+        <div class="etiqueta">Número:</div> ${comp?.prefijo}${comp?.numero}<br>
         <div class="etiqueta">Descripción:</div> ${comp?.descripcion}     <br>
 
         <div class="etiqueta">Fecha:</div> ${comp?.fecha?.format('dd/MM/yyyy')}<br>

@@ -73,13 +73,13 @@
             </div>
 
             <div style="height: 75px; line-height: 75px; font-size: 30px; float: left; margin-left:75px;">
-                Cratos - Contabilidad
+                Cratos - ${session.empresa}
             </div>
 
-            <div class="emp" style="height: 25px; width: 120px; margin-top: 50px; float: right;">
+            %{--<div class="emp" style="height: 25px; width: 200px; margin-top: 50px; float: right;">--}%
 
-                Empresa:  ${session.empresa}
-            </div>
+                %{--Empresa:--}%
+            %{--</div>--}%
         </g:link>
     </div>
 
