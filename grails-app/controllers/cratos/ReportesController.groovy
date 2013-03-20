@@ -614,7 +614,7 @@ order by rplnnmro
 
               }
 
-            println(asientos2)
+//            println(asientos)
 
         }
 
