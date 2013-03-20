@@ -25,7 +25,7 @@ class PdfController {
                 b = pdfService.buildPdfFromString(content.readAsString(), baseUri)
             }
             else{
-                println "sin plugin --> params url "+params.url
+//                println "sin plugin --> params url "+params.url
                 def url = baseUri + params.url
                 //println "url pdf "+url
                 b = pdfService.buildPdf(url)

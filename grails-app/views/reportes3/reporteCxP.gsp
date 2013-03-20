@@ -66,6 +66,10 @@
         color       : #a31b27;
         background  : #ffcecf;
     }
+    .titulo{
+       font-size: 14px;
+        font-weight: bold;
+    }
     </style>
 
 </head>
@@ -79,27 +83,33 @@
         </p>
     </div>
     <div style="width: 95%;margin-top: 20px;">
-        <table>
+        <table border="1">
             <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>Fecha</th>
+                <th>Documento</th>
+                <th>Proveedor</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+
             </tr>
             </thead>
             <tbody>
             <g:set var="total" value="${0}"></g:set>
             <g:each in="${cxp}" var="aux">
-                     <tr>
-                         <td></td>
-                         <td></td>
-                         <td></td>
-                         <td></td>
-                         <td></td>
-
-                     </tr>
+                <tr>
+                    <td style="text-align: left">${aux.fechaPago.format("dd-MM-yyyy")}</td>
+                    <td style="text-align: left">${aux.asiento.comprobante.proceso.documento}</td>
+                    <td style="text-align: left">${aux.asiento.comprobante.proceso.proveedor}</td>
+                    <td style="text-align: left">${aux.descripcion}</td>
+                    <td style="text-align: right">${valores[aux.id]}</td>
+                     <g:set var="total" value="${total.toDouble()+valores[aux.id]}"></g:set>
+                </tr>
             </g:each>
+            <tr>
+                <td style="text-align: left;font-weight: bold" colspan="4">TOTAL A PAGAR</td>
+                <td style="text-align: right">${total.round(2)}</td>
+            </tr>
             </tbody>
         </table>
 

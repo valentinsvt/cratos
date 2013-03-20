@@ -13,20 +13,30 @@ class Reportes3Controller {
     * */
 
     def reporteCxP(){
-        params.empresa=1
-        params.fechaInicio="01/03/2013"
-        params.fechaInicio="31/03/2013"
-        def fechaInicio = new Date().parse("dd/MM/yyyy",params.fechaInicio)
-        def fechaFin    = new Date().parse("dd/MM/yyyy",params.fechaFin)
+        println "reporte cxp "+params
+//        params.empresa=1
+//        params.fechaInicio="01/03/2013"
+//        params.fechaFin="31/04/2013"
+        def fechaInicio = new Date().parse("yyyy-MM-dd",params.fechaInicio)
+        def fechaFin    = new Date().parse("yyyy-MM-dd",params.fechaFin)
         def empresa = Empresa.get(params.empresa)
-        def axl = Auxiliar.findAllByFechaPagoBetweenAndDebeGreaterThan(fechaInicio,fechaFin,[sort:"fecha"],0)
+        def axl = Auxiliar.findAllByFechaPagoBetweenAndDebeGreaterThan(fechaInicio,fechaFin,0,[sort:"fechaPago"])
         def cxp=[]
+        def valores = [:]
         axl.each {a->
             if (a.asiento.cuenta.empresa.id.toInteger()==params.empresa.toInteger()){
-               cxp.add(axl)
+                def pagos = PagoAux.findAllByAuxiliar(a)
+                def pagado=0
+                pagos.each {p->
+                    pagado+=p.monto
+                }
+                if (pagado<a.debe){
+                    cxp.add(a)
+                    valores.put(a.id,a.debe-pagado)
+                }
             }
         }
-        [cxp:cxp,empresa:empresa,fechaInicio:fechaInicio,fechaFin:fechaFin]
+        [cxp:cxp,empresa:empresa,fechaInicio:fechaInicio,fechaFin:fechaFin,valores:valores]
 
     }
 

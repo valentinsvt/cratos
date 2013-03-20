@@ -153,6 +153,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def funciones = [["format": ["dd/MM/yyyy hh:mm"]], null, ["closure": [closure, "?"]]]   /*funciones para cada campo en caso de ser necesari. Cada campo debe tener un mapa (con el nombre de la funcion como key y los parametros como arreglo) o un null si no tiene funciones... si un parametro es ? sera sustituido por el valor del campo, si es & sera sustituido por el objeto */
         def link = "descripcion"                                      /*nombre del campo que va a llevar el link*/
         def url=g.createLink(action: "listar",controller: "proceso")     /*link de esta accion ...  sive para la opcion de reporte*/
+//        params.ordenado="fecha"
+//        params.orden="desc"
         def lista = buscadorService.buscar(Proceso, "Proceso", "excluyente", params, true) /* Dominio, nombre del dominio , excluyente dejar asi,params tal cual llegan de la interfaz del buscador, ignore case */
         lista.pop()
         if (!params.reporte){
@@ -202,7 +204,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoAuxiliar = {
         if (request.method == 'POST') {
-            println "nuevo aux "+params
+//            println "nuevo aux "+params
             def msn = null
             if (params.razon == "D")
                 params["debe"] = params.valor
