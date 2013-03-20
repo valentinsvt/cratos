@@ -202,6 +202,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoAuxiliar = {
         if (request.method == 'POST') {
+            println "nuevo aux "+params
             def msn = null
             if (params.razon == "D")
                 params["debe"] = params.valor

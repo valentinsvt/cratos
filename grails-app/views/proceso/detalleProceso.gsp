@@ -267,17 +267,22 @@
             data.enAux = parseFloat($(this).attr("aux"));
             data.restante = data.max - data.enAux;
 
-            if ($(this).data("debe") != 0) {
-                $(".spRazon").text("Debe");
+            if ($(this).data("debe")*1 != 0) {
+                $(".spRazon").text("Haber");
                 $("#spAsiento").text(number_format($(this).data("debe"), 2, ".", ""));
             } else {
-                $(".spRazon").text("Haber");
+                $(".spRazon").text("Debe");
                 $("#spAsiento").text(number_format($(this).data("haber"), 2, ".", ""));
             }
             $("#spAsignado").text(number_format(data.enAux, 2, ".", ""));
             $("#spAsignar").text(number_format(data.restante, 2, ".", ""));
 
+            data.debe =$(this).data("debe");
+            data.haber=$(this).data("haber");
+
             $("#agregar_axul").data(data);
+            $("#agregar_axul").attr("debe",$(this).data("debe"));
+            $("#agregar_axul").attr("haber",$(this).data("haber"));
 
             var id = $(this).attr("idAs");
             $("#idAsiento").val(id);
@@ -297,10 +302,11 @@
             var td = $("#td option:selected").val();
             var referencia = $.trim($("#ref").val());
             var razon;
-            if ($(".auxbtn").data("debe") != 0)
-                razon = "D";
-            else
+            if (parseFloat($(this).data("debe")) != 0)
                 razon = "H";
+            else
+                razon = "D";
+//            //console.log($(".auxbtn").data("debe"),$(".auxbtn").data("haber"),razon,$(this))
             var des = $.trim($("[name=descripcionAux]").val());
             var pro = $("#pr option:selected").val();
             var fecha = $.trim($("#axlr_fecha").val());

@@ -314,25 +314,17 @@
         })
 
         $(".borrar").click(function () {
-            var pass = prompt("Ingrese su contraseña de autorizaciones");
+
             var resultado = false
             var id = $(this).attr("idaux");
             var asientoId = $("#idAsiento").val();
+
             $.ajax({
                 type    : "POST",
-                url     : "../comprobarPassword",
-                data    : "atrz=" + pass,
+                url     : "../borrarAuxiliar",
+                data    : "id=" + id + "&idAs=" + asientoId,
                 success : function (msg) {
-                    if (msg == "true") {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "../borrarAuxiliar",
-                            data    : "id=" + id + "&idAs=" + asientoId,
-                            success : function (msg) {
-                                $("#listaAuxl").html(msg).show("slide");
-                            }
-                        });
-                    }
+                    $("#listaAuxl").html(msg).show("slide");
                 }
             });
         });

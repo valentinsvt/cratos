@@ -5,6 +5,34 @@ class Reportes3Controller {
     def dbConnectionService
 
 
+
+
+    /*Reporte de cuentas por pagar
+    * Sale de la tabla de axlr (plan de pagos)
+    * Las pagas en teoria crean un registro en la tabla pagos
+    * */
+
+    def reporteCxP(){
+        params.empresa=1
+        params.fechaInicio="01/03/2013"
+        params.fechaInicio="31/03/2013"
+        def fechaInicio = new Date().parse("dd/MM/yyyy",params.fechaInicio)
+        def fechaFin    = new Date().parse("dd/MM/yyyy",params.fechaFin)
+        def empresa = Empresa.get(params.empresa)
+        def axl = Auxiliar.findAllByFechaPagoBetweenAndDebeGreaterThan(fechaInicio,fechaFin,[sort:"fecha"],0)
+        def cxp=[]
+        axl.each {a->
+            if (a.asiento.cuenta.empresa.id.toInteger()==params.empresa.toInteger()){
+               cxp.add(axl)
+            }
+        }
+        [cxp:cxp,empresa:empresa,fechaInicio:fechaInicio,fechaFin:fechaFin]
+
+    }
+
+
+
+
     def auxiliarPorCliente() {
 //        println "\n\n\n\n"
 //        println params
