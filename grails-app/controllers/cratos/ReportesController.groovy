@@ -573,4 +573,48 @@ order by rplnnmro
     }
 
 
+    def reporteFacturacion (){
+
+
+        println("params"  + params)
+
+        def cuenta
+        def asientos
+        def periodo = Periodo.get(params.per);
+        def hijos
+
+
+        cuenta = Cuenta.get(1523);
+
+        asientos = Asiento.findAllByCuenta(cuenta)
+
+
+        hijos = Cuenta.findAllByPadre(cuenta)
+
+        println("hijos" + hijos)
+
+        if (hijos != " "){
+
+            println("entro")
+
+
+        }else {
+
+            println("entro2")
+
+        }
+
+
+
+//        def asientos = Asiento.findAllByCuenta(cuenta);
+//
+//        def periodo = Periodo.get(params.per);
+
+        return[asientos: asientos, cuenta: cuenta, periodo: periodo]
+
+
+
+    }
+
+
 }

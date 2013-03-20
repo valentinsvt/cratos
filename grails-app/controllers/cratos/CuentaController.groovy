@@ -48,6 +48,11 @@ class CuentaController extends cratos.seguridad.Shield {
             hijos = Cuenta.findAllByNivel(Nivel.get(1), [sort: "numero"])
         }
 
+        println("id: "+id)
+        println("padre:" + padre)
+        println("hijos " + hijos)
+
+       if(padre || hijos.size()>0){
         tree += "<ul>"
 
         hijos.each { hijo ->
@@ -75,7 +80,9 @@ class CuentaController extends cratos.seguridad.Shield {
         }
 
         tree += "</ul>"
-        return tree
+       }
+
+           return tree
     }
 
     def loadTreePart() {

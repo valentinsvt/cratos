@@ -1,4 +1,4 @@
-<%@ page import="cratos.Periodo" contentType="text/html;charset=UTF-8" %>
+<%@ page import="cratos.Cuenta; cratos.Periodo" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
@@ -173,6 +173,18 @@
             </g:link>
             Balance general con auxiliares, o Estado de situación financiera
         </li>
+        <li text="fact">
+
+            <g:link controller="reportes" action="reporteFacturacion" file="Reporte_Ventas_Facturacion.pdf" class="link" dialog="dlgVentasFacturacion">
+
+                Ventas Facturación
+            </g:link>
+
+            Reporte de Ventas Facturación
+
+
+
+        </li>
 
     </ul>
 </div>
@@ -297,6 +309,14 @@
 
     </div>
 
+    <div id="fact" class="notice ui-helper-hidden ui-corner-all">
+
+        <h1>Ventas Facturación</h1><br>
+
+        <p>Reporte de Ventas Facturación</p>
+
+    </div>
+
 </div>
 </div>
 </div>
@@ -397,6 +417,36 @@
 
 
 
+<div id="dlgVentasFacturacion" class="ui-helper-hidden">
+    <div>
+        Contabilidad:
+        <g:select name="contP5" id="contP5"
+                  from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                  optionKey="id" optionValue="descripcion"
+                  class="ui-widget-content ui-corner-all"/>
+    </div>
+
+    <div id="divPeriodo5">
+        Periodo:
+
+    </div>
+
+    <div id="divCuentaVentasFact">
+        Cuenta:
+        <g:select name="cuentasVentasFact"
+                  optionKey="id" style="width: 750px;" noSelection="['-1': 'Todas las cuentas']"
+                  class="ui-widget-content ui-corner-all" from="${cratos.Cuenta.findAllByPadre(Cuenta.get(1518))}"/>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
 <script type="text/javascript">
 
     var actionUrl = "";
@@ -468,6 +518,11 @@
         $("#contP4").change(function () {
             updatePeriodo("4");
         });
+        $("#contP5").change(function () {
+            updatePeriodo("5");
+
+        });
+
 
         $("#dlgContabilidad").dialog({
             modal     : true,
@@ -687,6 +742,68 @@
             $("#txtValor").val("Todos");
             return false;
         });
+
+
+
+        $("#dlgVentasFacturacion").dialog({
+            modal     : true,
+            resizable : false,
+            autoOpen  : false,
+            width     : 850,
+            open      : function () {
+
+                updatePeriodo("5");
+            },
+            buttons   : {
+                "Aceptar"  : function () {
+                    var cont = $("#contP5").val();
+                    var per = $("#periodo5").val();
+                    var cnta = $("#cuentasVentasFact").val();
+
+                    if (per != null) {
+//
+//                    console.log("contabilidad:" + cont);
+//                    console.log("periodo:" + per);
+//                    console.log("cuenta:" + cnta);
+
+                        var url = actionUrl + "?cont=" + cont + "Wper=" + per + "Wemp=${session.empresa.id}Wcnta=" + cnta;
+                        location.href = url;
+
+                    }
+                    else {
+
+//                        console.log("entro")
+                        $.box({
+                            imageClass : "box_error",
+                            title      : "Alerta",
+                            text       : "Ingrese el período!",
+                            iconClose  : false,
+                            dialog     : {
+                                draggable : false,
+                                resizable : false,
+                                buttons   : {
+                                    "Aceptar" : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                },
+                "Cancelar" : function () {
+
+                    $("#dlgVentasFacturacion").dialog("close");
+                }
+
+
+            }
+
+
+        });
+
+
+
+
     });
 </script>
 </body>
