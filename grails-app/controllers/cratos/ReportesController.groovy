@@ -583,33 +583,41 @@ order by rplnnmro
         def asientos
         def periodo = Periodo.get(params.per);
         def hijos
+        def asientos2  = []
 
 
-        cuenta = Cuenta.get(1523);
+        cuenta = Cuenta.get(1518);
 
-        asientos = Asiento.findAllByCuenta(cuenta)
-
+//        asientos = Asiento.findAllByCuenta(cuenta)
 
         hijos = Cuenta.findAllByPadre(cuenta)
 
-        println("hijos" + hijos)
+        println("hijos:" + hijos.id)
 
-        if (hijos != " "){
+        if (hijos == []){
 
-            println("entro")
-
+            asientos = Asiento.findAllByCuenta(cuenta)
 
         }else {
 
             println("entro2")
 
+
+              hijos.each{i->
+
+               cuenta = Cuenta.get(i.id)
+
+               asientos = Asiento.findAllByCuenta(cuenta)
+
+              asientos2.add(asientos)
+
+
+              }
+
+            println(asientos2)
+
         }
 
-
-
-//        def asientos = Asiento.findAllByCuenta(cuenta);
-//
-//        def periodo = Periodo.get(params.per);
 
         return[asientos: asientos, cuenta: cuenta, periodo: periodo]
 
