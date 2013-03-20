@@ -1,25 +1,9 @@
 package cratos
 
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-
-
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.*
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-
 
 class Reportes2Controller {
 
@@ -53,8 +37,9 @@ class Reportes2Controller {
         render html
     }
 
-
     def estadoSituacionFinanciera() {
+
+        println ">> " + params
 
         params.cont = 1
         params.per = 10
@@ -161,17 +146,58 @@ class Reportes2Controller {
     }
 
     def situacionFinanciera() {
+        println ">>>" + params
+
+        def empresa = Empresa.get(params.emp)
+        def periodo = Periodo.get(params.per)
+
+//        def cuenta1 = Cuenta.findByNumeroLikeAndEmpresa("1%", empresa)
+
+        def numCuentas = [1, 2, 3, 4, 5]
+
+        def datos = []
+
+        numCuentas.each { num ->
+//            println "**" + num
+            def c = Cuenta.withCriteria {
+                eq("empresa", empresa)
+                ilike("numero", num + "%")
+                eq("nivel", Nivel.get(1))
+            }
+//            println ">" + Cuenta.withCriteria {
+//                eq("empresa", empresa)
+////                ilike("numero", it.toString())
+//                eq("nivel", Nivel.get(1))
+//            }.numero
+//            println "   >" + Cuenta.withCriteria {
+//                eq("empresa", empresa)
+////                ilike("numero", it.toString())
+//                eq("nivel", Nivel.get(1))
+//            }.find { it.numero.contains(num.toString()) }
+
+            if (c.size() > 0) {
+//                def s = SaldoMensual.findByPeriodoAndCuenta(periodo, c[0])
+                def s = SaldoMensual.findByCuenta(c[0])
+                datos.add(s)
+            }
+        }
+
+        return [datos: datos, periodo: periodo]
+
+    }
+
+    def situacionFinanciera_old() {
 
         println "++++++++++++++++++++++++++++++++++" + params
         def empresa = Empresa.get(params.emp)
         def periodo = Periodo.get(params.per)
-        def cuenta1 = Cuenta.findByNumeroAndEmpresa("1",empresa)
-        def cuenta2 = Cuenta.findByNumeroAndEmpresa("2",empresa)
-        def cuenta3 = Cuenta.findByNumeroAndEmpresa("3",empresa)
-        def cuenta4 = Cuenta.findByNumeroAndEmpresa("4",empresa)
-        def cuenta5 = Cuenta.findByNumeroAndEmpresa("5",empresa)
-        def cuenta6 = Cuenta.findByNumeroAndEmpresa("6",empresa)
-        def cuenta7 = Cuenta.findByNumeroAndEmpresa("7",empresa)
+        def cuenta1 = Cuenta.findByNumeroAndEmpresa("1", empresa)
+        def cuenta2 = Cuenta.findByNumeroAndEmpresa("2", empresa)
+        def cuenta3 = Cuenta.findByNumeroAndEmpresa("3", empresa)
+        def cuenta4 = Cuenta.findByNumeroAndEmpresa("4", empresa)
+        def cuenta5 = Cuenta.findByNumeroAndEmpresa("5", empresa)
+        def cuenta6 = Cuenta.findByNumeroAndEmpresa("6", empresa)
+        def cuenta7 = Cuenta.findByNumeroAndEmpresa("7", empresa)
 //        println "periodo " + periodo + " cuenta2 " + cuenta3.id
         def saldo1 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta1)
         def saldo2 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta2)
@@ -180,7 +206,7 @@ class Reportes2Controller {
         def saldo5 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta5)
         def saldo6 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta6)
         def saldo7 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta7)
-        
+
         def tot1
         def tot2
         def tot3
@@ -211,15 +237,15 @@ class Reportes2Controller {
         if (saldo6)
             tot6 = saldo6.saldoInicial + (saldo6.debe - saldo6.haber)
         else
-            tot6=0
+            tot6 = 0
         if (saldo7)
             tot7 = saldo7.saldoInicial + (saldo7.debe - saldo7.haber)
         else
-            tot7=0
+            tot7 = 0
 
-        def resultado = (tot4+tot6)-(tot5+tot7)
-        def ppr = tot2+tot3+resultado
-        
+        def resultado = (tot4 + tot6) - (tot5 + tot7)
+        def ppr = tot2 + tot3 + resultado
+
 
         def datos = SaldoMensual.withCriteria {
             eq("periodo", periodo)
@@ -239,50 +265,50 @@ class Reportes2Controller {
 
 //        println datos
 
-        return [periodo: periodo, contabilidad: session.contabilidad, tot2: tot2, tot3: tot3, tot4: tot4, tot5: tot5, datos: datos,resultado:resultado,ppr:ppr]
+        return [periodo: periodo, contabilidad: session.contabilidad, tot2: tot2, tot3: tot3, tot4: tot4, tot5: tot5, datos: datos, resultado: resultado, ppr: ppr]
 
     }
 
 
 
-    def reporteBuscador= {
+    def reporteBuscador = {
 
         // println "reporte buscador params !! "+params
         if (!session.dominio)
             response.sendError(403)
-        else{
+        else {
             def listaTitulos = params.listaTitulos
             def listaCampos = params.listaCampos
             def lista = buscadorService.buscar(session.dominio, params.tabla, "excluyente", params, true)
             def funciones = session.funciones
-            session.dominio=null
-            session.funciones=null
+            session.dominio = null
+            session.funciones = null
             lista.pop()
 
             def baos = new ByteArrayOutputStream()
-            def name = "reporte_de_"+params.titulo.replaceAll(" ","_")+"_"+new Date().format("ddMMyyyy_hhmm")+".pdf";
-            println "name "+name
-            Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
-            Font info = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL)
+            def name = "reporte_de_" + params.titulo.replaceAll(" ", "_") + "_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+            println "name " + name
+            Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+            Font info = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL)
             Document document = new Document();
-            def pdfw= PdfWriter.getInstance(document,baos);
+            def pdfw = PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.addTitle("Reporte de "+params.titulo+" "+new Date().format("dd_MM_yyyy"));
+            document.addTitle("Reporte de " + params.titulo + " " + new Date().format("dd_MM_yyyy"));
             document.addSubject("Generado por el sistema Cratos");
-            document.addKeywords("reporte, cratos,"+params.titulo);
+            document.addKeywords("reporte, cratos," + params.titulo);
             document.addAuthor("Cratos");
             document.addCreator("Tedein SA");
             Paragraph preface = new Paragraph();
             addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Reporte de "+params.titulo, catFont));
-            preface.add(new Paragraph("Generado por el usuario: "+session.usuario+"   el: "+new Date().format("dd/MM/yyyy hh:mm"),info))
+            preface.add(new Paragraph("Reporte de " + params.titulo, catFont));
+            preface.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
             addEmptyLine(preface, 1);
             document.add(preface);
 //        Start a new page
 //        document.newPage();
             //System.getProperty("user.name")
-            addContent(document,catFont,listaCampos.size(),listaTitulos,params.anchos,listaCampos,funciones,lista);            // Los tamaños son porcentajes!!!!
+            addContent(document, catFont, listaCampos.size(), listaTitulos, params.anchos, listaCampos, funciones, lista);            // Los tamaños son porcentajes!!!!
             document.close();
             pdfw.close()
             byte[] b = baos.toByteArray();
@@ -300,42 +326,41 @@ class Reportes2Controller {
     }
 
 
-    private static void addContent(Document document,catFont,columnas,headers,anchos,campos,funciones,datos) throws DocumentException {
-        Font small= new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
-        def parrafo =  new Paragraph("")
-        createTable(parrafo,columnas,headers,anchos,campos,funciones,datos);
+    private static void addContent(Document document, catFont, columnas, headers, anchos, campos, funciones, datos) throws DocumentException {
+        Font small = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        def parrafo = new Paragraph("")
+        createTable(parrafo, columnas, headers, anchos, campos, funciones, datos);
         document.add(parrafo);
-
 
 
     }
 
 
-    private static void createTable(Paragraph subCatPart,columnas,headers,anchos,campos,funciones,datos) throws BadElementException {
+    private static void createTable(Paragraph subCatPart, columnas, headers, anchos, campos, funciones, datos) throws BadElementException {
         PdfPTable table = new PdfPTable(columnas);
         table.setWidthPercentage(100);
         table.setWidths(arregloEnteros(anchos))
-        Font small= new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
-        headers.eachWithIndex{h,i->
-            PdfPCell c1 = new PdfPCell(new Phrase(h,small));
+        Font small = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        headers.eachWithIndex { h, i ->
+            PdfPCell c1 = new PdfPCell(new Phrase(h, small));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(c1);
         }
         table.setHeaderRows(1);
         def tagLib = new BuscadorTagLib()
-        datos.each{d->
-            campos.eachWithIndex{c,j->
+        datos.each { d ->
+            campos.eachWithIndex { c, j ->
                 def campo
-                if(funciones){
-                    if(funciones[j])
-                        campo = tagLib.operacion([propiedad:c,funcion:funciones[j],registro:d]).toString()
+                if (funciones) {
+                    if (funciones[j])
+                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
                     else
                         campo = d.properties[c].toString()
-                }else{
+                } else {
                     campo = d.properties[c].toString()
                 }
 
-                table.addCell(new Phrase(campo,small));
+                table.addCell(new Phrase(campo, small));
 
             }
 
@@ -354,10 +379,10 @@ class Reportes2Controller {
     }
 
 
-    static arregloEnteros(array){
-        int[] ia= new int [array.size()]
-        array.eachWithIndex{it,i->
-            ia[i]=it.toInteger()
+    static arregloEnteros(array) {
+        int[] ia = new int[array.size()]
+        array.eachWithIndex { it, i ->
+            ia[i] = it.toInteger()
         }
 
         return ia
@@ -365,13 +390,13 @@ class Reportes2Controller {
 
 
     def estadoDeResultados = {
-        println "estado de resultados "+params
+        println "estado de resultados " + params
         def empresa = Empresa.get(params.emp)
         def periodo = Periodo.get(params.per)
-        def cuenta4 = Cuenta.findByNumeroAndEmpresa("4",empresa)
-        def cuenta5 = Cuenta.findByNumeroAndEmpresa("5",empresa)
-        def cuenta6 = Cuenta.findByNumeroAndEmpresa("6",empresa)
-        def cuenta7 = Cuenta.findByNumeroAndEmpresa("7",empresa)
+        def cuenta4 = Cuenta.findByNumeroAndEmpresa("4", empresa)
+        def cuenta5 = Cuenta.findByNumeroAndEmpresa("5", empresa)
+        def cuenta6 = Cuenta.findByNumeroAndEmpresa("6", empresa)
+        def cuenta7 = Cuenta.findByNumeroAndEmpresa("7", empresa)
 
         def saldo4 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta4)
         def saldo5 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta5)
@@ -394,14 +419,14 @@ class Reportes2Controller {
         if (saldo6)
             tot6 = saldo6.saldoInicial + (saldo6.debe - saldo6.haber)
         else
-            tot6=0
+            tot6 = 0
         if (saldo7)
             tot7 = saldo7.saldoInicial + (saldo7.debe - saldo7.haber)
         else
-            tot7=0
+            tot7 = 0
 
-        def resultado = (tot4+tot6)-(tot5+tot7)
-        [tot4:tot4,tot5: tot5,tot6:tot6,tot7:tot7,resultado: resultado,periodo: periodo]
+        def resultado = (tot4 + tot6) - (tot5 + tot7)
+        [tot4: tot4, tot5: tot5, tot6: tot6, tot7: tot7, resultado: resultado, periodo: periodo]
     }
 
 

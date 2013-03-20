@@ -15,7 +15,9 @@
             </a>
         </g:else>
         <br>
+
         <div class="etiqueta">Número:</div> ${comp?.prefijo}${comp?.numero}<br>
+
         <div class="etiqueta">Descripción:</div> ${comp?.descripcion}     <br>
 
         <div class="etiqueta">Fecha:</div> ${comp?.fecha?.format('dd/MM/yyyy')}<br>
@@ -192,13 +194,12 @@
     $(function () {
         $(".btn").button()
 
-        $("#imprimir").click(function(){
+        $("#imprimir").click(function () {
 
-            var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/"+$(this).attr("iden")
-            location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+            var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/" + $(this).attr("iden")
+            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
 
-        }) ;
-
+        });
 
         $(".guardarDatos").click(function () {
             var vd = $("#vald_" + $(this).attr("posicion")).val()
@@ -219,14 +220,26 @@
             });
         });
         $(".registrar").click(function () {
-            var id = $(this).attr("idComp")
+            var id = $(this).attr("idComp");
+            $.box({
+                imageClass : "box_info",
+                text       : "Por favor espere",
+                title      : "Procesando",
+                iconClose  : false,
+                dialog     : {
+                    resizable     : false,
+                    draggable     : false,
+                    closeOnEscape : false,
+                    buttons       : { }
+                }
+            });
             $.ajax({
                 type    : "POST",
                 url     : "${g.createLink(controller: 'proceso',action: 'registrarComprobante')}",
                 data    : "id=" + id,
                 success : function (msg) {
-                    $("#registro").html(msg).show("slide");
-                    location.reload(true)
+//                    $("#registro").html(msg).show("slide");
+                    location.reload(true);
                 }
             });
         });
@@ -267,7 +280,7 @@
             data.enAux = parseFloat($(this).attr("aux"));
             data.restante = data.max - data.enAux;
 
-            if ($(this).data("debe")*1 != 0) {
+            if ($(this).data("debe") * 1 != 0) {
                 $(".spRazon").text("Haber");
                 $("#spAsiento").text(number_format($(this).data("debe"), 2, ".", ""));
             } else {
@@ -277,12 +290,12 @@
             $("#spAsignado").text(number_format(data.enAux, 2, ".", ""));
             $("#spAsignar").text(number_format(data.restante, 2, ".", ""));
 
-            data.debe =$(this).data("debe");
-            data.haber=$(this).data("haber");
+            data.debe = $(this).data("debe");
+            data.haber = $(this).data("haber");
 
             $("#agregar_axul").data(data);
-            $("#agregar_axul").attr("debe",$(this).data("debe"));
-            $("#agregar_axul").attr("haber",$(this).data("haber"));
+            $("#agregar_axul").attr("debe", $(this).data("debe"));
+            $("#agregar_axul").attr("haber", $(this).data("haber"));
 
             var id = $(this).attr("idAs");
             $("#idAsiento").val(id);

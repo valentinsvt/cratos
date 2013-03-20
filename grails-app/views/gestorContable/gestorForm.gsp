@@ -43,7 +43,7 @@
                 <h1 class="titulo center  ui-corner-all" style="margin-bottom: 5px; margin-left: 10px;margin-bottom: 15px;">${(gestorInstance) ? 'Editar gestor contable' : 'Nuevo gestor contable'}</h1>
 
                 <div style="margin-left: 20px;margin-bottom: 10px;">
-                    <input type="submit" class="btn" value="Guardar">
+                    <input type="submit" class="btn" value="Guardar" id="btnGuardar"/>
                     <g:link class="btn" action="index">Cancelar</g:link>
                 </div>
 
@@ -131,7 +131,6 @@
                         }
                     })
                 });
-
                 $("#tipo").change(function () {
                     $.ajax({
                         type    : "POST",
@@ -143,7 +142,6 @@
                         }
                     })
                 });
-
 
                 $("#txtBusca").bind('keyup', function (event) {
                     var keyCode = event.which;
@@ -177,7 +175,6 @@
                     return false
 
                 });
-
 
             });
         </script>

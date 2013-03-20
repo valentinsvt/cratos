@@ -22,12 +22,14 @@
             text-align : center;
         }
 
-        h2{
-            font-size: 12px;
+        h2 {
+            font-size : 12px;
         }
-        h3{
-            font-size: 10px;
+
+        h3 {
+            font-size : 10px;
         }
+
         table {
             border-collapse : collapse;
             width           : 100%;
@@ -41,89 +43,12 @@
             background : #bbb;
         }
 
-        .even {
-            background : #ddd;
-        }
-
-        .odd {
-            background : #efefef;
-        }
-
-        .Uno {
-            background : #DDDDC0;
-            /*color      : #FFF;*/
-        }
-
-        .Dos {
-            background : #DDDDD0;
-        }
-
-        .Tres {
-            background : #EDEDE0;
-        }
-
-        .Cuatro {
-            background : #DDDDF0;
-        }
-
-        .Cinco {
-            background : #DDEDFF;
-        }
-
-        .Seis {
-            background : #EDDDFF;
-        }
-
-        .saldo {
+        .numero {
             text-align : right;
         }
 
-        .Uno .saldo {
-            margin-right : 0;
-        }
-
-        .Dos .saldo {
-            padding-right : 20px;
-        }
-
-        .Tres .saldo {
-            padding-right : 40px;
-        }
-
-        .Cuatro .saldo {
-            padding-right : 60px;
-        }
-
-        .Cinco .saldo {
-            padding-right : 80px;
-        }
-
-        .Seis .saldo {
-            padding-right : 100px;
-        }
-
-        .Uno .numero {
-            margin-left : 0;
-        }
-
-        .Dos .numero {
-            padding-left : 20px;
-        }
-
-        .Tres .numero {
-            padding-left : 40px;
-        }
-
-        .Cuatro .numero {
-            padding-left : 60px;
-        }
-
-        .Cinco .numero {
-            padding-left : 80px;
-        }
-
-        .Seis .numero {
-            padding-left : 100px;
+        .bold {
+            font-weight : bold;
         }
         </style>
 
@@ -137,52 +62,58 @@
 
             <h3>Periodo del ${periodo.fechaInicio.format('dd-MM-yyyy')} a ${periodo.fechaFin.format('dd-MM-yyyy')}</h3>
 
+            <g:set var="pos" value="${[1, 4]}"/>
+            <g:set var="neg" value="${[2, 3, 5]}"/>
+            <g:set var="tot" value="${0}"/>
+
             <table border='1' style="font-size: 10px !important;">
                 <thead>
                     <tr>
-                        <th width="15%">Número</th>
-                        <th width="55%">Cuenta</th>
-                        <th width="30%">Saldo</th>
+                        <th>Número</th>
+                        <th>Cuenta</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
+                        <th>Saldo</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <g:each in="${datos}" var="dato" status="i">
-                        <g:if test="${dato.cuenta.numero=='2'}">
-                            <tr>
-                                <td class="numero"></td>
-                                <td>
-                                    PASIVO MAS PATRIMONIO
-                                </td>
-                                <td class="saldo">
-                                    <g:formatNumber number="${ppr}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
-                                </td>
-                            </tr>
+                    <g:each in="${datos}" var="d">
+                        <g:set var="val" value="${d ? d.saldoInicial + (d.debe - d.haber) : 0}"/>
+                        <g:if test="${d.cuenta.numero.contains('1') || d.cuenta.numero.contains('4')}">
+                            <g:set var="tot" value="${tot + val}"/>
                         </g:if>
-                        <g:if test="${dato.cuenta.numero=='4'}">
-                            <tr>
-                                <td class="numero"></td>
-                                <td>
-                                    RESULTADO DEL EJERCICIO
-                                </td>
-                                <td class="saldo">
-                                    <g:formatNumber number="${resultado}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
-                                </td>
-                            </tr>
-                        </g:if>
-                        <tr class="${dato.cuenta.nivel.descripcion}">
-                            <td class="numero">
-                                ${dato.cuenta.numero}
+                        <g:else>
+                            <g:set var="tot" value="${tot - val}"/>
+                        </g:else>
+                        <tr>
+                            <td>
+                                ${d ? d.cuenta.numero : ""}
                             </td>
                             <td>
-                                ${dato.cuenta.descripcion}
+                                ${d ? d.cuenta.descripcion : ""}
                             </td>
-                            <td class="saldo">
-                                <g:formatNumber number="${dato.debe - dato.haber}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                            <td class="numero">
+                                <g:formatNumber number="${d ? (d.debe) : 0}" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                            </td>
+                            <td class="numero">
+                                <g:formatNumber number="${d ? (d.haber) : 0}" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                            </td>
+                            <td class="numero">
+                                <g:formatNumber number="${val}" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                             </td>
                         </tr>
-
                     </g:each>
                 </tbody>
+                <tfoot>
+                    <tr class="bold">
+                        <td colspan="4">
+                            RESULTADO (1-2-3+4-5)
+                        </td>
+                        <td class="numero">
+                            <g:formatNumber number="${tot}" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 
