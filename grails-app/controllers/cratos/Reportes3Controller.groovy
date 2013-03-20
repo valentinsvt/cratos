@@ -13,7 +13,7 @@ class Reportes3Controller {
     * */
 
     def reporteCxP(){
-        println "reporte cxp "+params
+//        println "reporte cxp "+params
 //        params.empresa=1
 //        params.fechaInicio="01/03/2013"
 //        params.fechaFin="31/04/2013"

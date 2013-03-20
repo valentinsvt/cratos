@@ -145,13 +145,13 @@
             </g:link>
             Auxiliares
         </li>
-        <li text="vnts">
-            <g:link controller="reportes" action="cambiosPatrimonio" file="Estado_Cambios_Patrimonio.pdf" class="link"
-                    dialog="dlgVentas">
-                Ventas
-            </g:link>
-            Ventas
-        </li>
+        %{--<li text="vnts">--}%
+            %{--<g:link controller="reportes" action="cambiosPatrimonio" file="Estado_Cambios_Patrimonio.pdf" class="link"--}%
+                    %{--dialog="dlgVentas">--}%
+                %{--Ventas--}%
+            %{--</g:link>--}%
+            %{--Ventas--}%
+        %{--</li>--}%
         <li text="auct">
             <g:link controller="reportes" action="auxiliaresContables" file="Auxiliar_Contable.pdf" class="link"
                     dialog="dlgAuxiliarContable">
@@ -184,6 +184,13 @@
 
 
 
+        </li>
+        <li text="vnts">
+            <g:link controller="reportes3" action="reporteCxP" file="Cuentas_por_pagar.pdf" class="link"
+                    dialog="dlgcxp">
+                Cuentas por pagar
+            </g:link>
+            Reporte de cuentas por pagar
         </li>
 
     </ul>
@@ -333,10 +340,10 @@
                                                                                                           id="btnComprobantes">Buscar</a>
 </div>
 
-<div id="dlgVentas">
-    Desde: <elm:datePicker class="field ui-corner-all" title="Desde" name="fechaPago" format="yyyy-MM-dd"
+<div id="dlgcxp">
+    Desde: <elm:datePicker class="field ui-corner-all" title="Desde" name="fechaIncio" format="yyyy-MM-dd"
                            style="width: 80px" id="desde"/>
-    Hasta: <elm:datePicker class="field ui-corner-all" title="Hasta" name="fechaPago" format="yyyy-MM-dd"
+    Hasta: <elm:datePicker class="field ui-corner-all" title="Hasta" name="fechaFin" format="yyyy-MM-dd"
                            style="width: 80px" id="hasta"/>
 </div>
 
@@ -434,7 +441,7 @@
     <div id="divCuentaVentasFact">
         Cuenta:
         <g:select name="cuentasVentasFact"
-                  optionKey="id" style="width: 750px;"
+                  optionKey="id" style="width: 750px;" noSelection="['-1': 'Todas las cuentas']"
                   class="ui-widget-content ui-corner-all" from="${cratos.Cuenta.findAllByPadre(Cuenta.get(1518))}"/>
 
     </div>
@@ -544,17 +551,18 @@
                 }
             }
         });
-        $("#dlgVentas").dialog({
+        $("#dlgcxp").dialog({
             modal    : true,
             width    : 400,
             height   : 300,
-            title    : "Reporte de ventas",
+            title    : "Reporte de Cuentas por pagar",
             autoOpen : false,
             buttons  : {
                 "Ver" : function () {
                     var desde = $("#desde").val()
                     var hasta = $("#hasta").val()
-                    location.href = "${g.createLink(action: 'ventas')}?desde=" + desde + "&hasta=" + hasta;
+                    url = "${g.createLink(controller:'reportes3' , action: 'reporteCxP')}?fechaInicio=" + desde + "WfechaFin=" + hasta+"Wempresa=${session.empresa.id}";
+                    location.href="${g.createLink(action: 'pdfLink',controller: 'pdf')}?url="+url+"&filename=cuentas_por_pagar"
                 }
             }
         });
