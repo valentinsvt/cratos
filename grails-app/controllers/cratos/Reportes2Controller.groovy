@@ -11,7 +11,7 @@ class Reportes2Controller {
 
     def updateCuenta() {
 
-        def per = Periodo.get(params.per)
+        def per = Periodo.get(params.per.toLong())
         def cont = per.contabilidad
 //        def cuentas = []
         def cuentas = Auxiliar.withCriteria {

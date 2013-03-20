@@ -103,6 +103,7 @@ class ReportesController {
         def js = ""
         if (params.cual == "2") {
             js += "<script>"
+            js += "updateCuenta();"
             js += '$("#periodo2").change(function() {'
             js += "updateCuenta();"
             js += '});'
