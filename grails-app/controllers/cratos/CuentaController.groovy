@@ -48,41 +48,41 @@ class CuentaController extends cratos.seguridad.Shield {
             hijos = Cuenta.findAllByNivel(Nivel.get(1), [sort: "numero"])
         }
 
-        println("id: "+id)
+        println("id: " + id)
         println("padre:" + padre)
         println("hijos " + hijos)
 
-       if(padre || hijos.size()>0){
-        tree += "<ul>"
+        if (padre || hijos.size() > 0) {
+            tree += "<ul>"
 
-        hijos.each { hijo ->
-            def hijosH = Cuenta.findAllByPadre(hijo, [sort: "numero"])
+            hijos.each { hijo ->
+                def hijosH = Cuenta.findAllByPadre(hijo, [sort: "numero"])
 
-            def gestores = Genera.findAllByCuenta(hijo)
-            def asientos = Asiento.findAllByCuenta(hijo)
+                def gestores = Genera.findAllByCuenta(hijo)
+                def asientos = Asiento.findAllByCuenta(hijo)
 
-            clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
-            rel = (hijosH.size() > 0) ? "padre" : "hijo"
+                clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
+                rel = (hijosH.size() > 0) ? "padre" : "hijo"
 
-            if (hijosH.size() > 0 || gestores.size() > 0 || asientos.size() > 0) {
-                clase += " ocupado "
-                if (gestores.size() > 0) {
-                    clase += " conGestores "
+                if (hijosH.size() > 0 || gestores.size() > 0 || asientos.size() > 0) {
+                    clase += " ocupado "
+                    if (gestores.size() > 0) {
+                        clase += " conGestores "
+                    }
+                    if (asientos.size() > 0) {
+                        clase += " conAsientos "
+                    }
                 }
-                if (asientos.size() > 0) {
-                    clase += " conAsientos "
-                }
+
+                tree += "<li id='li_" + hijo.id + "' class='" + clase + "' rel='" + rel + "' level='" + hijo.nivel.id + "'>"
+                tree += "<a href='#' class='label_arbol'>" + hijo + "</a>"
+                tree += "</li>"
             }
 
-            tree += "<li id='li_" + hijo.id + "' class='" + clase + "' rel='" + rel + "' level='" + hijo.nivel.id + "'>"
-            tree += "<a href='#' class='label_arbol'>" + hijo + "</a>"
-            tree += "</li>"
+            tree += "</ul>"
         }
 
-        tree += "</ul>"
-       }
-
-           return tree
+        return tree
     }
 
     def loadTreePart() {
@@ -188,8 +188,7 @@ class CuentaController extends cratos.seguridad.Shield {
             txt += "<ul>"
             txt += t
             txt += "</ul>"
-        }
-        else {
+        } else {
 //            println "si band"
             txt += "<li id='li_" + cuenta.id + "' class='hijo jstree-leaf' rel='hijo'>"
             txt += "<a href='#' class='label_arbol'>" + cuenta + "</a>"
@@ -212,12 +211,20 @@ class CuentaController extends cratos.seguridad.Shield {
             cuentaInstance = Cuenta.get(params.id)
             cuentaInstance.properties = params
         }
-        cuentaInstance.empresa=Empresa.get(session.empresa.id)
+        cuentaInstance.empresa = Empresa.get(session.empresa.id)
 
         if (!cuentaInstance.save(flush: true)) {
             println cuentaInstance.errors
             render "NO_Error al guardar. Por favor espere...."
         } else {
+            def padre = cuentaInstance.padre
+            if (padre) {
+                padre.movimiento = 0
+                padre.auxiliar = 'N'
+                if (!padre.save(flush: true)) {
+                    println "error al poner movimiento=0 en el padre con id " + padre.id
+                }
+            }
             if (params.id) {
                 render "OK_Cuenta actualizada. Por favor espere...."
             } else {
@@ -234,7 +241,7 @@ class CuentaController extends cratos.seguridad.Shield {
             cuentaInstance.properties = params
         }
 
-        cuentaInstance.empresa=Empresa.get(session.empresa.id)
+        cuentaInstance.empresa = Empresa.get(session.empresa.id)
 
         if (!cuentaInstance.save(flush: true)) {
             if (params.id) {
@@ -299,35 +306,35 @@ class CuentaController extends cratos.seguridad.Shield {
         }
     }
 
-    def cargarCuentas(){
+    def cargarCuentas() {
         def file = new File("/home/svt/cuentas4-9.csv")
-        def empresa=Empresa.get(1)
+        def empresa = Empresa.get(1)
         file.eachLine {
             def parts = it.split("&")
 
             // println "parts "+parts
             def cuenta = new Cuenta()
-            cuenta.auxiliar="S"
-            cuenta.numero=parts[1].trim()
-            cuenta.descripcion=parts[0].trim()
-            if (parts[0].trim()=="")
-                cuenta.descripcion="CAMBIAR DESCRIPCION"
-            cuenta.estado="A"
-            if(parts[2]){
+            cuenta.auxiliar = "S"
+            cuenta.numero = parts[1].trim()
+            cuenta.descripcion = parts[0].trim()
+            if (parts[0].trim() == "")
+                cuenta.descripcion = "CAMBIAR DESCRIPCION"
+            cuenta.estado = "A"
+            if (parts[2]) {
                 cuenta.padre = Cuenta.findByNumero(parts[2].trim())
-                if (!cuenta.padre){
+                if (!cuenta.padre) {
                     println "no encontro padre wtf"
                 }
-            }else{
-                cuenta.padre=null
+            } else {
+                cuenta.padre = null
             }
-            cuenta.movimiento=parts[4]
-            cuenta.empresa=empresa
-            cuenta.nivel = Nivel.get(Math.ceil(parts[1].size()/2))
-            if (!cuenta.save(flush: true)){
-                println "error "+cuenta.errors
-            } else{
-                println "save "+cuenta
+            cuenta.movimiento = parts[4]
+            cuenta.empresa = empresa
+            cuenta.nivel = Nivel.get(Math.ceil(parts[1].size() / 2))
+            if (!cuenta.save(flush: true)) {
+                println "error " + cuenta.errors
+            } else {
+                println "save " + cuenta
             }
 
 
