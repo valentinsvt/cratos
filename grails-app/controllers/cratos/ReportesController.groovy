@@ -577,41 +577,40 @@ order by rplnnmro
     def reporteFacturacion (){
 
 
-        println("params"  + params)
-
         def cuenta
         def asientos
         def periodo = Periodo.get(params.per);
         def hijos
+        def asientos2  = []
 
-
-        cuenta = Cuenta.get(1523);
-
-        asientos = Asiento.findAllByCuenta(cuenta)
-
+        cuenta = Cuenta.get(params.cnta);
 
         hijos = Cuenta.findAllByPadre(cuenta)
 
-        println("hijos" + hijos)
 
-        if (hijos != " "){
+        if (hijos == []){
 
-            println("entro")
+            asientos = Asiento.findAllByCuenta(cuenta)
+            asientos2+=asientos
+
+        }
+       else {
 
 
-        }else {
+              hijos.each{i->
 
-            println("entro2")
+               def cuentas = Cuenta.get(i.id)
+
+               asientos = Asiento.findAllByCuenta(cuentas)
+
+               asientos2+= asientos
+
+              }
+
 
         }
 
-
-
-//        def asientos = Asiento.findAllByCuenta(cuenta);
-//
-//        def periodo = Periodo.get(params.per);
-
-        return[asientos: asientos, cuenta: cuenta, periodo: periodo]
+        return[asientos: asientos2, cuenta: cuenta, periodo: periodo]
 
 
 

@@ -60,7 +60,7 @@
 
 <h2>
     Cuenta: ${cuenta.numero} ${cuenta.descripcion}
-</h2>
+    </h2>
 
 <div>
 
