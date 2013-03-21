@@ -441,7 +441,7 @@
     <div id="divCuentaVentasFact">
         Cuenta:
         <g:select name="cuentasVentasFact"
-                  optionKey="id" style="width: 750px;" noSelection="['-1': 'Todas las cuentas']"
+                  optionKey="id" style="width: 750px;"
                   class="ui-widget-content ui-corner-all" from="${cratos.Cuenta.findAllByPadre(Cuenta.get(1518))}"/>
 
     </div>
