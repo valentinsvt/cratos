@@ -322,28 +322,26 @@
 
             var valor = $(this).data("valor");
 
-            console.log(resultado, id, asientoId, valor);
-
-//            $.ajax({
-//                type    : "POST",
-//                url     : "../borrarAuxiliar",
-//                data    : "id=" + id + "&idAs=" + asientoId,
-//                success : function (msg) {
-//                    $("#listaAuxl").html(msg).show("slide");
+            $.ajax({
+                type    : "POST",
+                url     : "../borrarAuxiliar",
+                data    : "id=" + id + "&idAs=" + asientoId,
+                success : function (msg) {
+                    $("#listaAuxl").html(msg).show("slide");
 //
-            var enAux = $("#agregar_axul").data("enAux");
-            var restante = $("#agregar_axul").data("restante");
+                    var enAux = $("#agregar_axul").data("enAux");
+                    var restante = $("#agregar_axul").data("restante");
 
-            console.log(enAux, restante);
+                    enAux -= valor;
+                    restante += valor;
 
-            enAux -= valor;
-            restante += valor;
+                    $("#agregar_axul").data("enAux", enAux);
+                    $("#agregar_axul").data("restante", restante);
 
-            console.log(enAux, restante);
-
-//
-//                }
-//            });
+                    $("#spAsignado").text(number_format(enAux, 2, ".", ""));
+                    $("#spAsignar").text(number_format(restante, 2, ".", ""));
+                }
+            });
         });
 
     });

@@ -216,7 +216,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def cargarAuxiliares = {
+    def  cargarAuxiliares = {
         //println "cargar auxiliares "+params
         def msn = null
         def asiento = Asiento.get(params.id);

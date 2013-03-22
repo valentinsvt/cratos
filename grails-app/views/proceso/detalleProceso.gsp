@@ -117,19 +117,19 @@
         <div style="width: 900px;">
             <div id="cab" style="display: none">
 
-                <div style="height: 30px;">
-                    <div style="width: 145px;float: left">
-                        <div class="etiqueta">Asiento <span class="spRazon"></span>:</div>
+                <div style="height: 60px;">
+                    <div style="width: 100px;float: left">
+                        <div class="etiqueta">Asiento <span class="spRazon"></span></div>
                         <span id="spAsiento"></span>
                     </div>
 
-                    <div style="width: 145px;float: left; margin-left: 10px;">
-                        <div class="etiqueta">Registrado:</div>
+                    <div style="width: 100px;float: left; margin-left: 10px;">
+                        <div class="etiqueta">Registrado</div>
                         <span id="spAsignado"></span>
                     </div>
 
-                    <div style="width: 145px;float: left; margin-left: 10px;">
-                        <div class="etiqueta">Por registrar:</div>
+                    <div style="width: 100px;float: left; margin-left: 10px;">
+                        <div class="etiqueta">Por registrar</div>
                         <span id="spAsignar"></span>
                     </div>
                 </div>
