@@ -577,8 +577,8 @@ class KerberosoldService {
         println "ejecutar Procedure " + sql
         def template = new JdbcTemplate(dataSource)
         def result = template.queryForMap(sql)
-        println "result " + result
-        return result
+//        println "result " + result
+        return result.get(0)
     }
 
     def getJavaConnection() {

@@ -562,7 +562,7 @@
                     var desde = $("#desde").val()
                     var hasta = $("#hasta").val()
                     url = "${g.createLink(controller:'reportes3' , action: 'reporteCxP')}?fechaInicio=" + desde + "WfechaFin=" + hasta+"Wempresa=${session.empresa.id}";
-                    location.href="${g.createLink(action: 'pdfLink',controller: 'pdf')}?url="+url+"&filename=cuentas_por_pagar"
+                    location.href="${g.createLink(action: 'pdfLink',controller: 'pdf')}?url="+url+"&filename=cuentas_por_pagar.pdf"
                 }
             }
         });

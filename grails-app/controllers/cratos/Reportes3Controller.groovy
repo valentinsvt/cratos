@@ -284,7 +284,7 @@ class Reportes3Controller {
                 html += "<tr class='asiento'>"
                 html += "<td class='numero'> </td>"
                 html += "<td class='nombre'>"
-                html += asiento.comprobante.proceso.proveedor.nombre ?: asiento.comprobante.proceso.proveedor.nombreContacto + " " + asiento.comprobante.proceso.proveedor.apellidoContacto
+                html += asiento.comprobante.proceso?.proveedor?.nombre ?: asiento.comprobante.proceso?.proveedor?.nombreContacto + " " + asiento.comprobante.proceso?.proveedor?.apellidoContacto
                 html += "</td>"
                 html += "<td class='valor asiento'>"
                 html += g.formatNumber(number: asiento.debe - asiento.haber, minFractionDigits: 2, maxFractionDigits: 2)

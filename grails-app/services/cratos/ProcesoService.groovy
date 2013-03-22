@@ -260,6 +260,7 @@ class ProcesoService {
         def msg =""
         comprobantes.each{
             msg+= kerberosoldService.ejecutarProcedure("mayorizar",[it.id,1])+";"
+            println "resultado mayorizar "+msg
             it.registrado="S"
             it.save(flush: true)
         }
@@ -273,6 +274,7 @@ class ProcesoService {
         def msg =""
         comprobantes.each{
             msg+= kerberosoldService.ejecutarProcedure("mayorizar",[it.id,0])+";"
+            println "resultado mayorizar "+msg
             it.registrado="N"
         }
         proceso.estado="N"

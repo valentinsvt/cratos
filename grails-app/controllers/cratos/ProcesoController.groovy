@@ -75,12 +75,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
     def cargaComprobantes = {
-        println "cargar comprobantes " + params
+//        println "cargar comprobantes " + params
         def proceso = Proceso.get(params.proceso)
         def comprobantes = Comprobante.findByProceso(proceso)
         def asientos = []
         if (comprobantes)
             asientos += Asiento.findAllByComprobante(comprobantes)
+        if (asientos.size()>0){
+            asientos.sort{it.cuenta.numero}
+        }
 
         //println "comp "+comprobantes+" as "+asientos
         render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos, proceso: proceso])
@@ -105,8 +108,11 @@ class ProcesoController extends cratos.seguridad.Shield {
             //kerberosService.generarEntradaAuditoria(params,Asiento,"haber",vh,asiento.haber,session.perfil,session.usuario)
             asiento.debe = vd
             asiento.haber = vh
-            asiento.save()
-            render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos])
+            if (asiento.save(flush: true))
+                render "ok"
+            else
+                render "error"
+//            render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos])
         } else {
             redirect(controller: "shield", action: "ataques")
         }
@@ -116,9 +122,12 @@ class ProcesoController extends cratos.seguridad.Shield {
             println "registrar comprobante " + params
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, 1])
-            println "mayorizando por comprobante " + msn
-            if (msn =~ "ERROR") {
-                render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos, msn: msn])
+            println "mayorizando por comprobante " + msn+" "
+            if (msn=~ "Error") {
+//                def asientos=Asiento.findAllByComprobante(comprobante)
+//                println "error al mayorizar "+msn
+//                render(view: "detalleProceso", model: [comprobante: comprobante, asientos: asientos, msn: msn])
+                render " "+msn
             } else {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
@@ -128,12 +137,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 comprobante.save(flush: true)
                 proceso.estado = "R"
                 proceso.save(flush: true)
-                def comprobantes = Comprobante.findAllByProceso(proceso)
-                def asientos = []
-                comprobantes.each {
-                    asientos += Asiento.findAllByComprobante(it)
-                }
-                render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos])
+                render "ok"
             }
         } else {
             redirect(controller: "shield", action: "ataques")

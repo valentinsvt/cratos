@@ -11,6 +11,7 @@
             font-weight : bold;
             display     : inline-block;
         }
+        zz
         </style>
     </head>
 
@@ -60,7 +61,7 @@
 
                 <div class="span-28" style="margin-left: 40px;margin-top: 10px;margin-bottom: 15px;">
                     <div style="float:left;padding-top: 3px;">
-                        <label>Valor:</label><input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all" validate="required number" disabled="true">
+                        <label>Valor:</label><input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all saved" validate="required number" disabled="true">
                         <label>Impuestos:</label><input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number" disabled="true">
                         <label>Documento:</label><input type="text" name="factura" style="width: 120px;" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all" disabled="true">
                     </div>

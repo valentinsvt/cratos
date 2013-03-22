@@ -98,7 +98,7 @@
                     <label>Gestor contable:</label>
                 </td>
                 <td>
-                    <g:select name="pgo_gestor" from="${cratos.Gestor.list()}" id="pgo_gestor" class="required ui-widget-content ui-corner-all" noSelection="['-1': 'Seleccione']" optionKey="id" optionValue="descripcion"/>
+                    <g:select name="pgo_gestor" from="${cratos.Gestor.findAllByEstado('A')}" id="pgo_gestor" class="required ui-widget-content ui-corner-all" noSelection="['-1': 'Seleccione']" optionKey="id" optionValue="descripcion"/>
                 </td>
                 <td>
                     <label>Fecha:</label>

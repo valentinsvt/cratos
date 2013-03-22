@@ -47,7 +47,7 @@
             <g:set var="aux" value="${asiento.suma()}"/>
             <g:if test="${asiento.comprobante == comp}">
                 <tr>
-              <td style="width: 40px;"><g:if test="${asiento.cuenta.auxiliar == 'S'}">
+              <td style="width: 40px;" class="auxltd"><g:if test="${asiento.cuenta.auxiliar == 'S'}">
                 <div style="float: left; margin-left: 15px;" class="auxbtn btnpq ui-state-default ui-corner-all" id="axul_${asiento.cuenta.id}"
                      idAs="${asiento.id}" reg="${comp.registrado}" max="${Math.abs(asiento.debe - asiento.haber)}" aux="${aux ?: 0}"
                      data-debe="${asiento.debe ?: 0}" data-haber="${asiento.haber ?: 0}">
@@ -202,6 +202,7 @@
         });
 
         $(".guardarDatos").click(function () {
+            var btn = $(this)
             var vd = $("#vald_" + $(this).attr("posicion")).val()
             if (isNaN(vd))
                 vd = 0
@@ -214,14 +215,28 @@
                 url     : "${g.createLink(controller: 'proceso',action: 'valorAsiento')}",
                 data    : "proceso=" + $("#idProceso").val() + "&vd=" + vd + "&vh=" + vh + "&id=" + $("#hid_" + $(this).attr("posicion")).val(),
                 success : function (msg) {
-                    $("#registro").html(msg).show("slide");
-                    location.reload(true);
+//                    console.log($("#valh_" + btn.attr("posicion")))
+                    if(msg=="ok"){
+                        var valor = vd-vh
+                        var boton =$("#valh_" + btn.attr("posicion")).parent().parent().find(".auxltd").find(".auxbtn")
+//                        console.log( $("#valh_" + btn.attr("posicion")).parent().parent().find(".auxltd").find(".auxbtn"))
+                        boton.attr("max",valor)
+                        boton.data("debe",vd)
+                        boton.data("haber",vh)
+                        boton.attr("data-haber",vh)
+                        boton.attr("data-debe",vd)
+                        $("#valh_" + btn.attr("posicion")).css("background","rgba(225, 242, 182,0.6)")
+                        $("#vald_" + btn.attr("posicion")).css("background","rgba(225, 242, 182,0.6)")
+                    }
+
+//                    $("#registro").html(msg).show("slide");
+//                    location.reload(true);
                 }
             });
         });
         $(".registrar").click(function () {
             var id = $(this).attr("idComp");
-            $.box({
+            var coso = $.box({
                 imageClass : "box_info",
                 text       : "Por favor espere",
                 title      : "Procesando",
@@ -229,7 +244,7 @@
                 dialog     : {
                     resizable     : false,
                     draggable     : false,
-                    closeOnEscape : false,
+                    closeOnEscape : true,
                     buttons       : { }
                 }
             });
@@ -239,7 +254,22 @@
                 data    : "id=" + id,
                 success : function (msg) {
 //                    $("#registro").html(msg).show("slide");
-                    location.reload(true);
+                    if(msg=="ok")
+                        location.reload(true);
+                    else{
+                        $.box({
+                            imageClass : "box_info",
+                            text       : msg,
+                            title      : "Error",
+                            iconClose  : false,
+                            dialog     : {
+                                resizable     : false,
+                                draggable     : false,
+                                closeOnEscape : true,
+                                buttons       : { }
+                            }
+                        });
+                    }
                 }
             });
         });
