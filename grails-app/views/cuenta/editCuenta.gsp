@@ -70,6 +70,26 @@
 
             <tr class="prop ${hasErrors(bean: cuentaInstance, field: 'movimiento', 'error')}">
                 <td class="label " valign="middle">
+                    Auxiliar:
+                </td>
+
+                <td class="" valign="middle">
+                    <g:if test="${hijos == 0}">
+                        <select name='auxiliar' class="required ui-widget-content ui-corner-all">
+                            <option value="N" ${(cuentaInstance?.auxiliar== "N") ? 'selected' : ''}>No</option>
+                            <option value="S" ${(cuentaInstance?.auxiliar== "S") ? 'selected' : ''}>Si</option>
+                        </select>
+                    </g:if>
+                    <g:else>
+                        ${(cuentaInstance?.auxiliar== 'N') ? 'NO' : 'SI'}
+                    </g:else>
+                </td>
+
+                <td></td>
+            </tr>
+
+            <tr class="prop ${hasErrors(bean: cuentaInstance, field: 'movimiento', 'error')}">
+                <td class="label " valign="middle">
                     Movimiento:
                 </td>
 
@@ -81,7 +101,7 @@
                         </select>
                     </g:if>
                     <g:else>
-                        ${(cuentaInstance?.movimiento == '0') ? 'NO' : ''}
+                        ${(cuentaInstance?.movimiento == '0') ? 'NO' : 'SI'}
                     </g:else>
                 </td>
 
