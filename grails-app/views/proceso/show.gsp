@@ -42,6 +42,21 @@
                             action="index">
                         Salir
                     </g:link>
+
+
+                   <g:if test="${cratos.Comprobante.get(proceso.id)}">
+
+                    <g:if test="${cratos.Comprobante.get(proceso.id).registrado == 'N'}">
+
+
+                        <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
+
+
+                    </g:if>
+
+                   </g:if>
+
+
                 </div>
 
                 <div id="contenido" class="span-11 " style="padding-left: 40px;">
@@ -96,6 +111,15 @@
                 </g:if>
 
             });
+
+
+            $("#borrarProceso").click(function () {
+
+
+               console.log("entro")
+
+            });
+
         </script>
     </body>
 

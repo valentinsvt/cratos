@@ -140,10 +140,72 @@
             </tr>
 
         </table>
+
     %{--</div>--}%
 
     </g:each>
 
-</div>
+    <g:each in="${tipoComprobante}" var="i">
+
+      <g:if test="${i == 'D'}">
+
+
+        <table style="width: 600px; margin-top: 50px">
+
+
+
+            <tr>
+                <td width="400px" style="text-align: center" >
+                    <b>___________________</b>
+                </td>
+            </tr>
+            <tr>
+                <td width="400px" height="50px" style="text-align: center" >
+                    Autoriza
+                </td>
+
+
+            </tr>
+
+        </table>
+
+
+
+    </g:if>
+    <g:else>
+
+
+        <table style="width: 600px; margin-top: 50px">
+
+
+            <tr>
+                <td width="400px" style="text-align: center" >
+                    <b>___________________</b>
+                </td>
+
+                <td width="400px" style="text-align: center" >
+                    <b>____________________</b>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td width="400px" height="50px" style="text-align: center" >
+                    Autoriza
+                </td>
+
+                <td width="400px" height="50px" style="text-align: center" >
+                    Recibí Conforme
+                </td>
+
+            </tr>
+
+        </table>
+
+    </g:else>
+
+    </g:each>
+
+    </div>
 </body>
 </html>

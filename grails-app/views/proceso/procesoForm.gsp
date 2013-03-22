@@ -46,6 +46,9 @@
                     <g:link class="btn ui-corner-all" action="index">
                         Cancelar
                     </g:link>
+
+                    <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
+
                 </div>
                 <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
                 <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
@@ -77,7 +80,7 @@
                         <label>Valor:</label><input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all" validate="required number">
                         <label style="margin-left: 40px;">Impuestos:</label><input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number">
                         <label style="margin-left: 40px;">Documento:</label><input type="text" name="documento" style="width: 120px;margin-right: 5px" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all">
-                        <b>Tipoa de pago:</b> <g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"></g:select>
+                        <b>Tipo de pago:</b> <g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"></g:select>
                     </div>
 
                     <div class="span-9 last" style="margin-left: 40px;float: left;"></div>

@@ -184,12 +184,15 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def show = {
         def proceso = Proceso.get(params.id)
+
+        def comprobante = Comprobante.findByProceso(proceso)
+
         def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
 //        println "registro "+registro
         if (registro)
-            [proceso: proceso, registro: registro]
+            [proceso: proceso, registro: registro, comprobante:  comprobante]
         else
-            render(view: "procesoForm", model: [proceso: proceso, registro: registro])
+            render(view: "procesoForm", model: [proceso: proceso, registro: registro, comprobante: comprobante])
     }
 
     def comprobarPassword = {
@@ -321,6 +324,74 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def prueba(){
         render "prueba"
+    }
+
+
+    def borrarProceso () {
+
+        println("params:" + params)
+
+        def proceso = Proceso.get(params.id)
+
+        def comprobante = Comprobante.findByProceso(proceso)
+
+        def asiento
+
+        if (comprobante){
+
+           asiento = Asiento.findAllByComprobante(comprobante)
+
+        }
+
+//        println("asiento " + asiento)
+//        println("comprobante " + comprobante)
+//        println("proceso" + proceso)
+
+
+        if (comprobante){
+
+        if (comprobante.registrado == 'N'){
+
+
+            asiento.each{i->
+
+                i.delete(flush: true)
+
+            }
+//                asiento.delete(flush: true)
+                comprobante.delete(flush: true)
+           proceso.delete(flush: true)
+
+
+            flash.message="Proceso Borrado!"
+
+            redirect(action: 'lsta')
+
+        }else {
+
+            flash.message="No se puede borrar el proceso!!"
+
+            redirect(action: 'lsta')
+
+
+
+        }
+
+        }else {
+
+
+            proceso.delete(flush: true)
+
+
+            flash.message="Proceso Borrado!"
+
+            redirect(action: 'lsta')
+
+
+
+        }
+
+
     }
 
 }

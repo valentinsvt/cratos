@@ -234,6 +234,19 @@ class ReportesController {
     def comprobante() {
         println "imprimir comprobante " + params
         def comprobantes = cuentasService.getComprobante(params.id)
+
+        def tipoComprobante = []
+
+//        println("CMPR:" + comprobantes.tipo)
+
+        comprobantes.each {i->
+
+             tipoComprobante+=i.tipo.codigo
+
+
+        }
+
+
         def asiento
         if (comprobantes)
             asiento = cuentasService.getAsiento(comprobantes?.pop()?.id)
@@ -270,7 +283,7 @@ class ReportesController {
 
         }
 
-        [asiento: asiento, comprobantes: comprobantes, comp: comp]
+        [asiento: asiento, comprobantes: comprobantes, comp: comp, tipoComprobante: tipoComprobante]
 
     }
 
