@@ -11,7 +11,7 @@
             font-weight : bold;
             display     : inline-block;
         }
-        zz
+
         </style>
     </head>
 
@@ -30,16 +30,17 @@
 
 
                 <div style="height: 30px;margin-bottom: 10px;width: 600px;padding-left: 40px;">
-                    <g:link
-                            class="btn  ui-corner-all"
-                            action="pdfLink" controller="pdf" params="[url: g.createLink(action: 'comprobante', controller: 'reportes', id: proceso.id), filename: 'comprobante']">
-                        Imprimir
-                    </g:link>
+                   %{----}%
+                    %{--<g:link--}%
+                            %{--class="btn  ui-corner-all"--}%
+                            %{--action="pdfLink" controller="pdf" params="[url: g.createLink(action: 'comprobante', controller: 'reportes', id: proceso.id), filename: 'comprobante']">--}%
+                        %{--Imprimir--}%
+                    %{--</g:link>--}%
 
                     <g:link
                             class="btn ui-corner-all"
                             action="index">
-                        Cancelar
+                        Salir
                     </g:link>
                 </div>
 
@@ -49,7 +50,7 @@
                     <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
                     <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
 
-                    <div class="etiqueta">Fecha:</div>${(new Date().format('dd/MM/yyyy'))}<br>
+                    <div class="etiqueta">Fecha:</div>${proceso.fecha.format("dd/MM/yyyy")}<br>
 
                 </div>
 

@@ -104,7 +104,7 @@ class ProcesoService {
             cc.put("numero",num+1)
             cc.put("descripcion",p.descripcion)
 
-            cc.put("fecha",new Date())
+            cc.put("fecha",proceso.fecha)
             // cc.put("factura",p.factura)
             cc.put("registrado","N")
 //            kerberosService.save(cc,Comprobante,perfil,usuario)

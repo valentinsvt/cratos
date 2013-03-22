@@ -31,9 +31,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def save = {
         if (request.method == 'POST') {
-
-            //println "save proceso "
-
+//            println "save proceso "+params
+            def p
             params.controllerName = controllerName
             params.actionName = actionName
             if (params.proveedor.id == "null")
@@ -41,28 +40,16 @@ class ProcesoController extends cratos.seguridad.Shield {
             params.estado = "N"
             println "params " + params
             if (!params.fecha){
-
-                println("entro")
-
                 params.fecha = new Date()
-
             }else {
-
-                println("entro2 "+params.fecha)
-
                 params.fecha = Date.parse("yyyy-MM-dd",params.fecha);
-
-//                p.fecha = params.fecha
-
             }
-
-            println("fecha:" + params.fecha)
-
-            def p = new Proceso(params)
-
+            if(params.id)
+                p= Proceso.get(params.id)
+            else
+                p = new Proceso()
+            p.properties=params
             p.contabilidad = session.contabilidad
-
-
             p.save(flush: true)
             println "errores proceso " + p.errors
             if (p.errors.getErrorCount() == 0)
@@ -141,15 +128,15 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
     def registrarComprobante = {
         if (request.method == 'POST') {
-            println "registrar comprobante " + params
+//            println "registrar comprobante " + params
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, 1])
-            println "mayorizando por comprobante " + msn+" "
-            if (msn=~ "Error") {
+//            println "mayorizando por comprobante " + msn["mayorizar"]
+            if (msn["mayorizar"]=~ "Error") {
 //                def asientos=Asiento.findAllByComprobante(comprobante)
 //                println "error al mayorizar "+msn
 //                render(view: "detalleProceso", model: [comprobante: comprobante, asientos: asientos, msn: msn])
-                render " "+msn
+                render " "+msn["mayorizar"]
             } else {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
@@ -198,7 +185,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def show = {
         def proceso = Proceso.get(params.id)
         def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-        println "registro "+registro
+//        println "registro "+registro
         if (registro)
             [proceso: proceso, registro: registro]
         else

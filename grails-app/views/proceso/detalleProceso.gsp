@@ -260,13 +260,18 @@
                         $.box({
                             imageClass : "box_info",
                             text       : msg,
-                            title      : "Error",
+                            title      : "Error al mayorizar",
                             iconClose  : false,
                             dialog     : {
                                 resizable     : false,
+                                width:400,
                                 draggable     : false,
                                 closeOnEscape : true,
-                                buttons       : { }
+                                buttons       : {
+                                "Cerrar":function(){
+                                    $(this).dialog("close")
+                                }
+                                }
                             }
                         });
                     }
