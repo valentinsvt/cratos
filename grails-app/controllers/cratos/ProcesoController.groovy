@@ -31,16 +31,38 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def save = {
         if (request.method == 'POST') {
+
             //println "save proceso "
+
             params.controllerName = controllerName
             params.actionName = actionName
             if (params.proveedor.id == "null")
                 params.proveedor.id = null
             params.estado = "N"
             println "params " + params
+            if (!params.fecha){
+
+                println("entro")
+
+                params.fecha = new Date()
+
+            }else {
+
+                println("entro2 "+params.fecha)
+
+                params.fecha = Date.parse("yyyy-MM-dd",params.fecha);
+
+//                p.fecha = params.fecha
+
+            }
+
+            println("fecha:" + params.fecha)
+
             def p = new Proceso(params)
+
             p.contabilidad = session.contabilidad
-            p.fecha = new Date()
+
+
             p.save(flush: true)
             println "errores proceso " + p.errors
             if (p.errors.getErrorCount() == 0)
