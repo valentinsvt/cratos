@@ -37,7 +37,8 @@
             </td>
             <td style="text-align: center;">
                 %{--<g:if test="${asiento?.comprobante?.registrado!='R'}">--}%
-                <div style="margin:auto;width: 16px;cursor: pointer" class="borrar btnpq ui-state-default ui-corner-all" id="guardar_${i}" idaux="${aux?.id}" posicion="${i}">
+                <div style="margin:auto;width: 16px;cursor: pointer" class="borrar btnpq ui-state-default ui-corner-all" id="borrar_${i}" idaux="${aux?.id}" posicion="${i}"
+                     data-valor="${aux?.debe != 0 ? aux.debe : aux.haber}">
                     <span class="ui-icon ui-icon-circle-close"></span>
                 </div>
                 %{--</g:if>--}%
@@ -311,22 +312,38 @@
             icons : {
                 primary : "ui-icon-disk"
             }
-        })
+        });
 
         $(".borrar").click(function () {
 
-            var resultado = false
+            var resultado = false;
             var id = $(this).attr("idaux");
             var asientoId = $("#idAsiento").val();
 
-            $.ajax({
-                type    : "POST",
-                url     : "../borrarAuxiliar",
-                data    : "id=" + id + "&idAs=" + asientoId,
-                success : function (msg) {
-                    $("#listaAuxl").html(msg).show("slide");
-                }
-            });
+            var valor = $(this).data("valor");
+
+            console.log(resultado, id, asientoId, valor);
+
+//            $.ajax({
+//                type    : "POST",
+//                url     : "../borrarAuxiliar",
+//                data    : "id=" + id + "&idAs=" + asientoId,
+//                success : function (msg) {
+//                    $("#listaAuxl").html(msg).show("slide");
+//
+            var enAux = $("#agregar_axul").data("enAux");
+            var restante = $("#agregar_axul").data("restante");
+
+            console.log(enAux, restante);
+
+            enAux -= valor;
+            restante += valor;
+
+            console.log(enAux, restante);
+
+//
+//                }
+//            });
         });
 
     });
