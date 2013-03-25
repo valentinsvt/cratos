@@ -59,7 +59,7 @@
 </h2>
 
 <h2>
-    Cuenta: ${cuenta.numero} ${cuenta.descripcion}
+    Cuenta: ${cuenta?.numero} ${cuenta?.descripcion}
     </h2>
 
 <div>
@@ -87,40 +87,40 @@
 
                 <td class="fecha" align="center">
 
-                    <g:formatDate date="${asiento.comprobante.proceso.fecha}" format="dd-MM-yyyy hh:mm"/>
+                    <g:formatDate date="${asiento?.comprobante?.proceso?.fecha}" format="dd-MM-yyyy hh:mm"/>
 
                 </td>
 
                 <td class="factura" align="center" style="width: 40px;">
 
-                    ${asiento.comprobante.proceso.documento}
+                    ${asiento?.comprobante?.proceso?.documento}
 
 
                 </td>
 
                 <td class="cliente" align="center">
 
-                    ${asiento.comprobante.proceso.proveedor.nombre}
+                    ${asiento?.comprobante?.proceso?.proveedor?.nombre}
                 </td>
 
 
                 <td class="subt" style="text-align: center">
 
-                    <g:formatNumber number="${asiento.comprobante.proceso.valor}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    <g:formatNumber number="${asiento?.comprobante?.proceso?.valor}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 
                 </td>
 
 
                 <td class="iva" style="text-align: center">
 
-                    <g:formatNumber number="${asiento.comprobante.proceso.ivaGenerado}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    <g:formatNumber number="${asiento?.comprobante?.proceso?.ivaGenerado}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 
                 </td>
 
 
                 <td class="iva" style="text-align: center">
 
-                    <g:formatNumber number="${asiento.comprobante.proceso.valor + asiento.comprobante.proceso.ivaGenerado}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
+                    <g:formatNumber number="${asiento?.comprobante?.proceso?.valor + asiento?.comprobante?.proceso?.ivaGenerado}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 
                 </td>
 

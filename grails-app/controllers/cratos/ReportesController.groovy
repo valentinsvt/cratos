@@ -593,18 +593,36 @@ order by rplnnmro
         def cuenta
         def asientos
         def periodo = Periodo.get(params.per);
+//
+//        println("periodo: " + periodo)
+//
+//        println("inicio" + periodo.fechaInicio)
+//        println("fin" + periodo.fechaFin)
+
+
         def hijos
         def asientos2  = []
+
+        def comprobante
 
         cuenta = Cuenta.get(params.cnta);
 
         hijos = Cuenta.findAllByPadre(cuenta)
 
+        comprobante = Comprobante.findAllByFechaBetween(periodo.fechaInicio,periodo.fechaFin)
+//
+//        println(comprobante)
+//
+//
+//        println(hijos)
 
         if (hijos == []){
 
-            asientos = Asiento.findAllByCuenta(cuenta)
-            asientos2+=asientos
+//            asientos = Asiento.findAllByCuenta(cuenta)
+//            asientos2+=asientos
+
+            asientos = Asiento.findAllByCuentaAndComprobanteInList(cuenta,comprobante)
+           asientos2+=asientos
 
         }
        else {
@@ -614,7 +632,9 @@ order by rplnnmro
 
                def cuentas = Cuenta.get(i.id)
 
-               asientos = Asiento.findAllByCuenta(cuentas)
+//               asientos = Asiento.findAllByCuenta(cuentas)
+
+                  asientos = Asiento.findAllByCuentaAndComprobanteInList(cuentas,comprobante)
 
                asientos2+= asientos
 
@@ -622,6 +642,8 @@ order by rplnnmro
 
 
         }
+
+//        println(asientos2)
 
         return[asientos: asientos2, cuenta: cuenta, periodo: periodo]
 

@@ -439,10 +439,14 @@
             </div>
 
             <div id="divCuentaVentasFact">
+
+                <g:set var="hijos" value="${cratos.Cuenta.findAllByPadre(Cuenta.get(1518))}"/>
+                <g:set var="hijos2" value="${cratos.Cuenta.findAllByNumeroIlike("4.%")}"/>
+
                 Cuenta:
                 <g:select name="cuentasVentasFact"
                           optionKey="id" style="width: 750px;"
-                          class="ui-widget-content ui-corner-all" from="${cratos.Cuenta.findAllByPadre(Cuenta.get(1518))}"/>
+                          class="ui-widget-content ui-corner-all" from="${hijos2}"/>
 
             </div>
         </div>
