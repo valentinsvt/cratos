@@ -5,38 +5,59 @@ class Reportes3Controller {
     def dbConnectionService
 
 
+    def reporteComprobante() {
+        def contabilidad = params.cont
+        def numComp = params.num
+        def tipoComp = params.tipo
 
+        def comp = Comprobante.withCriteria {
+            proceso {
+                eq("contabilidad", Contabilidad.get(contabilidad))
+            }
+            eq("numero", numComp)
+            eq("tipo", TipoComprobante.get(tipoComp))
+        }
+        if (comp) {
+            if (comp.size() == 1) {
+                render comp[0].procesoId
+            } else {
+                render "NO_Se encontró más de un comprobante"
+            }
+        } else {
+            render "NO_No se encontró el comprobante"
+        }
+    }
 
     /*Reporte de cuentas por pagar
     * Sale de la tabla de axlr (plan de pagos)
     * Las pagas en teoria crean un registro en la tabla pagos
     * */
 
-    def reporteCxP(){
+    def reporteCxP() {
 //        println "reporte cxp "+params
 //        params.empresa=1
 //        params.fechaInicio="01/03/2013"
 //        params.fechaFin="31/04/2013"
-        def fechaInicio = new Date().parse("yyyy-MM-dd",params.fechaInicio)
-        def fechaFin    = new Date().parse("yyyy-MM-dd",params.fechaFin)
+        def fechaInicio = new Date().parse("yyyy-MM-dd", params.fechaInicio)
+        def fechaFin = new Date().parse("yyyy-MM-dd", params.fechaFin)
         def empresa = Empresa.get(params.empresa)
-        def axl = Auxiliar.findAllByFechaPagoBetweenAndDebeGreaterThan(fechaInicio,fechaFin,0,[sort:"fechaPago"])
-        def cxp=[]
+        def axl = Auxiliar.findAllByFechaPagoBetweenAndDebeGreaterThan(fechaInicio, fechaFin, 0, [sort: "fechaPago"])
+        def cxp = []
         def valores = [:]
-        axl.each {a->
-            if (a.asiento.cuenta.empresa.id.toInteger()==params.empresa.toInteger()){
+        axl.each { a ->
+            if (a.asiento.cuenta.empresa.id.toInteger() == params.empresa.toInteger()) {
                 def pagos = PagoAux.findAllByAuxiliar(a)
-                def pagado=0
-                pagos.each {p->
-                    pagado+=p.monto
+                def pagado = 0
+                pagos.each { p ->
+                    pagado += p.monto
                 }
-                if (pagado<a.debe){
+                if (pagado < a.debe) {
                     cxp.add(a)
-                    valores.put(a.id,a.debe-pagado)
+                    valores.put(a.id, a.debe - pagado)
                 }
             }
         }
-        [cxp:cxp,empresa:empresa,fechaInicio:fechaInicio,fechaFin:fechaFin,valores:valores]
+        [cxp: cxp, empresa: empresa, fechaInicio: fechaInicio, fechaFin: fechaFin, valores: valores]
 
     }
 

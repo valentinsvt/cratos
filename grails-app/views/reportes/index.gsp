@@ -82,13 +82,13 @@
                             Sirve para determinar las cuentas que son afectadas en un proceso contable
                         </li>
 
-                        <li text="prsp">
-                            <g:link controller="reportes" action="presupuesto" file="Presupuesto.pdf" class="link"
-                                    dialog="dlgContabilidad">
-                                Presupuesto
-                            </g:link>
-                            Reporta el presupuesto anual.
-                        </li>
+                        %{--<li text="prsp">--}%
+                        %{--<g:link controller="reportes" action="presupuesto" file="Presupuesto.pdf" class="link"--}%
+                        %{--dialog="dlgContabilidad">--}%
+                        %{--Presupuesto--}%
+                        %{--</g:link>--}%
+                        %{--Reporta el presupuesto anual.--}%
+                        %{--</li>--}%
 
                         <li text="cmpr">
                             <g:link controller="reportes" action="comprobante" file="Comprobante.pdf" class="link"
@@ -337,8 +337,12 @@
         </div>
 
         <div id="dlgComprobante" class="ui-helper-hidden">
-            Comprobante: <g:textField type="text" class="ui-widget-content ui-corner-all" name="comprobante"/> <a href="#"
-                                                                                                                  id="btnComprobantes">Buscar</a>
+            Contabilidad:
+            <g:select name="compCont" from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                      optionKey="id" optionValue="descripcion"
+                      class="ui-widget-content ui-corner-all"/><br/>
+            Tipo: <g:select name="compTipo" from="${cratos.TipoComprobante.list()}" optionKey="id" optionValue="descripcion"/>
+            Número: <g:textField type="text" class="ui-widget-content ui-corner-all" name="compNum"/>
         </div>
 
         <div id="dlgcxp">
@@ -683,12 +687,6 @@
 
                 });
 
-                $("#btnComprobantes").button({
-                    icons : {
-                        primary : "ui-icon-search"
-                    }
-                });
-
                 $("#dlgComprobante").dialog({
                     resizable : false,
                     autoOpen  : false,
@@ -696,14 +694,30 @@
                     width     : 400,
                     buttons   : {
                         "Aceptar"  : function () {
-                            var cont = $("#cont").val();
-                            var per = $("#periodo").val();
-                            var url = actionUrl + "?cont=" + cont + "Wper=" + per + "Wemp=${session.empresa.id}";
-//                            console.group("URL");
-//                            console.log(actionUrl);
-//                            console.log(url);
-//                            console.groupEnd();
-                            location.href = url;
+                            var cont = $("#compCont").val();
+                            var tipo = $("#compTipo").val();
+                            var num = $("#compNum").val();
+
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(controller: 'reportes3', action: 'reporteComprobante')}",
+                                data    : {
+                                    cont : cont,
+                                    tipo : tipo,
+                                    num  : num
+                                },
+                                success : function (msg) {
+                                    var parts = msg.split("_");
+                                    if (parts[0] != "NO") {
+                                        var url = actionUrl + "?id=" + msg;
+                                        location.href = url;
+                                    } else {
+                                        console.log(parts[1]);
+                                    }
+                                }
+                            });
+
+//                            location.href = url;
                         },
                         "Cancelar" : function () {
                             $("#dlgComprobante").dialog("close");
