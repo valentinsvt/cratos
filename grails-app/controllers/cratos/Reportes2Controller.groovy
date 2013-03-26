@@ -5,9 +5,13 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 
+
+
 class Reportes2Controller {
 
     def buscadorService
+
+    def kerberosoldService
 
     def updateCuenta() {
 
@@ -391,42 +395,87 @@ class Reportes2Controller {
 
     def estadoDeResultados = {
         println "estado de resultados " + params
+
+
+//        def contabilidad = Contabilidad.get(params.cont);
+
+        def sp = kerberosoldService.ejecutarProcedure("saldos",params.cont)
+
+        def periodo = Periodo.get(params.per);
+
+
         def empresa = Empresa.get(params.emp)
-        def periodo = Periodo.get(params.per)
-        def cuenta4 = Cuenta.findByNumeroAndEmpresa("4", empresa)
-        def cuenta5 = Cuenta.findByNumeroAndEmpresa("5", empresa)
-        def cuenta6 = Cuenta.findByNumeroAndEmpresa("6", empresa)
-        def cuenta7 = Cuenta.findByNumeroAndEmpresa("7", empresa)
 
-        def saldo4 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta4)
-        def saldo5 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta5)
-        def saldo6 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta6)
-        def saldo7 = SaldoMensual.findByPeriodoAndCuenta(periodo, cuenta7)
+        def cuenta4 = Cuenta.findAllByNumeroIlikeAndEmpresa("4%", empresa)
 
-        def tot4
-        def tot5
-        def tot6
-        def tot7
+        def cuenta5 = Cuenta.findAllByNumeroIlikeAndEmpresa("5%", empresa)
 
-        if (saldo4)
-            tot4 = saldo4.saldoInicial + (saldo4.debe - saldo4.haber)
-        else
-            tot4 = 0
-        if (saldo5)
-            tot5 = saldo5.saldoInicial + (saldo5.debe - saldo5.haber)
-        else
-            tot5 = 0
-        if (saldo6)
-            tot6 = saldo6.saldoInicial + (saldo6.debe - saldo6.haber)
-        else
-            tot6 = 0
-        if (saldo7)
-            tot7 = saldo7.saldoInicial + (saldo7.debe - saldo7.haber)
-        else
-            tot7 = 0
+        def saldo4
 
-        def resultado = (tot4 + tot6) - (tot5 + tot7)
-        [tot4: tot4, tot5: tot5, tot6: tot6, tot7: tot7, resultado: resultado, periodo: periodo]
+        def saldoMensual4  = []
+
+        def total4
+
+        def total6=0
+
+        def saldo5
+
+        def saldoMensual5 = []
+
+        def total5
+
+        def total7 =0
+
+        def totalResultados
+
+        cuenta4.each {i->
+
+
+//            saldo4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
+//
+//            saldoMensual4+=saldo4
+
+            total4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
+
+            total6+=total4
+
+
+        }
+
+        cuenta5.each {i->
+
+//            saldo5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
+//
+//            saldoMensual5+=saldo5
+//
+
+            total5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
+
+            total7+=total5
+
+
+
+        }
+
+        totalResultados = total7 - total6
+
+//        println("TOTAL6" + total6)
+//
+//        println("TOTAL7" + total7)
+//        println(totalResultados)
+
+
+        return[periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, totalResultados: totalResultados]
+
+
+//        println("periodo: " + periodo)
+//        println("contabilidad: " + contabilidad)
+//        println("empresa: " + empresa)
+//        println("cuenta: " + cuenta4)
+//        println("saldo mensual 4" + saldoMensual4)
+//        println("saldo mensual 5" + saldoMensual5)
+
+
     }
 
 
