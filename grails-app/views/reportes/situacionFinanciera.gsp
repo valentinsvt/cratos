@@ -129,7 +129,7 @@
 
             <h2>Situación financiera</h2>
 
-            <h3>Periodo del ${periodo.fechaInicio.format('dd-MM-yyyy')} a ${periodo.fechaFin.format('dd-MM-yyyy')}</h3>
+            <h3>***Periodo del ${periodo.fechaInicio.format('dd-MM-yyyy')} a ${periodo.fechaFin.format('dd-MM-yyyy')}</h3>
 
             <table border='1'>
                 <thead>

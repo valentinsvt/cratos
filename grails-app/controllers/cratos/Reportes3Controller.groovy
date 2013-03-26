@@ -3,7 +3,9 @@ package cratos
 class Reportes3Controller {
 
     def dbConnectionService
-
+    def cuentasService
+    def buscadorService
+    def kerberosoldService
 
     def reporteComprobante() {
         def contabilidad = params.cont
@@ -60,9 +62,6 @@ class Reportes3Controller {
         [cxp: cxp, empresa: empresa, fechaInicio: fechaInicio, fechaFin: fechaFin, valores: valores]
 
     }
-
-
-
 
     def auxiliarPorCliente() {
 //        println "\n\n\n\n"
@@ -287,6 +286,7 @@ class Reportes3Controller {
         def saldos = SaldoMensual.findAllByCuentaAndPeriodo(cuenta, per)
         def saldoInit = 0
         saldos.each {
+            it.refresh()
             saldoInit += (it.saldoInicial + it.debe - it.haber)
         }
         html += g.formatNumber(number: saldoInit, maxFractionDigits: 2, minFractionDigits: 2)
@@ -305,7 +305,18 @@ class Reportes3Controller {
                 html += "<tr class='asiento'>"
                 html += "<td class='numero'> </td>"
                 html += "<td class='nombre'>"
-                html += asiento.comprobante.proceso?.proveedor?.nombre ?: asiento.comprobante.proceso?.proveedor?.nombreContacto + " " + asiento.comprobante.proceso?.proveedor?.apellidoContacto
+                if (asiento.comprobante.proceso?.proveedor) {
+                    if (asiento.comprobante.proceso?.proveedor?.nombre) {
+                        html += asiento.comprobante.proceso?.proveedor?.nombre
+                    } else if (asiento.comprobante.proceso?.proveedor?.nombreContacto) {
+                        html += asiento.comprobante.proceso?.proveedor?.nombreContacto + " " + asiento.comprobante.proceso?.proveedor?.apellidoContacto
+                    } else {
+                        html += ""
+                    }
+                } else {
+                    html += ""
+                }
+
                 html += "</td>"
                 html += "<td class='valor asiento'>"
                 html += g.formatNumber(number: asiento.debe - asiento.haber, minFractionDigits: 2, maxFractionDigits: 2)
@@ -352,6 +363,8 @@ class Reportes3Controller {
                 html += "</ul>"
                 html += "</div>"
             } else {
+
+                def sp = kerberosoldService.ejecutarProcedure("saldos", periodo.contabilidadId)
 
                 header += "<h1>" + empresa.nombre + "</h1>"
                 header += "<h2>ESTADO DE SITUACION FINANCIERA (BALANCE GENERAL CON AUXILIARES)</h2>"
@@ -413,6 +426,7 @@ class Reportes3Controller {
         }
         if (valor.size() == 1) {
             valor = valor[0]
+            valor.refresh()
             valor = valor.saldoInicial + valor.debe - valor.haber
             return valor
         } else if (valor.size() == 0) {

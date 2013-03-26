@@ -9,24 +9,24 @@ class ReportesController {
     def index() {
         def camposCliente = ["nombre": ["Nombre", "string"], "ruc": ["Ruc", "string"]]
         if (params.msn)
-            [camposCliente: camposCliente,msn:params.msn]
+            [camposCliente: camposCliente, msn: params.msn]
         else
             [camposCliente: camposCliente]
     }
 
 
     def listarClientes = {
-        def closure = {proveedor->
-            if (proveedor.nombre){
+        def closure = { proveedor ->
+            if (proveedor.nombre) {
                 return proveedor.nombre
-            }else{
-                return proveedor.nombreCont.acto+" "+proveedor.apellidoContacto
+            } else {
+                return proveedor.nombreCont.acto + " " + proveedor.apellidoContacto
             }
 
         }
-        def listaTitulos = ["Ruc", "Nombre","Actividad"]       /*Titulos de la tabla*/
-        def listaCampos = ["ruc", "nombre","actividad"]           /*campos que van a mostrarse en la tabla, en el mismo orden que los titulos*/
-        def funciones = [null, ["closure": [closure, "&"]],null]   /*funciones para cada campo en caso de ser necesario. Cada campo debe tener un mapa (con el nombre de la funcion como key y los parametros como arreglo) o un null si no tiene funciones... si un parametro es ? sera sustituido por el valor del campo*/
+        def listaTitulos = ["Ruc", "Nombre", "Actividad"]       /*Titulos de la tabla*/
+        def listaCampos = ["ruc", "nombre", "actividad"]           /*campos que van a mostrarse en la tabla, en el mismo orden que los titulos*/
+        def funciones = [null, ["closure": [closure, "&"]], null]   /*funciones para cada campo en caso de ser necesario. Cada campo debe tener un mapa (con el nombre de la funcion como key y los parametros como arreglo) o un null si no tiene funciones... si un parametro es ? sera sustituido por el valor del campo*/
         def url = g.createLink(action: "listarClientes", controller: "reportes")     /*link de esta accion ...  sive para la opcion de reporte*/
         if (params.campos instanceof java.lang.String) {
             params.campos = [params.campos, "empresa"]
@@ -82,12 +82,7 @@ class ReportesController {
         } else {
             render "Transacción no encontrada"
         }
-
-
     }
-
-
-
 
     def updatePeriodo() {
 
@@ -112,20 +107,15 @@ class ReportesController {
 
             html += js
         }
-
         render html
     }
 
     def planDeCuentas() {
-
-
         [cuentas: cuentasService.getCuentas(params.cont, params.emp)]
     }
 
     def balanceComprobacion() {
-
-
-        def sp = kerberosoldService.ejecutarProcedure("saldos",params.cont)
+        def sp = kerberosoldService.ejecutarProcedure("saldos", params.cont)
 
         def contabilidad = Contabilidad.get(params.cont)
         def periodo = Periodo.get(params.per)
@@ -137,7 +127,7 @@ class ReportesController {
 //            println "saldo "+it.cuenta.numero+" "+it.saldoInicial+" d "+it.debe+" h "+it.haber
 //        }
 
-        saldos.sort{
+        saldos.sort {
             it.refresh()
             it.cuenta.numero
         }
@@ -192,12 +182,8 @@ class ReportesController {
     }
 
     def reporteOrdenCompra() {
-
-
         def ordenCompraInstance = OrdenCompra.get(params.id);
         [ordenCompraInstance: ordenCompraInstance]
-
-
     }
 
 
@@ -210,13 +196,9 @@ class ReportesController {
 
 //        println("CMPR:" + comprobantes.tipo)
 
-        comprobantes.each {i->
-
-            tipoComprobante+=i.tipo.codigo
-
-
+        comprobantes.each { i ->
+            tipoComprobante += i.tipo.codigo
         }
-
 
         def asiento
         if (comprobantes)
@@ -229,7 +211,7 @@ class ReportesController {
         asiento.each { asientos ->
 
             def fecha = asientos.comprobante.fecha
-            def numero = ""+asientos.comprobante.prefijo+""+asientos.comprobante.numero
+            def numero = "" + asientos.comprobante.prefijo + "" + asientos.comprobante.numero
             def descripcion = asientos.comprobante.descripcion
 
             if (!comp.containsKey(numero)) {
@@ -292,6 +274,9 @@ class ReportesController {
 //        println "++++++++++++++++++++++++++++++++++" + params
 
         def periodo = Periodo.get(params.per)
+
+        def sp = kerberosoldService.ejecutarProcedure("saldos", periodo.contabilidadId)
+
         def cuenta2 = Cuenta.findByNumero("2")
         def cuenta3 = Cuenta.findByNumero("3")
         def cuenta4 = Cuenta.findByNumero("4")
@@ -305,21 +290,25 @@ class ReportesController {
         def tot3
         def tot4
         def tot5
-        if (saldo2)
+        if (saldo2) {
+            saldo2.refresh()
             tot2 = saldo2.saldoInicial + (saldo2.debe - saldo2.haber)
-        else
+        } else
             tot2 = 0
-        if (saldo3)
+        if (saldo3) {
+            saldo3.refresh()
             tot3 = saldo3.saldoInicial + (saldo3.debe - saldo3.haber)
-        else
+        } else
             tot3 = 0
-        if (saldo4)
+        if (saldo4) {
+            saldo4.refresh()
             tot4 = saldo4.saldoInicial + (saldo4.debe - saldo4.haber)
-        else
+        } else
             tot4 = 0
-        if (saldo5)
+        if (saldo5) {
+            saldo5.refresh()
             tot5 = saldo5.saldoInicial + (saldo5.debe - saldo5.haber)
-        else
+        } else
             tot5 = 0
 //        println "saldo2:" + tot2 + "  3:" + tot3 + "  4:" + tot4 + "  5:" + tot5
 
@@ -447,7 +436,7 @@ order by rplnnmro
 
             println("cuenta" + cuenta.id)
 
-            cuenta.each { g->
+            cuenta.each { g ->
 
                 println(g.id)
 
@@ -459,7 +448,7 @@ order by rplnnmro
 
                 def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuentaP, periodo)
 
-                println("SM:"+ saldoMensual)
+                println("SM:" + saldoMensual)
 
 
                 def comprobante = Comprobante.findAllByProcesoInList(proceso)
@@ -506,8 +495,7 @@ order by rplnnmro
 
 
                 saldoInicial = saldoMensual.saldoInicial;
-            }
-            else {
+            } else {
 
                 saldoInicial = 0;
 //            println("ENTRO:" + saldoInicial)
@@ -515,7 +503,7 @@ order by rplnnmro
 
 
 
-            asiento.each {v ->
+            asiento.each { v ->
 
                 def m = v
                 def saldos = [:]
@@ -528,16 +516,14 @@ order by rplnnmro
                     saldoInicial = saldos.debe - saldos.haber
 
 
-                }
-                else {
+                } else {
 
                     if (saldos.debe != 0) {
 
 
                         saldoInicial = saldoInicial + saldos.debe
 
-                    }
-                    else {
+                    } else {
 
                         saldoInicial = saldoInicial - saldos.haber
                     }
@@ -558,7 +544,7 @@ order by rplnnmro
     }
 
 
-    def reporteFacturacion (){
+    def reporteFacturacion() {
 
 
         def cuenta
@@ -572,7 +558,7 @@ order by rplnnmro
 
 
         def hijos
-        def asientos2  = []
+        def asientos2 = []
 
         def comprobante
 
@@ -580,34 +566,33 @@ order by rplnnmro
 
         hijos = Cuenta.findAllByPadre(cuenta)
 
-        comprobante = Comprobante.findAllByFechaBetween(periodo.fechaInicio,periodo.fechaFin)
+        comprobante = Comprobante.findAllByFechaBetween(periodo.fechaInicio, periodo.fechaFin)
 //
 //        println(comprobante)
 //
 //
 //        println(hijos)
 
-        if (hijos == []){
+        if (hijos == []) {
 
 //            asientos = Asiento.findAllByCuenta(cuenta)
 //            asientos2+=asientos
 
-            asientos = Asiento.findAllByCuentaAndComprobanteInList(cuenta,comprobante)
-            asientos2+=asientos
+            asientos = Asiento.findAllByCuentaAndComprobanteInList(cuenta, comprobante)
+            asientos2 += asientos
 
-        }
-        else {
+        } else {
 
 
-            hijos.each{i->
+            hijos.each { i ->
 
                 def cuentas = Cuenta.get(i.id)
 
 //               asientos = Asiento.findAllByCuenta(cuentas)
 
-                asientos = Asiento.findAllByCuentaAndComprobanteInList(cuentas,comprobante)
+                asientos = Asiento.findAllByCuentaAndComprobanteInList(cuentas, comprobante)
 
-                asientos2+= asientos
+                asientos2 += asientos
 
             }
 
@@ -616,8 +601,7 @@ order by rplnnmro
 
 //        println(asientos2)
 
-        return[asientos: asientos2, cuenta: cuenta, periodo: periodo]
-
+        return [asientos: asientos2, cuenta: cuenta, periodo: periodo]
 
 
     }
