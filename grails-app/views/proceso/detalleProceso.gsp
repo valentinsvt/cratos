@@ -13,6 +13,9 @@
             <a href="#" class="btn ui-corner-all" id="imprimir" iden="${comp?.proceso?.id}" style="margin-bottom: 10px;">
                 Imprimir
             </a>
+            <a href="#" class="btn   ui-corner-all" id="desmayo" idComp="${comp?.id}" style="margin-bottom: 10px;">
+                Desmayorizar
+            </a>
         </g:else>
         <br>
 
@@ -200,6 +203,46 @@
             location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
 
         });
+
+        $("#desmayo").click(function(){
+            var id = $(this).attr("idComp")
+            $.box({
+                imageClass : "box_info",
+                text       : "Por favor espere",
+                title      : "Procesando",
+                iconClose  : false,
+                dialog     : {
+                    resizable     : false,
+                    draggable     : false,
+                    closeOnEscape : true,
+                    buttons       : { }
+                }
+            });
+//            console.log("click demayo")
+            $.ajax({
+                type    : "POST",
+                url     : "${g.createLink(controller: 'proceso',action: 'desmayorizar')}",
+                data    : "id=" + id,
+                success : function (msg) {
+                   if(msg=="ok"){
+                       window.location.reload("true")
+                   }else{
+                       $.box({
+                           imageClass : "box_info",
+                           text       : msg,
+                           title      : "Error",
+                           iconClose  : false,
+                           dialog     : {
+                               resizable     : false,
+                               draggable     : false,
+                               closeOnEscape : true,
+                               buttons       : { }
+                           }
+                       });
+                   }
+                }
+            });
+        }) ;
 
         $(".guardarDatos").click(function () {
             var btn = $(this)

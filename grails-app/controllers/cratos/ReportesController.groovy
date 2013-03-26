@@ -4,6 +4,7 @@ class ReportesController {
 
     def cuentasService
     def buscadorService
+    def kerberosoldService
 
     def index() {
         def camposCliente = ["nombre": ["Nombre", "string"], "ruc": ["Ruc", "string"]]
@@ -19,7 +20,7 @@ class ReportesController {
             if (proveedor.nombre){
                 return proveedor.nombre
             }else{
-                return proveedor.nombreContacto+" "+proveedor.apellidoContacto
+                return proveedor.nombreCont.acto+" "+proveedor.apellidoContacto
             }
 
         }
@@ -123,57 +124,27 @@ class ReportesController {
 
     def balanceComprobacion() {
 
-        //1 contabilidad -> empresa y contabilidad
-        //2 procesos de la cont comparando fechas con el periodo
-        //3 comprobantes de c/ proceso
-        //4 asientos de c/ comprobante
-        //5 cada asiento tiene cuenta
+
+        def sp = kerberosoldService.ejecutarProcedure("saldos",params.cont)
 
         def contabilidad = Contabilidad.get(params.cont)
         def periodo = Periodo.get(params.per)
 
-        def procs = Proceso.withCriteria {
-            and {
-                eq("contabilidad", contabilidad)
-                between("fecha", periodo.fechaInicio, periodo.fechaFin)
-            }
-        }
-        def cuentas = [:]
-        println "procesos " + procs + " periodo " + periodo.fechaInicio + "   " + periodo.fechaFin + "  cont " + params.cont
-        procs.each { proc ->
-            def comprobantes = Comprobante.findAllByProceso(proc)
-            comprobantes.each { comp ->
-                def asientos = Asiento.findAllByComprobante(comp)
-                asientos.each { asi ->
-                    def cuenta = asi.cuenta
 
-                    if (!cuentas.containsKey(cuenta)) {
-                        cuentas[cuenta] = [:]
-                        cuentas[cuenta]["debe"] = 0
-                        cuentas[cuenta]["haber"] = 0
-                    }
-                    cuentas[cuenta]["debe"] += asi.debe
-                    cuentas[cuenta]["haber"] += asi.haber
-                }
-            }
+        def saldos = SaldoMensual.findAllByPeriodo(periodo)
+//        println "saldos "+saldos+" periodo "+periodo.id
+//        saldos.each {
+//            println "saldo "+it.cuenta.numero+" "+it.saldoInicial+" d "+it.debe+" h "+it.haber
+//        }
+
+        saldos.sort{
+            it.refresh()
+            it.cuenta.numero
         }
 
-        cuentas = cuentas.sort { it.key.numero}
-        def res = []
-        cuentas.each { k, v ->
-            def cuenta = k
-            def m = v
-            def mapCuenta = [:]
-            mapCuenta.cuenta = cuenta
-            mapCuenta.debe = m.debe
-            mapCuenta.haber = m.haber
-            mapCuenta.total = m.debe - m.haber
-            res.add(mapCuenta)
-        }
-
-        println cuentas
-        println res
-        return [res: res, contabilidad: contabilidad, periodo: periodo]
+//        println cuentas
+//        println res
+        return [res: saldos, contabilidad: contabilidad, periodo: periodo]
     }
 
     def presupuesto() {
@@ -241,7 +212,7 @@ class ReportesController {
 
         comprobantes.each {i->
 
-             tipoComprobante+=i.tipo.codigo
+            tipoComprobante+=i.tipo.codigo
 
 
         }
@@ -622,23 +593,23 @@ order by rplnnmro
 //            asientos2+=asientos
 
             asientos = Asiento.findAllByCuentaAndComprobanteInList(cuenta,comprobante)
-           asientos2+=asientos
+            asientos2+=asientos
 
         }
-       else {
+        else {
 
 
-              hijos.each{i->
+            hijos.each{i->
 
-               def cuentas = Cuenta.get(i.id)
+                def cuentas = Cuenta.get(i.id)
 
 //               asientos = Asiento.findAllByCuenta(cuentas)
 
-                  asientos = Asiento.findAllByCuentaAndComprobanteInList(cuentas,comprobante)
+                asientos = Asiento.findAllByCuentaAndComprobanteInList(cuentas,comprobante)
 
-               asientos2+= asientos
+                asientos2+= asientos
 
-              }
+            }
 
 
         }

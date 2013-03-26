@@ -131,7 +131,17 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println "registrar comprobante " + params
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, 1])
-//            println "mayorizando por comprobante " + msn["mayorizar"]
+            println "LOG: mayorizando por comprobante ${comprobante.id}" + msn["mayorizar"]
+            try{
+                def log = new LogMayorizacion()
+                log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
+                log.comprobante=comprobante
+                log.tipo="M"
+                log.resultado= msn["mayorizar"].toString()
+                log.save(flush: true)
+            }catch (e){
+                println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+            }
             if (msn["mayorizar"]=~ "Error") {
 //                def asientos=Asiento.findAllByComprobante(comprobante)
 //                println "error al mayorizar "+msn
@@ -145,6 +155,41 @@ class ProcesoController extends cratos.seguridad.Shield {
                 comprobante.registrado = "S"
                 comprobante.save(flush: true)
                 proceso.estado = "R"
+                proceso.save(flush: true)
+                render "ok"
+            }
+        } else {
+            redirect(controller: "shield", action: "ataques")
+        }
+    }
+
+    def desmayorizar(){
+        println "demayo "+params
+        if (request.method == 'POST') {
+            def comprobante = Comprobante.get(params.id)
+            def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
+            println "LOG: desmayorizando  comprobante ${comprobante.id} " + msn["mayorizar"]
+            try{
+                def log = new LogMayorizacion()
+                log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
+                log.comprobante=comprobante
+                log.tipo="D"
+                log.resultado= msn["mayorizar"].toString()
+                log.save(flush: true)
+            }catch (e){
+                println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+            }
+            if (msn["mayorizar"]=~ "Error") {
+
+                render " "+msn["mayorizar"]
+            } else {
+                def proceso = comprobante.proceso
+                params.controllerName = controllerName
+                params.actionName = actionName
+//                kerberosService.generarEntradaAuditoria(params,Comprobante,"registrado","R",comprobante.registrado,session.perfil,session.usuario)
+                comprobante.registrado = "N"
+                comprobante.save(flush: true)
+                proceso.estado = "N"
                 proceso.save(flush: true)
                 render "ok"
             }
@@ -339,7 +384,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         if (comprobante){
 
-           asiento = Asiento.findAllByComprobante(comprobante)
+            asiento = Asiento.findAllByComprobante(comprobante)
 
         }
 
@@ -350,32 +395,32 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         if (comprobante){
 
-        if (comprobante.registrado == 'N'){
+            if (comprobante.registrado == 'N'){
 
 
-            asiento.each{i->
+                asiento.each{i->
 
-                i.delete(flush: true)
+                    i.delete(flush: true)
 
-            }
+                }
 //                asiento.delete(flush: true)
                 comprobante.delete(flush: true)
-           proceso.delete(flush: true)
+                proceso.delete(flush: true)
 
 
-            flash.message="Proceso Borrado!"
+                flash.message="Proceso Borrado!"
 
-            redirect(action: 'lsta')
+                redirect(action: 'lsta')
 
-        }else {
+            }else {
 
-            flash.message="No se puede borrar el proceso!!"
+                flash.message="No se puede borrar el proceso!!"
 
-            redirect(action: 'lsta')
+                redirect(action: 'lsta')
 
 
 
-        }
+            }
 
         }else {
 
