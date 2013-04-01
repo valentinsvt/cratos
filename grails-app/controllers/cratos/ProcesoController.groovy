@@ -100,7 +100,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def valorAsiento = {
         if (request.method == 'POST') {
-            //println "cambiar Valor Asiento "+params
+//            println "cambiar Valor Asiento "+params
             def vd = params.vd.toDouble()
             def vh = params.vh.toDouble()
             // println "vd "+vd +" vh  "+vh
@@ -117,6 +117,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             //kerberosService.generarEntradaAuditoria(params,Asiento,"haber",vh,asiento.haber,session.perfil,session.usuario)
             asiento.debe = vd
             asiento.haber = vh
+            asiento.cuenta=Cuenta.get(params.cnta)
             if (asiento.save(flush: true))
                 render "ok"
             else

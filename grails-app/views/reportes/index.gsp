@@ -158,7 +158,7 @@
                         <li text="auct">
                             <g:link controller="reportes" action="auxiliaresContables" file="Auxiliar_Contable.pdf" class="link"
                                     dialog="dlgAuxiliarContable">
-                                Auxiliar Contable
+                                Libro mayor
                             </g:link>
                             Auxiliar Contable
                         </li>
