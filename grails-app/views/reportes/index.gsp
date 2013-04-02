@@ -138,15 +138,13 @@
                             Estado de cambios en el patrimonio durante el ejercicio fiscal
                         </li>
 
-                        %{--TODO: revisar este reporte!!!--}%
-
-                        %{--<li text="auxl">--}%
-                        %{--<g:link controller="reportes2" action="auxiliares" file="Auxiliares.pdf" class="link"--}%
-                        %{--dialog="dlgContabilidadPeriodoCuenta">--}%
-                        %{--Auxiliares--}%
-                        %{--</g:link>--}%
-                        %{--Auxiliares--}%
-                        %{--</li>--}%
+                        <li text="auxl">
+                        <g:link controller="reportes2" action="pagos" file="Pagos.pdf" class="link"
+                        dialog="dlgPagos">
+                        Pagos
+                        </g:link>
+                        Pagos
+                        </li>
 
                         %{--<li text="vnts">--}%
                         %{--<g:link controller="reportes" action="cambiosPatrimonio" file="Estado_Cambios_Patrimonio.pdf" class="link"--}%
@@ -291,9 +289,9 @@
                     </div>
 
                     <div id="auxl" class="notice ui-helper-hidden ui-corner-all ">
-                        <h1>Auxiliares</h1><br>
+                        <h1>Pagos</h1><br>
 
-                        <p>Auxiliares.</p>
+                        <p>Pagos.</p>
                     </div>
 
                     <div id="auct" class="notice ui-helper-hidden ui-corner-all">
@@ -351,6 +349,17 @@
             Hasta: <elm:datePicker class="field ui-corner-all" title="Hasta" name="fechaFin" format="yyyy-MM-dd"
                                    style="width: 80px" id="hasta"/>
         </div>
+
+
+    <div id="dlgPagos">
+        Desde: <elm:datePicker class="field ui-corner-all" title="Desde" name="fechaIncio" format="yyyy-MM-dd"
+                               style="width: 80px" id="desde"/>
+        Hasta: <elm:datePicker class="field ui-corner-all" title="Hasta" name="fechaFin" format="yyyy-MM-dd"
+                               style="width: 80px" id="hasta"/>
+    </div>
+
+
+
 
         <div id="dlgContabilidadPeriodo" class="ui-helper-hidden">
             <div>

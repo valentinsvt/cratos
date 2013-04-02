@@ -428,6 +428,10 @@ class Reportes2Controller {
 
         def totalResultados
 
+
+
+        if(cuenta4){
+
         cuenta4.each {i->
 
 
@@ -442,6 +446,9 @@ class Reportes2Controller {
 
         }
 
+
+        }
+         if(cuenta5){
         cuenta5.each {i->
 
 //            saldo5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
@@ -456,6 +463,8 @@ class Reportes2Controller {
 
 
         }
+
+         }
 
         totalResultados = total7 - total6
 
