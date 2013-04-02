@@ -63,7 +63,7 @@
                         ${asiento.cuenta.numero + '(' + asiento.cuenta.descripcion + ')'}
                     </g:if>
                     <g:else>
-                        <g:select name="cuentas" from="${cratos.Cuenta.findAllByPadreAndMovimiento(asiento.cuenta.padre,'1')}" id="select_${i}" value="${asiento.cuenta.id}" optionKey="id"  class="cuentas"></g:select>
+                        <g:select name="cuentas" from="${cratos.Cuenta.findAllByPadreAndMovimiento(asiento.cuenta.padre,'1')}" id="select_${i}" value="${asiento.cuenta.id}" optionKey="id"  class="cuentas" style="width:300px"></g:select>
                     </g:else>
                 </td>
                 <g:if test="${comp.registrado != 'S'}">

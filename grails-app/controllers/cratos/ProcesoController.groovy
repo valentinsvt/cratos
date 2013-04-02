@@ -394,25 +394,23 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         }
 
-//        println("asiento " + asiento)
-//        println("comprobante " + comprobante)
-//        println("proceso" + proceso)
-
 
         if (comprobante){
 
             if (comprobante.registrado == 'N'){
 
-
-//                asiento.each{i->
-//
-//                    i.delete(flush: true)
-//
-//                }
-////                asiento.delete(flush: true)
-//                comprobante.delete(flush: true)
-//                proceso.delete(flush: true)
-
+                def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
+                println "LOG: desmayorizando  comprobante borrar proceso ${comprobante.id} " + msn["mayorizar"]
+                try{
+                    def log = new LogMayorizacion()
+                    log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
+                    log.comprobante=comprobante
+                    log.tipo="B"
+                    log.resultado= msn["mayorizar"].toString()
+                    log.save(flush: true)
+                }catch (e){
+                    println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+                }
                 proceso.estado="B"
                 proceso.save(flush: true)
                 comprobante.registrado="B"
