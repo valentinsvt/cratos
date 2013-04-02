@@ -154,6 +154,7 @@ class Reportes3Controller {
                         "          and s.cnta__id = u.cnta__id\n" +
                         "          and x.prve__id = r.prve__id\n" +
                         "          and u.empr__id = ${params.emp}\n" +
+                        "          and c.cmprrgst = 'S'"
                         "          and\n" +
                         "          c.cmprfcha >=\n" +
                         "                  (select prdofcin from prdo where prdo__id = ${params.per})\n" +

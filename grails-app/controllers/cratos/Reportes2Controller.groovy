@@ -85,7 +85,7 @@ class Reportes2Controller {
                 clientes.each { cliente ->
                     def mapCliente = [:]
                     def tieneAuxiliares = false
-                    def procesos = Proceso.findAllByProveedor(cliente, [sort: 'fecha'])
+                    def procesos = Proceso.findAllByProveedorAndEstado(cliente,'R', [sort: 'fecha'])
                     if (procesos.size() > 0) {
                         mapCliente.cliente = cliente
                         mapCliente.auxiliares = []
@@ -97,24 +97,26 @@ class Reportes2Controller {
 //                                mapProceso.proceso = proceso
 //                                mapProceso.comprobantes = []
                                 comprobantes.each { comprobante ->
+                                    if(comprobante.registrado=="S"){
 //                                    def mapComprobante = [:]
-                                    def asientos = Asiento.findAllByComprobanteAndCuenta(comprobante, cuenta)
-                                    if (asientos.size() > 0) {
+                                        def asientos = Asiento.findAllByComprobanteAndCuenta(comprobante, cuenta)
+                                        if (asientos.size() > 0) {
 //                                        mapComprobante.comprobante = comprobante
 //                                        mapComprobante.asientos = []
-                                        asientos.each { asiento ->
+                                            asientos.each { asiento ->
 //                                            def mapAsiento = [:]
 //                                            mapAsiento.asiento = asiento
 //                                            mapAsiento.auxiliares = Auxiliar.findAllByAsiento(asiento)
-                                            mapCliente.auxiliares += Auxiliar.findAllByAsiento(asiento)
+                                                mapCliente.auxiliares += Auxiliar.findAllByAsiento(asiento)
 //                                            mapComprobante.asientos.add(mapAsiento)
-                                        } //asientos.each
-                                        if (mapCliente.auxiliares.size() > 0) {
-                                            tieneAuxiliares = true
-                                            band = true
-                                        }
+                                            } //asientos.each
+                                            if (mapCliente.auxiliares.size() > 0) {
+                                                tieneAuxiliares = true
+                                                band = true
+                                            }
 //                                        mapProceso.comprobantes.add(mapComprobante)
-                                    } //if comprobante tiene asientos
+                                        } //if comprobante tiene asientos
+                                    }
                                 } //comprobantes.each
 //                                mapCliente.procesos.add(mapProceso)
                             } //if procesos tiene comprobantes
@@ -432,39 +434,39 @@ class Reportes2Controller {
 
         if(cuenta4){
 
-        cuenta4.each {i->
+            cuenta4.each {i->
 
 
 //            saldo4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
 //
 //            saldoMensual4+=saldo4
 
-            total4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
+                total4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
 
-            total6+=total4
+                total6+=total4
+
+
+            }
 
 
         }
-
-
-        }
-         if(cuenta5){
-        cuenta5.each {i->
+        if(cuenta5){
+            cuenta5.each {i->
 
 //            saldo5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
 //
 //            saldoMensual5+=saldo5
 //
 
-            total5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
+                total5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
 
-            total7+=total5
+                total7+=total5
 
 
+
+            }
 
         }
-
-         }
 
         totalResultados = total7 - total6
 
