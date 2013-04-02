@@ -138,8 +138,8 @@
                             Estado de cambios en el patrimonio durante el ejercicio fiscal
                         </li>
 
-                        <li text="auxl">
-                        <g:link controller="reportes2" action="pagos" file="Pagos.pdf" class="link"
+                        <li text="pags">
+                        <g:link controller="reportes2" action="reportePagos" file="Pagos.pdf" class="link"
                         dialog="dlgPagos">
                         Pagos
                         </g:link>
@@ -288,7 +288,7 @@
                         <p>Los cambios visualizados son: aumentos y disminuciones patrimoniales y los saldos finales.</p>
                     </div>
 
-                    <div id="auxl" class="notice ui-helper-hidden ui-corner-all ">
+                    <div id="pags" class="notice ui-helper-hidden ui-corner-all ">
                         <h1>Pagos</h1><br>
 
                         <p>Pagos.</p>
@@ -351,11 +351,19 @@
         </div>
 
 
-    <div id="dlgPagos">
+    <div id="dlgPagos" class="ui-helper-hidden">
+
+        <div>
+
+        Proveedor <g:select name="proveedorPagos" from="${cratos.Proveedor.findAllByEmpresa(session.empresa, [sort: 'nombre'])}" optionKey="id"/>
+
+        </div>
+
         Desde: <elm:datePicker class="field ui-corner-all" title="Desde" name="fechaIncio" format="yyyy-MM-dd"
-                               style="width: 80px" id="desde"/>
+                               style="width: 80px" id="desdePagos"/>
         Hasta: <elm:datePicker class="field ui-corner-all" title="Hasta" name="fechaFin" format="yyyy-MM-dd"
-                               style="width: 80px" id="hasta"/>
+                               style="width: 80px" id="hastaPagos"/>
+
     </div>
 
 
@@ -590,6 +598,29 @@
                         }
                     }
                 });
+
+
+                $("#dlgPagos").dialog({
+                    modal    : true,
+                    width    : 400,
+                    height   : 300,
+                    title    : "Reporte de Pagos",
+                    autoOpen : false,
+                    buttons  : {
+                        "Ver" : function () {
+                            var desde = $("#desdePagos").val()
+                            var hasta = $("#hastaPagos").val()
+                            var prove = $("#proveedorPagos").val()
+
+                            console.log("prove" + prove)
+
+                            url = "${g.createLink(controller:'reportes2' , action: 'reportePagos')}?fechaInicio=" + desde + "WfechaFin=" + hasta + "Wempresa=${session.empresa.id}" + "Wprove=" + prove;
+                            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=Pagos.pdf"
+                        }
+                    }
+                });
+
+
 
                 $("#dlgContabilidadPeriodo").dialog({
                     modal     : true,
