@@ -81,7 +81,7 @@
             <g:set var="totDeudor" value="${0}"></g:set>
             <g:set var="totAcreedor" value="${0}"></g:set>
             <g:each in="${res}" var="m" status="i">
-                <tr class="${i % 2 == 0 ? 'even' : 'odd'}">
+                <tr>
                     <td>${m.cuenta.numero}</td>
                     <td>${m.cuenta.descripcion}</td>
                     <td style="text-align:right;"><g:formatNumber number="${m.saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/></td>

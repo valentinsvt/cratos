@@ -102,7 +102,7 @@
 
             <g:each in="${val.items}" var="i" status="j" >
 
-                <tr class="${(j%2==0)?'even':'odd'}">
+                <tr>
                     <td>
                         ${i.cuenta}
                     </td>

@@ -4,8 +4,8 @@
 <head>
   <title>Plan de cuentas</title>
     <style type="text/css">
-        .even {background:#B7C4F7;}
-        .odd  {background:#FCFDFF}
+        .even {background:#fff;}
+        .odd  {background:#ddd}
     </style>
 
 </head>

@@ -214,8 +214,13 @@ class ProcesoController extends cratos.seguridad.Shield {
         def url=g.createLink(action: "listar",controller: "proceso")     /*link de esta accion ...  sive para la opcion de reporte*/
 //        params.ordenado="fecha"
 //        params.orden="desc"
-        def lista = buscadorService.buscar(Proceso, "Proceso", "excluyente", params, true) /* Dominio, nombre del dominio , excluyente dejar asi,params tal cual llegan de la interfaz del buscador, ignore case */
-        lista.pop()
+        def listaSinFiltro = buscadorService.buscar(Proceso, "Proceso", "excluyente", params, true) /* Dominio, nombre del dominio , excluyente dejar asi,params tal cual llegan de la interfaz del buscador, ignore case */
+        listaSinFiltro.pop()
+        def lista=[]
+        listaSinFiltro.each {
+            if(it.estado!="B")
+                lista.add(it)
+        }
         if (!params.reporte){
             render(view: '../lstaTbla', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista,  link: link, funciones: funciones,url:url])
         } else{
@@ -375,7 +380,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def borrarProceso () {
 
-        println("params:" + params)
+        println("LOG: borrar proceso " + params)
 
         def proceso = Proceso.get(params.id)
 
@@ -399,16 +404,19 @@ class ProcesoController extends cratos.seguridad.Shield {
             if (comprobante.registrado == 'N'){
 
 
-                asiento.each{i->
+//                asiento.each{i->
+//
+//                    i.delete(flush: true)
+//
+//                }
+////                asiento.delete(flush: true)
+//                comprobante.delete(flush: true)
+//                proceso.delete(flush: true)
 
-                    i.delete(flush: true)
-
-                }
-//                asiento.delete(flush: true)
-                comprobante.delete(flush: true)
-                proceso.delete(flush: true)
-
-
+                proceso.estado="B"
+                proceso.save(flush: true)
+                comprobante.registrado="B"
+                comprobante.save(flush: true)
                 flash.message="Proceso Borrado!"
 
                 redirect(action: 'lsta')
@@ -426,7 +434,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else {
 
 
-            proceso.delete(flush: true)
+            proceso.estado="B"
+            proceso.save(flush: true)
 
 
             flash.message="Proceso Borrado!"

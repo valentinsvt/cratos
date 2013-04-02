@@ -44,15 +44,9 @@
                     </g:link>
 
 
-                   <g:if test="${cratos.Comprobante.get(proceso.id)}">
-
-                    <g:if test="${cratos.Comprobante.get(proceso.id).registrado == 'N'}">
-
+                   <g:if test="${comprobante.registrado!='S'}">
 
                         <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
-
-
-                    </g:if>
 
                    </g:if>
 

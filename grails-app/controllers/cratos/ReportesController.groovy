@@ -20,7 +20,7 @@ class ReportesController {
             if (proveedor.nombre) {
                 return proveedor.nombre
             } else {
-                return proveedor.nombreCont.acto + " " + proveedor.apellidoContacto
+                return proveedor.nombreContacto + " " + proveedor?.apellidoContacto
             }
 
         }
@@ -419,11 +419,11 @@ order by rplnnmro
 
         def proceso = Proceso.findAllByContabilidadAndFechaBetween(contabilidad, fini, fin)
 
-        println(proceso.descripcion);
-
-        println("contabilidadCont:" + contabilidad.descripcion)
-
-        println("procesos:" + proceso)
+//        println(proceso.descripcion);
+//
+//        println("contabilidadCont:" + contabilidad.descripcion)
+//
+//        println("procesos:" + proceso)
 
         def cuenta
 
@@ -434,7 +434,7 @@ order by rplnnmro
 
             cuenta = Cuenta.all
 
-            println("cuenta" + cuenta.id)
+//            println("cuenta" + cuenta.id)
 
             cuenta.each { g ->
 
@@ -444,7 +444,7 @@ order by rplnnmro
 
                 cuentaP = Cuenta.get(g.id)
 
-                println("cuentaP: " + cuentaP)
+//                println("cuentaP: " + cuentaP)
 
                 def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuentaP, periodo)
 
@@ -453,7 +453,7 @@ order by rplnnmro
 
                 def comprobante = Comprobante.findAllByProcesoInList(proceso)
 
-                println("comprobante" + comprobante)
+//                println("comprobante" + comprobante)
 
 //                def asiento = Asiento.findAllByCuentatAndComprobanteInList(cuenta, comprobante)
 
@@ -469,7 +469,7 @@ order by rplnnmro
 
             cuenta = Cuenta.get(params.cnta);
 
-            println("cuentaC: " + cuenta.id)
+//            println("cuentaC: " + cuenta.id)
 
 
 
@@ -477,13 +477,13 @@ order by rplnnmro
 
 //        println("saldoMensual:" + saldoMensual.saldoInicial)
 
-            def comprobante = Comprobante.findAllByProcesoInList(proceso)
+            def comprobante = Comprobante.findAllByProcesoInListAndRegistrado(proceso,"S")
 
-            println("comprobante" + comprobante)
+//            println("comprobante" + comprobante)
 
             def asiento = Asiento.findAllByCuentaAndComprobanteInList(cuenta, comprobante)
 
-            println("asiento" + asiento)
+//            println("asiento" + asiento)
 
 
             def saldo = []
