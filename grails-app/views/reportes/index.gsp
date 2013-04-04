@@ -612,7 +612,7 @@
                             var hasta = $("#hastaPagos").val()
                             var prove = $("#proveedorPagos").val()
 
-                            console.log("prove" + prove)
+//                            console.log("prove" + prove)
 
                             url = "${g.createLink(controller:'reportes2' , action: 'reportePagos')}?fechaInicio=" + desde + "WfechaFin=" + hasta + "Wempresa=${session.empresa.id}" + "Wprove=" + prove;
                             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=Pagos.pdf"

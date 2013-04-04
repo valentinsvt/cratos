@@ -494,7 +494,7 @@ class Reportes2Controller {
     def reportePagos () {
 
 
-       println("---->>" + params)
+//       println("---->>" + params)
 
 
         def fechaInicio = new Date().parse("yyyy-MM-dd",params.fechaInicio)
@@ -505,9 +505,9 @@ class Reportes2Controller {
 
         def auxiliar = Auxiliar.findAllByFechaPagoBetweenAndProveedor(fechaInicio, fechaFin, proveedor)
 
-
-        println("pro" + proveedor)
-        println("aux" + auxiliar)
+//
+//        println("pro" + proveedor)
+//        println("aux" + auxiliar)
 
         def pago
 
@@ -518,13 +518,13 @@ class Reportes2Controller {
 
           pago = PagoAux.findAllByAuxiliar(i)
 
-          println("pagos" + pago.id)
+//          println("pagos" + pago.id)
 
             pagos+=pago
 
         }
 
-        println(pagos)
+//        println(pagos)
 
         return[auxiliar: auxiliar, pagos: pagos, fechaInicio: fechaInicio, fechaFin: fechaFin, empresa: empresa]
 

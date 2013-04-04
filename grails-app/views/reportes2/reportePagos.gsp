@@ -5,7 +5,7 @@
 
     <style type="text/css">
     @page {
-        size   : 29.7cm 21cm;  /*width height */
+        size   : 21cm 29.7cm;  /*width height */
         margin : 2cm;
     }
 
@@ -33,9 +33,9 @@
         width           : 100%;
     }
 
-    th, td {
-        vertical-align : middle;
-    }
+    /*th, td {*/
+        /*vertical-align : middle;*/
+    /*}*/
 
     th {
         background : #bbb;
@@ -79,79 +79,98 @@
     <div class="titulo">
         <p>${empresa}</p>
         <p>
-            Reporte pagos desde ${fechaInicio.format("dd-MM-yyyy")} hasta ${fechaFin.format("dd-MM-yyyy")}
+            Reporte pagos desde ${fechaInicio?.format("dd-MM-yyyy")} hasta ${fechaFin?.format("dd-MM-yyyy")}
         </p>
     </div>
     <div style="width: 95%;margin-top: 20px;">
 
 <g:each in="${auxiliar}" var="aux">
+
+    <table>
+
+        <tr>
+           <td style="font-weight: bold">
+            Fecha:
+            </td>
+            <td>
+            ${aux?.fechaPago?.format("dd-MM-yyyy")}
+            </td>
+        </tr>
+        <tr>
+         <td style="font-weight: bold">
+             Descripción:
+
+         </td>
+            <td>
+                ${aux?.descripcion}
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">
+                Proveedor:
+            </td>
+            <td>
+                ${aux?.proveedor}
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">
+                Debe:
+            </td>
+            <td style="margin-left: -100px">
+                ${aux?.debe}
+            </td>
+        </tr>
+        <tr style="margin-bottom: 10px">
+            <td style="font-weight: bold">
+                Haber:
+            </td>
+            <td>
+                ${aux?.haber}
+            </td>
+        </tr>
+
+
+
+    </table>
+
+
         <table border="1">
+
+
             <thead>
+
             <tr>
-                <th>Fecha</th>
-                <th>Descripción</th>
-                <th>Proveedor</th>
-                <th>Monto Debe</th>
-                <th>Monto Haber</th>
+            <th>Fecha</th>
+            <th>Factura</th>
+            <th>Tipo de Documento</th>
+            <th>Monto</th>
 
             </tr>
+
             </thead>
+
+            %{--<g:each in="${pagos}" var="pago">--}%
             <tbody>
-            %{--<g:set var="total" value="${0}"></g:set>--}%
+            <tr>
+            <g:each in="${cratos.PagoAux.findAllByAuxiliar(aux)}" var="pago">
 
-                <tr>
-                    <td style="text-align: left">${aux?.fechaPago?.format("dd-MM-yyyy")}</td>
-                    <td style="text-align: left">${aux?.descripcion}</td>
-                    <td style="text-align: left">${aux?.proveedor}</td>
-                    <td style="text-align: right">${aux?.debe}</td>
-                    <td style="text-align: right">${aux?.haber}</td>
-                    %{--<g:set var="total" value="${total.toDouble()+valores[aux.id]}"></g:set>--}%
-                </tr>
-
-                <tr>
-
-                    <table border="1">
-
-                        <thead>
-
-                            <tr>
-                            <th>Fecha</th>
-                            <th>Factura</th>
-                            <th>Monto</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                        %{--<g:each in="${pagos}" var="pago">--}%
-                        <g:each in="${cratos.PagoAux.findAllByAuxiliar(aux)}" var="pago">
-
-                        <td style="text-align: left">${pago?.fecha?.format("dd-MM-yyyy")}</td>
-                        <td style="text-align: left">${pago?.factura}</td>
-                        <td style="text-align: right">${pago?.monto}</td>
-                        </g:each>
-
-                        </tbody>
-
-                    </table>
+            <td style="text-align: left; width: 70px">${pago?.fecha?.format("dd-MM-yyyy")}</td>
+            <td style="text-align: left; width: 70px">${pago?.factura}</td>
+                <td style="text-align: left; width: 100px">${pago?.tipoDocumento?.descripcion}</td>
+                <td style="text-align: left; width: 200px">${pago?.monto}</td>
 
 
+            </g:each>
 
-
-
-
-                </tr>
-
-
-            %{--<tr>--}%
-                %{--<td style="text-align: left;font-weight: bold" colspan="4">TOTAL A PAGAR</td>--}%
-                %{--<td style="text-align: right">${total.round(2)}</td>--}%
-            %{--</tr>--}%
+            </tr>
 
             </tbody>
 
 
 
         </table>
+
 
          <div style="margin-bottom: 40px"> </div>
 
