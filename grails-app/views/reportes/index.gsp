@@ -191,6 +191,15 @@
                             </g:link>
                             Reporte de cuentas por pagar
                         </li>
+                        <li text="balg">
+                            <g:link controller="reportes" action="balanceG" file="balanceG.pdf" class="link"
+                                    dialog="balanceDialog">
+                                Balance
+                            </g:link>
+                            Balance General
+                        </li>
+
+
 
                     </ul>
                 </div>
@@ -470,6 +479,25 @@
                           class="ui-widget-content ui-corner-all" from="${hijos2}"/>
 
             </div>
+
+            <div id="balanceDialog" class="ui-helper-hidden">
+                <div>
+                    Contabilidad:
+                    <g:select name="contP6" id="contP6"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion"
+                              class="ui-widget-content ui-corner-all"/>
+                </div>
+
+                <div id="divPeriodo6">
+                    Periodo:
+                </div>
+            </div>
+
+
+
+
+
         </div>
 
         <script type="text/javascript">
@@ -560,6 +588,10 @@
                 });
                 $("#contP5").change(function () {
                     updatePeriodo("5");
+
+                });
+                $("#contP6").change(function () {
+                    updatePeriodo("6");
 
                 });
 
@@ -871,6 +903,40 @@
 
 
                 });
+
+
+
+
+
+                $("#balanceDialog").dialog({
+                    modal     : true,
+                    resizable : false,
+                    autoOpen  : false,
+                    width     : 400,
+                    open      : function () {
+                        updatePeriodo("6");
+                    },
+                    buttons   : {
+                        "Aceptar"  : function () {
+                            var cont = $("#contP6").val();
+                            var per = $("#periodo6").val();
+
+                            console.log(cont)
+                            console.log(per)
+
+                            url = "${g.createLink(controller:'reportes' , action: 'balanceG')}?contabilidad=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
+                            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=BalanceG.pdf"
+
+
+                        },
+                        "Cancelar" : function () {
+                            $("#balanceDialog").dialog("close");
+                        }
+                    }
+                });
+
+
+
 
             });
         </script>
