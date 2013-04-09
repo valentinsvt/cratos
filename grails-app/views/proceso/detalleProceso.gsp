@@ -312,16 +312,16 @@
             var combo = $("#select_"+$(this).attr("posicion"))
             var cuenta = combo.val()
             var cont=0
-            $(".cuentas").each(function(){
-                if($(this).val()==cuenta){
-                    cont++
-//                    console.log("es igual",$(this))
-                }
-            })
-
-            if(cont>1){
-                error="Error: No puede seleccionar mas de una vez a una cuenta dentro del mismo comprobante"
-            }
+//            $(".cuentas").each(function(){
+//                if($(this).val()==cuenta){
+//                    cont++
+////                    console.log("es igual",$(this))
+//                }
+//            })
+//
+//            if(cont>1){
+//                error="Error: No puede seleccionar mas de una vez a una cuenta dentro del mismo comprobante"
+//            }
 
             if(error!=""){
                 $.box({
