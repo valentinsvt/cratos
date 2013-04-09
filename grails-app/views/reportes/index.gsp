@@ -492,6 +492,24 @@
                 <div id="divPeriodo6">
                     Periodo:
                 </div>
+                <div>
+                    Nivel:
+                    <select id="nivel">
+                    <option value="1,2">DOS</option>
+                    <option value="1,2,3">TRES</option>
+                    <option value="1,2,3,4">CUATRO</option>
+                    <option value="1,2,3,4,5">CINCO</option>
+                    </select>
+                </div>
+                <div>
+                Mostrar cuentas con saldo cero? <input type="checkbox" id="cero" value="1" checked="true">
+                </div>
+                <div>
+                    Firma: <input type="text" id="firma1">
+                </div>
+                <div>
+                    Firma: <input type="text" id="firma2">
+                </div>
             </div>
 
 
@@ -920,11 +938,19 @@
                         "Aceptar"  : function () {
                             var cont = $("#contP6").val();
                             var per = $("#periodo6").val();
-
-                            console.log(cont)
-                            console.log(per)
-
-                            url = "${g.createLink(controller:'reportes' , action: 'balanceG')}?contabilidad=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
+                            var ceros = "1"
+                            var firma1=$("#firma1").val()
+                            var firma2=$("#firma2").val()
+                            firma1=$.trim(firma1)
+                            firma1=firma1.replace(new RegExp(" ","g"),"_");
+                            firma2=$.trim(firma2)
+                            firma2=firma2.replace(new RegExp(" ","g"),"_");
+//                            console.log(firma1,firma2)
+                            if($("#cero").attr("checked")!="checked"){
+                                ceros="0"
+                            }
+                            url = "${g.createLink(controller:'reportes' , action: 'balanceG')}?contabilidad=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}Wnivel="+$("#nivel").val()+"Wceros="+ceros+"Wfirma1="+firma1+"Wfirma2="+firma2;
+//                            console.log(url)
                             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=BalanceG.pdf"
 
 

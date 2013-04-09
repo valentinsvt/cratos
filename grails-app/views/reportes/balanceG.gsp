@@ -15,7 +15,7 @@
     }
 
     .hoja {
-        width : 25cm;
+        width : 16.5cm;
         /*background : #d8f0fa;*/
     }
 
@@ -24,7 +24,7 @@
     }
 
     h1 {
-        font-size  : 16px;
+        font-size  : 14px;
         margin-top : 30px;
     }
 
@@ -70,66 +70,114 @@
         font-size: 14px;
         font-weight: bold;
     }
+
+    .Dos{
+        padding-left: 0px;
+        font-size:11px ;
+    }
+    .Tres{
+        padding-left: 10px;
+        font-size:11px ;
+    }
+    .Cuatro{
+        padding-left: 20px;
+        font-size:11px ;
+    }
+    .Cinco{
+        padding-left: 30px;
+        font-size:11px ;
+    }
+
+    .numDos{
+        padding-right: 0px;
+        font-size:11px ;
+    }
+    .numTres{
+        padding-right: 10px;
+        font-size:11px ;
+    }
+    .numCuatro{
+        padding-right: 20px;
+        font-size:11px ;
+    }
+    .numCinco{
+        padding-right: 30px;
+        font-size:11px ;
+    }
     </style>
 
 </head>
 
 <body>
 <div class="hoja">
-    <div class="titulo">
-        %{--<p>${empresa}</p>--}%
+    <h1 style="margin-bottom: 5px">Balance de comprobación <br/>
+        ${contabilidad.institucion.nombre}</h1>
+    %{--<h1>${contabilidad.descripcion}</h1>--}%
+    <h3>Al ${periodo.fechaFin.format("dd-MM-yyyy")}</h3>
 
-    </div>
-    <div style="width: 95%;margin-top: 20px;">
+    <g:each in="${paginas}" var="p">
+        <div style="width: 100%;margin-top: 10px;${(p.key!="EGRESOS")?"page-break-after:always":""}">
+            <h1>${p.key}</h1>
+            <table style="margin-top: 10px">
+                <tbody>
+                <g:set var="cont" value="${0}"></g:set>
+                <g:each in="${p.value}" var="cnta" status="i">
+                    <g:if test="${i==0}">
+                        <g:set var="tot" value="${saldos[cnta.id.toString()].round(2)}"></g:set>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${ceros=='1'}">
+                            <tr class="${(i%2==0)?'even':''}">
+                                <td class="${cnta.nivel.descripcion}">
+                                    ${cnta.numero} - ${cnta.descripcion}
+                                </td>
+                                <td style="text-align: right" class="num${cnta.nivel.descripcion}" >
+                                    ${saldos[cnta.id.toString()].round(2)}
+                                </td>
+                            </tr>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${Math.abs(saldos[cnta.id.toString()]).toDouble()>0.0}">
+                                <tr class="${(cont%2==0)?'even':''}">
+                                    <td class="${cnta.nivel.descripcion}" >
+                                        ${cnta.numero} - ${cnta.descripcion}
+                                    </td>
+                                    <td style="text-align: right" class="num${cnta.nivel.descripcion}" >
+                                        ${saldos[cnta.id.toString()].round(2)}
+                                    </td>
+                                </tr>
+                                <g:set var="cont" value="${cont+1}"></g:set>
+                            </g:if>
+                        </g:else>
+                    </g:else>
 
-        <div>ACTIVO</div>
+                </g:each>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        TOTAL
+                    </td>
+                    <td style="text-align: right">
+                        ${tot}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <h1 style="text-align: left;float: left;width: 100%;">TOTAL ${p.key}: ${tot}</h1>
+            <g:if test="${firma1}">
+                <div style="width: 170px;height: 10px;float: left;margin-top: 150px;border-top: 1px solid black;text-align: center">
+                    <b>${firma1?.replaceAll("_"," ")}</b>
+                </div>
+            </g:if>
+            <g:if test="${firma2}">
+                <div style="width: 170px;height: 10px;float: right;margin-top: 150px;border-top: 1px solid black;text-align: center">
+                    <b>${firma2?.replaceAll("_"," ")}</b>
+                </div>
+            </g:if>
+        </div>
+    </g:each>
 
-        <div> Fondos Disponibles</div>
-
-        <table>
-            <tr>
-                <td style="font-weight: bold">
-                 Caja General
-
-                </td>
-                <td>
-
-
-                </td>
-                <td style="font-weight: bold">
-                 Banco Internacional
-
-                </td>
-                <td>
-
-
-                </td>
-            </tr>
-
-
-        </table>
-
-        <div>Cuentas por Cobrar</div>
-
-        <table>
-            <tr>
-
-                <td style="font-weight: bold">
-                    Caja General
-
-                </td>
-                <td>
-
-
-                </td>
-
-
-            </tr>
-
-        </table>
-
-
-    </div>
 
 </div>
 </body>

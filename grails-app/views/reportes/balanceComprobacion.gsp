@@ -13,17 +13,17 @@
 
     <style type="text/css">
     @page {
-        size   : 29.7cm 21cm;  /*width height */
+        size   : 21cm 29.7cm ;  /*width height */
         margin : 2cm;
     }
 
     html {
         font-family : Verdana, Arial, sans-serif;
-        font-size   : 15px;
+        font-size   : 10px;
     }
 
     .hoja {
-        width      : 25cm;
+        width      : 16.5cm;
         /*background : #d8f0fa;*/
     }
 
@@ -57,7 +57,7 @@
 <body>
 <div class="hoja">
     <h1>Balance de comprobación</h1>
-
+    <h1>${contabilidad.institucion.nombre}</h1>
     <h2>${contabilidad.descripcion}</h2>
 
     <h3>${periodo.fechaInicio.format("dd-MM-yyyy")} a ${periodo.fechaFin.format("dd-MM-yyyy")}</h3>

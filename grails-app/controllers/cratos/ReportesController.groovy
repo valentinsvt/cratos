@@ -608,10 +608,74 @@ order by rplnnmro
 
 
     def balanceG (){
+        println "balance g "+params
+        def sp = kerberosoldService.ejecutarProcedure("saldos", params.contabilidad)
+
+        def contabilidad = Contabilidad.get(params.contabilidad)
+        def periodo = Periodo.get(params.periodo)
+
+        def niveles =params.nivel
+        def saldos = [:]
+        def paginas = [:]
+        def activo = Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '1%' order by numero")
+        def pasivo=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '2%' order by numero")
+        def patrimonio=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '3%' order by numero")
+        def ingresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '4%' order by numero")
+        def egresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '5%' order by numero")
+        paginas.put("ACTIVO",activo)
+        paginas.put("PASIVO",pasivo)
+        paginas.put("PATRIMONIO",patrimonio)
+        paginas.put("INGRESOS",ingresos)
+        paginas.put("EGRESOS",egresos)
+        activo.each {cnta->
+            def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
+            if(saldo){
+                saldo.refresh()
+                saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+            }else{
+                saldos.put(cnta.id.toString(),"0.00")
+            }
+        }
+        pasivo.each {cnta->
+            def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
+            if(saldo){
+                saldo.refresh()
+                saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+            }else{
+                saldos.put(cnta.id.toString(),"0.00")
+            }
+        }
+        patrimonio.each {cnta->
+            def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
+            if(saldo){
+                saldo.refresh()
+                saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+            }else{
+                saldos.put(cnta.id.toString(),"0.00")
+            }
+        }
+        ingresos.each {cnta->
+            def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
+            if(saldo){
+                saldo.refresh()
+                saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+            }else{
+                saldos.put(cnta.id.toString(),"0.00")
+            }
+        }
+        egresos.each {cnta->
+            def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
+            if(saldo){
+                saldo.refresh()
+                saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+            }else{
+                saldos.put(cnta.id.toString(),"0.00")
+            }
+        }
+//        println "activo "+activo
 
 
-
-
+        [contabilidad:contabilidad,periodo: periodo,saldos:saldos,paginas:paginas,ceros:params.ceros,firma1:params.firma1,firma2:params.firma2]
     }
 
 
