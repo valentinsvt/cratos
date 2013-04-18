@@ -23,7 +23,9 @@ class MenuTagLib {
             html += '<li class="current">'
             html += '<a href="#a">' + mdlo.descripcion + '</a>'
             html += '<ul>'
+
             Accn.findAllByModuloAndTipo(mdlo, Tpac.get(1), [sort: "accnDescripcion"]).each {
+
                 if (acciones.contains(it.id)) {
                     html += '<li>'
                     html += '<a href="' + g.createLink(controller: it.control, action: it.accnNombre) + '">' + it.accnDescripcion + '</a>'

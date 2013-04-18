@@ -55,13 +55,13 @@
         <table style="width: 600px;">
             <tr>
                 <td width="400px" height="50px" >
-                    <b>Número:</b> ${item.key}
+                    <b>Número:</b> ${item.key} ${(comprobante.registrado=="B")?" Anulado":""}
                 </td>
 
                 <td>
 
                     <b>Fecha:</b>
-                    <g:formatDate format="dd/MM/yyyy"  type="datetime" date="${val.fecha}"> </g:formatDate>
+                    ${val.fecha?.format("dd/MM/yyyy")}
 
                 </td>
 

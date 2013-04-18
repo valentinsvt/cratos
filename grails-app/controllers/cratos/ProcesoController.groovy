@@ -447,4 +447,30 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     }
 
+
+    def procesosAnulados(){
+//        println "proc anulados "+params
+        def contabilidad
+        if(!params.contabilidad){
+            contabilidad=Contabilidad.findAllByInstitucion(session.empresa,[sort:"fechaInicio",order:"asc"])
+            if(contabilidad){
+                contabilidad=contabilidad.pop()
+            }else{
+                render "no existen contabilidades creadeas en esta empresa"
+                return
+            }
+        }else{
+            contabilidad=Contabilidad.get(params.contabilidad)
+        }
+//        println "contabilidad "+contabilidad
+        def procesos = Proceso.findAllByEstadoAndContabilidad("B",contabilidad,[sort:"fecha"])
+        [procesos:procesos,contabilidad:contabilidad]
+    }
+
+    def verComprobante(){
+        def comp = Comprobante.get(params.id)
+        def asientos = Asiento.findAllByComprobante(comp)
+        [asientos:asientos,comp:comp]
+    }
+
 }

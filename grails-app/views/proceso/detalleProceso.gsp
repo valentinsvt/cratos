@@ -10,7 +10,7 @@
         </a>
     </g:if>
     <g:else>
-        <a href="#" class="btn ui-corner-all" id="imprimir" iden="${comp?.proceso?.id}" style="margin-bottom: 10px;">
+        <a href="#" class="btn ui-corner-all" id="imprimir" iden="${comp?.proceso?.id}" nombre="${comp.prefijo+comp.numero}" style="margin-bottom: 10px;">
             Imprimir
         </a>
         <a href="#" class="btn   ui-corner-all" id="desmayo" idComp="${comp?.id}" style="margin-bottom: 10px;">
@@ -63,7 +63,7 @@
                         ${asiento.cuenta.numero + '(' + asiento.cuenta.descripcion + ')'}
                     </g:if>
                     <g:else>
-                        <g:select name="cuentas" from="${cratos.Cuenta.findAllByPadreAndMovimiento(asiento.cuenta.padre,'1')}" id="select_${i}" value="${asiento.cuenta.id}" optionKey="id"  class="cuentas" style="width:300px"></g:select>
+                        <g:select name="cuentas" from="${cratos.Cuenta.findAllByEmpresaAndMovimiento(session.empresa,'1')}" id="select_${i}" value="${asiento.cuenta.id}" optionKey="id"  class="cuentas" style="width:300px"></g:select>
                     </g:else>
                 </td>
                 <g:if test="${comp.registrado != 'S'}">
@@ -240,48 +240,51 @@
         $("#imprimir").click(function () {
 
             var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/" + $(this).attr("iden")
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url+"&filename="+$(this).attr("nombre")
 
         });
 
         $("#desmayo").click(function(){
             var id = $(this).attr("idComp")
-            $.box({
-                imageClass : "box_info",
-                text       : "Por favor espere",
-                title      : "Procesando",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : true,
-                    buttons       : { }
-                }
-            });
-//            console.log("click demayo")
-            $.ajax({
-                type    : "POST",
-                url     : "${g.createLink(controller: 'proceso',action: 'desmayorizar')}",
-                data    : "id=" + id,
-                success : function (msg) {
-                    if(msg=="ok"){
-                        window.location.reload("true")
-                    }else{
-                        $.box({
-                            imageClass : "box_info",
-                            text       : msg,
-                            title      : "Error",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable     : false,
-                                draggable     : false,
-                                closeOnEscape : true,
-                                buttons       : { }
-                            }
-                        });
+            if(confirm("Esta seguro de desmayorizar este comprobante? Esta acción modificará los saldos")){
+                $.box({
+                    imageClass : "box_info",
+                    text       : "Por favor espere",
+                    title      : "Procesando",
+                    iconClose  : false,
+                    dialog     : {
+                        resizable     : false,
+                        draggable     : false,
+                        closeOnEscape : true,
+                        buttons       : { }
                     }
-                }
-            });
+                });
+//            console.log("click demayo")
+                $.ajax({
+                    type    : "POST",
+                    url     : "${g.createLink(controller: 'proceso',action: 'desmayorizar')}",
+                    data    : "id=" + id,
+                    success : function (msg) {
+                        if(msg=="ok"){
+                            window.location.reload("true")
+                        }else{
+                            $.box({
+                                imageClass : "box_info",
+                                text       : msg,
+                                title      : "Error",
+                                iconClose  : false,
+                                dialog     : {
+                                    resizable     : false,
+                                    draggable     : false,
+                                    closeOnEscape : true,
+                                    buttons       : { }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
         }) ;
 
         $(".guardarDatos").click(function () {
@@ -374,47 +377,49 @@
         });
         $(".registrar").click(function () {
             var id = $(this).attr("idComp");
-            var coso = $.box({
-                imageClass : "box_info",
-                text       : "Por favor espere",
-                title      : "Procesando",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : true,
-                    buttons       : { }
-                }
-            });
-            $.ajax({
-                type    : "POST",
-                url     : "${g.createLink(controller: 'proceso',action: 'registrarComprobante')}",
-                data    : "id=" + id,
-                success : function (msg) {
+            if(confirm("Esta seguro de mayorizar este comprobante? Esta acción modificará los saldos")){
+                var coso = $.box({
+                    imageClass : "box_info",
+                    text       : "Por favor espere",
+                    title      : "Procesando",
+                    iconClose  : false,
+                    dialog     : {
+                        resizable     : false,
+                        draggable     : false,
+                        closeOnEscape : true,
+                        buttons       : { }
+                    }
+                });
+                $.ajax({
+                    type    : "POST",
+                    url     : "${g.createLink(controller: 'proceso',action: 'registrarComprobante')}",
+                    data    : "id=" + id,
+                    success : function (msg) {
 //                    $("#registro").html(msg).show("slide");
-                    if(msg=="ok")
-                        location.reload(true);
-                    else{
-                        $.box({
-                            imageClass : "box_info",
-                            text       : msg,
-                            title      : "Error al mayorizar",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable     : false,
-                                width:400,
-                                draggable     : false,
-                                closeOnEscape : true,
-                                buttons       : {
-                                    "Cerrar":function(){
-                                        $(this).dialog("close")
+                        if(msg=="ok")
+                            location.reload(true);
+                        else{
+                            $.box({
+                                imageClass : "box_info",
+                                text       : msg,
+                                title      : "Error al mayorizar",
+                                iconClose  : false,
+                                dialog     : {
+                                    resizable     : false,
+                                    width:400,
+                                    draggable     : false,
+                                    closeOnEscape : true,
+                                    buttons       : {
+                                        "Cerrar":function(){
+                                            $(this).dialog("close")
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         });
         function cargarAuxiliares() {
             $("#listaAuxl").html(loading);

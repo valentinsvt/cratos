@@ -201,9 +201,13 @@ class ReportesController {
         }
 
         def asiento
-        if (comprobantes)
+        def comprobante
+        def numero
+        if (comprobantes){
+            numero = "" + comprobantes[0].prefijo + "" + comprobantes[0].numero
+            comprobante= comprobantes[0]
             asiento = cuentasService.getAsiento(comprobantes?.pop()?.id)
-
+        }
         //def cuentas = cuentasService.getCuentas(params.cont, params.emp)
 
         def comp = [:]
@@ -211,7 +215,7 @@ class ReportesController {
         asiento.each { asientos ->
 
             def fecha = asientos.comprobante.fecha
-            def numero = "" + asientos.comprobante.prefijo + "" + asientos.comprobante.numero
+
             def descripcion = asientos.comprobante.descripcion
 
             if (!comp.containsKey(numero)) {
@@ -234,9 +238,12 @@ class ReportesController {
 
                 comp[numero].items.add(c)
 
+
         }
 
-        [asiento: asiento, comprobantes: comprobantes, comp: comp, tipoComprobante: tipoComprobante]
+        comp[numero].items.sort{ it.cuenta}
+
+        [asiento: asiento, comprobantes: comprobantes, comp: comp, tipoComprobante: tipoComprobante,comprobante:comprobante]
 
     }
 
