@@ -94,6 +94,7 @@
             <th align="center">Debe</th>
             <th align="center" style="">Haber</th>
             <th align="center" style="">Saldo</th>
+            <th align="center" style="">Documentos</th>
         </tr>
         </thead>
 
@@ -132,7 +133,7 @@
 
                 </td>
 
-                <td class="procesoDesc" align="center">
+                <td class="procesoDesc" align="center" style="text-align: left">
                     ${asientos.comprobante.proceso.descripcion}
 
                 </td>
@@ -154,6 +155,11 @@
 
                     %{--${saldo[j]}--}%
 
+                </td>
+
+                <td class="documentos" style="text-align: right">
+
+                       ${asientos?.comprobante?.proceso?.documento}
                 </td>
 
 
