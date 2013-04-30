@@ -240,7 +240,7 @@
         $("#imprimir").click(function () {
 
             var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/" + $(this).attr("iden")
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url+"&filename="+$(this).attr("nombre")
+            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url+"&filename="+$(this).attr("nombre")+".pdf"
 
         });
 

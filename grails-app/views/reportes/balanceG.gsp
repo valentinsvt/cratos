@@ -110,8 +110,8 @@
 
 <body>
 <div class="hoja">
-    <h1 style="margin-bottom: 5px">Balance de comprobación <br/>
-        ${contabilidad.institucion.nombre}</h1>
+    <h1 style="margin-bottom: 5px">${contabilidad.institucion.nombre}</h1><br/>
+    Balance general
     %{--<h1>${contabilidad.descripcion}</h1>--}%
     <h3>Al ${periodo.fechaFin.format("dd-MM-yyyy")}</h3>
 

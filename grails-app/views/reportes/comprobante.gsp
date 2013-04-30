@@ -31,12 +31,12 @@
         border-bottom: solid 2px #555;
 
     }
-    /*.odd{*/
-       /*background: #ffecd2;*/
-    /*}*/
-    /*.even{*/
+        /*.odd{*/
+        /*background: #ffecd2;*/
+        /*}*/
+        /*.even{*/
         /*background: #e7e6ea;*/
-    /*}*/
+        /*}*/
     </style>
 
 </head>
@@ -101,24 +101,25 @@
             <g:set var="totalHaber" value="${0}"/>
 
             <g:each in="${val.items}" var="i" status="j" >
+                <g:if test="${i.debe+i.haber>0}">
 
-                <tr>
-                    <td>
-                        ${i.cuenta}
-                    </td>
-                    <td>
-                        ${i.descripcion}
-                    </td>
-                    <td align="right">
-                        ${i.debe}
-                    </td>
-                    <td align="right">
-                        ${i.haber}
-                    </td>
-                    <g:set var="totalDebe" value="${totalDebe + i.debe}"/>
-                    <g:set var="totalHaber" value="${totalHaber +i.haber}"/>
-                </tr>
-
+                    <tr>
+                        <td>
+                            ${i.cuenta}
+                        </td>
+                        <td>
+                            ${i.descripcion}
+                        </td>
+                        <td align="right">
+                            ${i.debe}
+                        </td>
+                        <td align="right">
+                            ${i.haber}
+                        </td>
+                        <g:set var="totalDebe" value="${totalDebe + i.debe}"/>
+                        <g:set var="totalHaber" value="${totalHaber +i.haber}"/>
+                    </tr>
+                </g:if>
             </g:each>
 
             <tr>
@@ -147,65 +148,65 @@
 
     <g:each in="${tipoComprobante}" var="i">
 
-      <g:if test="${i == 'D'}">
+        <g:if test="${i == 'D'}">
 
 
-        <table style="width: 600px; margin-top: 50px">
-
-
-
-            <tr>
-                <td width="400px" style="text-align: center" >
-                    <b>___________________</b>
-                </td>
-            </tr>
-            <tr>
-                <td width="400px" height="50px" style="text-align: center" >
-                    Autoriza
-                </td>
-
-
-            </tr>
-
-        </table>
+            <table style="width: 600px; margin-top: 50px">
 
 
 
-    </g:if>
-    <g:else>
+                <tr>
+                    <td width="400px" style="text-align: center" >
+                        <b>___________________</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="400px" height="50px" style="text-align: center" >
+                        Autoriza
+                    </td>
 
 
-        <table style="width: 600px; margin-top: 50px">
+                </tr>
+
+            </table>
 
 
-            <tr>
-                <td width="400px" style="text-align: center" >
-                    <b>___________________</b>
-                </td>
 
-                <td width="400px" style="text-align: center" >
-                    <b>____________________</b>
-                </td>
-            </tr>
+        </g:if>
+        <g:else>
 
-            <tr>
 
-                <td width="400px" height="50px" style="text-align: center" >
-                    Autoriza
-                </td>
+            <table style="width: 600px; margin-top: 50px">
 
-                <td width="400px" height="50px" style="text-align: center" >
-                    Recibí Conforme
-                </td>
 
-            </tr>
+                <tr>
+                    <td width="400px" style="text-align: center" >
+                        <b>___________________</b>
+                    </td>
 
-        </table>
+                    <td width="400px" style="text-align: center" >
+                        <b>____________________</b>
+                    </td>
+                </tr>
 
-    </g:else>
+                <tr>
+
+                    <td width="400px" height="50px" style="text-align: center" >
+                        Autoriza
+                    </td>
+
+                    <td width="400px" height="50px" style="text-align: center" >
+                        Recibí Conforme
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </g:else>
 
     </g:each>
 
-    </div>
+</div>
 </body>
 </html>
