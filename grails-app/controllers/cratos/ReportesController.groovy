@@ -629,6 +629,12 @@ order by rplnnmro
         def patrimonio=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '3%' order by numero")
         def ingresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '4%' order by numero")
         def egresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '5%' order by numero")
+        def total4=0
+        def total5=0
+        def total3=0
+        def uno = Nivel.findByDescripcionIlike("Uno%")
+        def cntaPat=patrimonio[0]
+        def cntaPas=pasivo[0]
         paginas.put("ACTIVO",activo)
         paginas.put("PASIVO",pasivo)
         paginas.put("PATRIMONIO",patrimonio)
@@ -661,29 +667,66 @@ order by rplnnmro
                 saldos.put(cnta.id.toString(),"0.00")
             }
         }
+
         ingresos.each {cnta->
+//            println "cuenta "+cnta.numero+" "+cnta.nivel.descripcion
             def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
             if(saldo){
+//                println "saldo "+saldo
                 saldo.refresh()
                 saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+                if(cnta.nivel.descripcion.trim()=="Uno") {
+//                    println "entro "+saldo.saldoInicial+" "+saldo.debe+"  "+saldo.haber
+                    total4= saldo.saldoInicial+saldo.debe-saldo.haber
+                }
             }else{
                 saldos.put(cnta.id.toString(),"0.00")
             }
         }
         egresos.each {cnta->
+//            println "cuenta "+cnta.numero+" "+cnta.nivel.descripcion
             def saldo = SaldoMensual.findByPeriodoAndCuenta(periodo,cnta)
             if(saldo){
+//                println "saldo "+saldo
                 saldo.refresh()
                 saldos.put(cnta.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+                if(cnta.nivel.descripcion.trim()=="Uno") {
+                    total5= saldo.saldoInicial+saldo.debe-saldo.haber
+                }
             }else{
                 saldos.put(cnta.id.toString(),"0.00")
             }
         }
-//        println "activo "+activo
+        def resultado = total4+total5
+        def cuentaSuper = Cuenta.findByResultadoAndEmpresa("S",contabilidad.institucion)
+        def cuentaDef = Cuenta.findByResultadoAndEmpresa("D",contabilidad.institucion)
+        if(cuentaSuper && cuentaDef){
+            if(resultado<0){
+//                saldos.put(cuentaSuper.id.toString(),resultado)
+                saldos=actualizaPadre(cuentaSuper,saldos,resultado)
+            }else{
+//                saldos.put(cuentaDef.id.toString(),resultado)
+                saldos=actualizaPadre(cuentaDef,saldos,resultado)
+
+            }
+
+        }
+
+        [contabilidad:contabilidad,periodo: periodo,saldos:saldos,paginas:paginas,ceros:params.ceros,firma1:params.firma1,firma2:params.firma2,cntaPat:cntaPat,cntaPas:cntaPas]
+    }
 
 
-        [contabilidad:contabilidad,periodo: periodo,saldos:saldos,paginas:paginas,ceros:params.ceros,firma1:params.firma1,firma2:params.firma2]
+    def actualizaPadre(Cuenta cuenta,cuentas,saldo){
+//        println "actualiza padre "+cuenta+" "+saldo
+        if(cuenta.padre)
+            cuentas=actualizaPadre(cuenta.padre,cuentas,saldo)
+
+        def valor = cuentas[cuenta.id.toString()]?.toDouble()
+        cuentas[cuenta.id.toString()]=valor+saldo
+
+        return cuentas
     }
 
 
 }
+

@@ -481,6 +481,9 @@
             </div>
 
             <div id="balanceDialog" class="ui-helper-hidden">
+                <div style="margin-bottom: 10px;">
+                    Antes de generar este reporte asegurese de configurar las cuentas para el cálculo de resultados <a href="${g.createLink(controller: 'cuenta',action: 'cuentaResultados')}" style="color: blue">Aquí</a>
+                </div>
                 <div>
                     Contabilidad:
                     <g:select name="contP6" id="contP6"

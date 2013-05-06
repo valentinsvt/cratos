@@ -10,6 +10,27 @@ class CuentaController extends cratos.seguridad.Shield {
         redirect(action: "list", params: params)
     }
 
+    def cuentaResultados(){
+        def cuentas = Cuenta.findAllByNumeroLikeAndMovimiento("3%","1",[sort: "numero"])
+        Cuenta.findAll("from Cuenta where numero like '3%' and movimiento='1' order by numero ")
+        def cuentaS= Cuenta.findByResultadoAndEmpresa("S",session.empresa)
+        def cuentaD= Cuenta.findByResultado("D",session.empresa)
+        [cuentas:cuentas,cuentaS:cuentaS,cuentaD:cuentaD]
+    }
+
+    def grabarCuentaResultado(){
+        println "grabar cuentas resultado "+params
+        def sup = Cuenta.get(params.super)
+        def deficit = Cuenta.get(params.deficit)
+        sup.resultado="S"
+        deficit.resultado="D"
+        sup.save(flush: true)
+        deficit.save(flush: true)
+        flash.message="Datos guardados"
+        redirect(action: 'cuentaResultados')
+    }
+
+
     def loadForm() {
 
 //        println ">>>>  " + params

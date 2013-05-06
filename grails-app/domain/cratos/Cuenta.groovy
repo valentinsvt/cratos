@@ -12,6 +12,7 @@ class Cuenta implements Serializable {
     String estado
     String retencion    /*     S --> si    N--> no      */
     Impuesto impuesto
+    String resultado = ""  /* Cuenta para el calculo de resultados S--> superavit D--> deficit */
     static mapping = {
         table 'cnta'
         cache usage: 'read-write', include: 'non-lazy'
@@ -31,6 +32,7 @@ class Cuenta implements Serializable {
             estado column: 'cntaetdo'
             retencion column: 'cntartcn'
             impuesto column: 'impt__id'
+            resultado column: 'imptrstd'
         }
     }
     static constraints = {
@@ -46,6 +48,7 @@ class Cuenta implements Serializable {
         estado(blank: false, maxSize: 1, attributes: [title: 'Estado'])
         retencion(blank: true,nullable: true,size: 0..1)
         impuesto(blank:true,nullable: true)
+        resultado(blank: true,nullable: true,size:1..1)
     }
 
     String toString() {

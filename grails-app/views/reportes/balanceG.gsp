@@ -110,8 +110,9 @@
 
 <body>
 <div class="hoja">
-    <h1 style="margin-bottom: 5px">${contabilidad.institucion.nombre}</h1><br/>
-    Balance general
+    <h1 style="margin-bottom: 5px">${contabilidad.institucion.nombre}<br/>
+        Balance general
+    </h1>
     %{--<h1>${contabilidad.descripcion}</h1>--}%
     <h3>Al ${periodo.fechaFin.format("dd-MM-yyyy")}</h3>
 
@@ -131,7 +132,7 @@
                                 <td class="${cnta.nivel.descripcion}">
                                     ${cnta.numero} - ${cnta.descripcion}
                                 </td>
-                                <td style="text-align: right" class="num${cnta.nivel.descripcion}" >
+                                <td style="text-align: right"  >
                                     ${saldos[cnta.id.toString()].round(2)}
                                 </td>
                             </tr>
@@ -142,7 +143,7 @@
                                     <td class="${cnta.nivel.descripcion}" >
                                         ${cnta.numero} - ${cnta.descripcion}
                                     </td>
-                                    <td style="text-align: right" class="num${cnta.nivel.descripcion}" >
+                                    <td style="text-align: right"  >
                                         ${saldos[cnta.id.toString()].round(2)}
                                     </td>
                                 </tr>
@@ -165,6 +166,9 @@
                 </tfoot>
             </table>
             <h1 style="text-align: left;float: left;width: 100%;">TOTAL ${p.key}: ${tot}</h1>
+            <g:if test="${(p.key=="PATRIMONIO")}">
+                <h1 style="text-align: left;float: left;width: 100%;">TOTAL PASIVO Y PATRIMONIO: ${(saldos[cntaPas.id.toString()].toDouble()+saldos[cntaPat.id.toString()].toDouble())?.round(2)}</h1>
+            </g:if>
             <g:if test="${firma1}">
                 <div style="width: 170px;height: 10px;float: left;margin-top: 150px;border-top: 1px solid black;text-align: center">
                     <b>${firma1?.replaceAll("_"," ")}</b>

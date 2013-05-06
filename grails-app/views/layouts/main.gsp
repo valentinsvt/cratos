@@ -72,7 +72,7 @@
                 <img src="${resource(dir: 'images', file: 'finix1.png')}" alt="Finix" height="73"/>
             </div>
 
-            <div style="height: 75px; line-height: 75px; font-size: 30px; float: left; margin-left:75px;">
+            <div style="height: 75px; line-height: 75px; font-size: 25px; float: left; margin-left:0px;width: 800px;float: right">
                 Cratos - ${session.empresa}
             </div>
 
