@@ -51,9 +51,9 @@
         <div class="span-3">Factura #:</div>
 
         <div class="span-6">
-            <g:if test="${factura.numero}">
-                ${factura.numero}
-                <input type="hidden" id="numero" class="" value="${factura.numero}" maxlength="15"/>
+            <g:if test="${factura.secuencial}">
+                ${factura.secuencial}
+                <input type="hidden" id="numero" class="" value="${factura.secuencial}" maxlength="15"/>
             </g:if>
             <g:else>
                 <input type="text" id="numero" class="required span-6 ui-widget-content ui-corner-all" value=""
@@ -442,7 +442,7 @@
 //                        console.log("1");
             } else {
                 id = $("#txtId").val();
-                console.log("2");
+                //console.log("2");
             }
 
 //                    console.log(id);
@@ -763,7 +763,8 @@
                             url:"${createLink (action: 'save') }",
                             data:data,
                             success:function (msg) {
-                                console.log(msg);
+                                alert("Datos guardados");
+                                //console.log(msg);
                             }
                         });
                     }

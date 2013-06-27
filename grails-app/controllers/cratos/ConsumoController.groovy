@@ -114,8 +114,8 @@ class ConsumoController extends cratos.seguridad.Shield  {
             factura.paciente = params.paciente
             factura.telefono = params.telefono
             factura.direccion = params.direccion
-            factura.numero=params.numero
-            println "numero "+ factura.numero
+            factura.secuencial=params.numero
+            println "numero "+ factura.secuencial
             if (!factura.save(flush: true)) {
                 println "error factura: " + factura.errors
             }

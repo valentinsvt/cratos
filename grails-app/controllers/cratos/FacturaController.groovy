@@ -369,7 +369,7 @@ class FacturaController extends cratos.seguridad.Shield {
     }
 
     def generar() {
-//        println params
+        println params
 
         def factura = Factura.get(params.id)
         def ok = true

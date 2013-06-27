@@ -16,7 +16,7 @@ class ProcesoService {
         def datosAsientos=[]
         def asientos=[]
         def ca=["actionName":"registroProceso","controllerName":"proceso"] //capos asiento
-        println "movimientos "+p.gestor.movimientos.toArray()
+        println "movimientos "+p.gestor?.movimientos.toArray()
         def cont=0
         def retencion = []
         def empresa= proceso.gestor.empresa

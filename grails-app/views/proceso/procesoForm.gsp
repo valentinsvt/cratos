@@ -55,7 +55,7 @@
                 <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
 
                 <div id="contenido" style="width: 900px;padding-left: 30px;">
-                    <div class="etiqueta">Gestor:</div> <g:select class="ui-corner-all" name="gestor.id" from="${cratos.Gestor.findAllByEstado('A')}" label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"></g:select>
+                    <div class="etiqueta">Gestor:</div> <g:select class="ui-corner-all" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A',session.empresa,[sort:'nombre'])}" label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"></g:select>
                     <br>
 
                     %{--<div class="etiqueta">Fecha:</div> ${new java.util.Date().format("dd/MM/yyyy")}--}%
