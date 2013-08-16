@@ -1,4 +1,5 @@
 package cratos
+
 class Persona implements Serializable {
     String email
     String telefono
@@ -16,6 +17,8 @@ class Persona implements Serializable {
     Profesion profesion
     EstadoCivil estadoCivil
     String observaciones
+
+    String libretaMilitar
 
     static mapping = {
         table 'prsn'
@@ -41,6 +44,7 @@ class Persona implements Serializable {
             profesion column: 'prof__id'
             estadoCivil column: 'edcv__id'
             observaciones column: 'prsnobsr'
+            libretaMilitar column: 'prsnlbml'
         }
     }
     static constraints = {
@@ -59,7 +63,8 @@ class Persona implements Serializable {
         nacionalidad(blank: false, attributes: [title: 'Nacionalidad'])
         profesion(blank: true, nullable: true, attributes: [title: 'Profesión'])
         estadoCivil(blank: true, nullable: true, attributes: [title: 'Estado Civil'])
-        observaciones(size: 1..127, blank: true, attributes: [title: 'Observaciones'])
+        observaciones(size: 1..127, blank: true, nullable: true, attributes: [title: 'Observaciones'])
+        libretaMilitar(blank: true, nullable: true, attributes: [title: 'Libreta militar'])
     }
 
     String toString() {

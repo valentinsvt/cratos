@@ -1,7 +1,8 @@
 package cratos
+
 class Empleado implements Serializable {
     double porcentajeComision
-    String foto
+    byte[] foto
     String estado
     Date fechaFin
     Date fechaInicio
@@ -17,6 +18,8 @@ class Empleado implements Serializable {
     Persona persona
     Canton canton
     String crgo
+
+    String observaciones
 
     static mapping = {
         table 'empl'
@@ -43,6 +46,8 @@ class Empleado implements Serializable {
             persona column: 'prsn__id'
             canton column: 'cntn__id'
             crgo column: 'emplcrgo'
+
+            observaciones column: 'emplobsv'
         }
     }
     static constraints = {
@@ -63,5 +68,6 @@ class Empleado implements Serializable {
         persona(blank: true, nullable: true, attributes: [title: 'persona'])
         canton(blank: true, nullable: true, attributes: [title: 'canton'])
         crgo(blank: true, nullable: true, size: 1..127, attributes: [title: 'crgo'])
+        observaciones(blank: true, nullable: true, size: 1..127, attributes: [title: 'observaciones'])
     }
 }

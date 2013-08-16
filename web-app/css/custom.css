@@ -27,6 +27,10 @@ body {
     /*margin : 0;*/
 }
 
+.fila {
+    min-height : 37px;
+}
+
 .small {
     font-size : 12px;
 }
@@ -166,6 +170,6 @@ input.required, select.required {
     background : #dedede !important;
 }
 
-a{
-    color:white;
+a {
+    color : white;
 }

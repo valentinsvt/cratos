@@ -11,9 +11,11 @@ class Shield {
 //        println "AUTH SHIELD: an " + actionName + " cn " + controllerName + "  "
 
 //        println session
-        session.an = actionName
-        session.cn = controllerName
-        session.pr = params
+        if (!actionName.contains("ajax")) {
+            session.an = actionName
+            session.cn = controllerName
+            session.pr = params
+        }
         if (!session.usuario || !session.perfil) {
 //            println "1"
             redirect(controller: 'login', action: 'login')
