@@ -81,7 +81,7 @@
 
 <div>
 
-    <table>
+    <table border="1">
 
         <thead>
         <tr style="font-size: 11px">
@@ -89,12 +89,12 @@
             <th align="center">Fecha</th>
             <th align="center" style="width: 40px;">Tipo</th>
             <th align="center" style="">#</th>
-            <th align="center" style="width: 150px;">Proveedor</th>
-            <th align="center" style="width: 500px;">Descripción</th>
+            <th align="center" style="width: 130px;">Proveedor</th>
+            <th align="center" style="width: 420px;">Descripción</th>
+            <th align="center" style="width: 60px;">Documento</th>
             <th align="center">Debe</th>
             <th align="center" style="">Haber</th>
             <th align="center" style="">Saldo</th>
-            <th align="center" style="">Documentos</th>
         </tr>
         </thead>
 
@@ -111,7 +111,7 @@
                 </td>
                 <td class="procesoFecha" align="center">
 
-                    <g:formatDate date="${asientos.comprobante.proceso.fecha}" format="dd-MM-yyyy hh:mm"/>
+                    <g:formatDate date="${asientos.comprobante.proceso.fecha}" format="dd-MM-yyyy"/>
 
                 </td>
 
@@ -127,7 +127,7 @@
                 </td>
 
 
-                <td class="tipo" align="center" style="width: 150px;text-align: left">
+                <td class="tipo" align="center" style="width: 130px;text-align: left">
 
                     ${asientos.comprobante.proceso.proveedor}
 
@@ -138,18 +138,22 @@
 
                 </td>
 
-                <td class="debe" style="text-align: right">
+                <td class="documentos" style="text-align: right">
+
+                    ${asientos?.comprobante?.proceso?.documento}
+                </td>
+                <td class="debe" style="text-align: right;padding-right: 5px;">
 
                     <g:formatNumber number="${asientos.debe}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
                     %{--${asientos?.debe}--}%
                 </td>
-                <td class="haber" style="text-align: right">
+                <td class="haber" style="text-align: right;padding-right: 5px;">
                     <g:formatNumber number="${asientos.haber}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
                     %{--${asientos?.haber}--}%
 
                 </td>
 
-                <td class="saldo" style="text-align: right">
+                <td class="saldo" style="text-align: right;padding-right: 5px;">
 
                     <g:formatNumber number="${saldo[j]}" maxFractionDigits="2" minFractionDigits="2" type="number"/>
 
@@ -157,10 +161,6 @@
 
                 </td>
 
-                <td class="documentos" style="text-align: right">
-
-                       ${asientos?.comprobante?.proceso?.documento}
-                </td>
 
 
 

@@ -85,14 +85,17 @@ class ReportesController {
     }
 
     def updatePeriodo() {
-
+        println "update periodo "+params
         def cont = Contabilidad.get(params.cont)
         def periodos = Periodo.findAllByContabilidad(cont, [sort: 'fechaInicio'])
 
         // <g:select name="contP" from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}" optionKey="id" optionValue="descripcion"
         // class="ui-widget-content ui-corner-all"/>
-
-        def sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all")
+        def sel
+        if(cont)
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all",noSelection: ["-1":"Todos"])
+        else
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all",noSelection: ["-1":"Todos"])
 
         def html = "Periodo: " + sel
 
@@ -410,13 +413,24 @@ order by rplnnmro
 
 
         def contabilidad = Contabilidad.get(params.cont);
+        def fini
+        def fin
+        def periodo
+        if(params.per!="-1"){
+            periodo = Periodo.get(params.per);
+            fini = periodo.fechaInicio
+            fin = periodo.fechaFin
+        }else{
+//            println "else"
+            def periodos = Periodo.findAllByContabilidad(contabilidad,[sort:"fechaInicio"]);
+//            println "periodos "     +periodos
+            fini = periodos[0].fechaInicio
+            periodo=periodos.last()
+            fin = periodo.fechaFin
+//            println " "+fini+" "+fin+"  "+periodo
+        }
 
 
-        def periodo = Periodo.get(params.per);
-
-        def fini = periodo.fechaInicio
-
-        def fin = periodo.fechaFin
 
 
         println(fini);
@@ -453,9 +467,9 @@ order by rplnnmro
 
 //                println("cuentaP: " + cuentaP)
 
-                def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuentaP, periodo)
+                def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuentaP, periodo)?.refresh()
 
-                println("SM:" + saldoMensual)
+                println("SM con refres :" + saldoMensual)
 
 
                 def comprobante = Comprobante.findAllByProcesoInList(proceso)
@@ -480,9 +494,17 @@ order by rplnnmro
 
 
 
-            def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuenta, periodo)
+            def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuenta, periodo)?.refresh()
+            println "saldos 1 "+saldoMensual
+            if(!saldoMensual){
+                saldoMensual=SaldoMensual.findAllByCuenta(cuenta)
+                saldoMensual.sort{it.periodo.fechaInicio}
+                println "saldos "+saldoMensual.periodo
+                if(saldoMensual.size()>0)
+                    saldoMensual=saldoMensual.pop()
+            }
 
-//        println("saldoMensual:" + saldoMensual.saldoInicial)
+            println("saldoMensual: refresh " + saldoMensual)
 
             def comprobante = Comprobante.findAllByProcesoInListAndRegistrado(proceso,"S")
 
@@ -537,7 +559,7 @@ order by rplnnmro
 
 
                 }
-                println(saldoInicial)
+//                println(saldoInicial)
 
                 saldo.add(saldoInicial)
 

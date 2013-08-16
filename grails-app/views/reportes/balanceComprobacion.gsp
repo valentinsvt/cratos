@@ -60,6 +60,7 @@
     <h1>Balance de comprobación</h1>
     %{--<h2>${contabilidad.descripcion}</h2>--}%
     <h3>Del ${periodo.fechaInicio.format("dd-MM-yyyy")} al ${periodo.fechaFin.format("dd-MM-yyyy")}</h3>
+    <h3>Impreso el ${new Date().format("dd-MM-yyyy hh:mm")}</h3>
 
     <div>
         <table border="1">
@@ -80,7 +81,7 @@
             <g:set var="totDeudor" value="${0}"></g:set>
             <g:set var="totAcreedor" value="${0}"></g:set>
             <g:each in="${res}" var="m" status="i">
-                <g:if test="${m.saldoInicial+m.debe+m.haber>0}">
+                <g:if test="${m.saldoInicial+m.debe-m.haber!=0}">
                     <tr>
                         <td>${m.cuenta.numero}</td>
                         <td>${m.cuenta.descripcion}</td>
