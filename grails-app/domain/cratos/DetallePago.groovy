@@ -2,6 +2,7 @@ package cratos
 class DetallePago implements Serializable {
     RolPagos rolPagos
     RubroTipoContrato rubroTipoContrato
+    String descripcion
     Empleado empleado
     double valor
     static mapping = {
@@ -16,6 +17,7 @@ class DetallePago implements Serializable {
             empleado column: 'empl__id'
             rolPagos column: 'rlpg__id'
             valor column: 'dtpgvlor'
+            descripcion column: 'dtpgdscr'
         }
     }
     static constraints = {
@@ -23,5 +25,6 @@ class DetallePago implements Serializable {
         empleado(blank: true, nullable: true, attributes: [title: 'empleado'])
         rolPagos(blank: true, nullable: true, attributes: [title: 'rol de pagos'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
+        descripcion(blank: true,nullable: true,size: 1..124)
     }
 }

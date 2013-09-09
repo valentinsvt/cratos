@@ -13,7 +13,11 @@ class EmpleadoController extends cratos.seguridad.Shield {
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [empleadoInstanceList: Empleado.list(params), empleadoInstanceTotal: Empleado.count()]
+
+        def mes = Mes.list([sort:"id"])
+        def periodos = Periodo.findAllByContabilidad(session.contabilidad,[sort: "fechaInicio"])
+
+        [empleadoInstanceList: Empleado.list(params), empleadoInstanceTotal: Empleado.count(),mes:mes,periodos:periodos]
     }
 
     def findPersona_ajax() {
@@ -77,7 +81,7 @@ class EmpleadoController extends cratos.seguridad.Shield {
             params.empleado.fechaInicio = new Date().parse("dd-MM-yyyy", params.empleado.fechaInicio)
         }
         if (params.empleado.fechaFin) {
-            params.empleado.fechafin = new Date().parse("dd-MM-yyyy", params.empleado.fechaFin)
+            params.empleado.fechaFin = new Date().parse("dd-MM-yyyy", params.empleado.fechaFin)
         }
         def empleadoInstance, personaInstance
         if (params.empleado.id) {
@@ -100,6 +104,7 @@ class EmpleadoController extends cratos.seguridad.Shield {
                 }
             } else {
                 personaInstance = new Persona(params.persona)
+                personaInstance.empresa=session.empresa
                 personaInstance.nacionalidad = Nacionalidad.get(1)
             }
             empleadoInstance = new Empleado(params.empleado)
