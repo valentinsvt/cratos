@@ -108,8 +108,8 @@ class RubroController extends cratos.seguridad.Shield {
         def mes = Mes.get(params.mes)
         def periodo = Periodo.get(params.periodo)
         def empresa = Empresa.get(session.empresa.id)
-        def rol = RolPagos.findByMess(mes)
-        println "periodo "+periodo
+        def rol = RolPagos.findByMessAndPeriodo(mes,periodo)
+        println "rol??  "+rol
         def msg =""
         if(!rol){
             rol = new RolPagos()
@@ -133,17 +133,21 @@ class RubroController extends cratos.seguridad.Shield {
                     isNull("fechaFin")
                     gt("fechaFin",periodo.fechaInicio)
                 }
+                isNotNull("tipoContrato")
 
             }
-            println "empleados  "+empleados.persona.nombre
+//            println "empleados  "+empleados.persona.nombre
             def total = 0
             empleados.each {emp->
+//                println "_________________________________________________"
+//                println "emp "+emp.persona.nombre+"  contra "+emp.tipoContrato.descripcion
                 def sueldo = emp.sueldo
                 if(emp.fechaInicio>periodo.fechaInicio && emp.fechaInicio<periodo.fechaFin){
                     println "porcentaje sueldo "
                     sueldo=(emp.sueldo/30*(periodo.fechaFin.day-emp.fechaInicio.day).toInteger()).toDouble().round(2)
                 }
                 def detalle = DetallePago.findAll("from DetallePago where rolPagos = ${rol.id} and rubroTipoContrato is null and empleado=${emp.id}")
+//                println "detalle ?? "+detalle
                 if(detalle.size()==0){
                     detalle=new DetallePago()
                     detalle.empleado=emp
@@ -155,14 +159,16 @@ class RubroController extends cratos.seguridad.Shield {
 
                 }
                 total+=sueldo
-                println "total "+total+" sueldo "  +sueldo
+//                println "total "+total+" sueldo "  +sueldo
 
                 def rubros = RubroTipoContrato.findAllByTipoContrato(emp.tipoContrato)
+//                println "rubros ==> "+rubros.rubro.descripcion+"  "+rubros.rubro.valor+"  "+rubros.rubro.porcentaje
 //                def rubrosEsp = RubroTipoContrato.findAllByEmpleado(emp)
                 rubros.each {r->
+                    detalle = DetallePago.findAll("from DetallePago where rubroTipoContrato=${r.id} and rolPagos=${rol.id} and empleado=${emp.id}")
 
-                    detalle = DetallePago.findByRubroTipoContratoAndRolPagos(r,rol)
-                    if(!detalle){
+//                    println "detalle rubros ? "+detalle
+                    if(detalle.size()==0){
                         detalle=new DetallePago()
                         detalle.empleado=emp
                         detalle.rolPagos=rol
@@ -171,7 +177,7 @@ class RubroController extends cratos.seguridad.Shield {
                         def signo = -1
                         if(r.rubro.tipoRubro.codigo=="I")
                             signo=1
-                        if(r.valor){
+                        if(r.valor!=0){
                             valor=r.valor*signo
                         }else{
                             valor=sueldo*(r.porcentaje/100)*signo
@@ -223,15 +229,15 @@ class RubroController extends cratos.seguridad.Shield {
             if(params.anio){
                 def fecha = new Date().parse("dd-MM-yyyy","01-01-"+params.anio)
                 def cont = Contabilidad.findAllByInstitucionAndFechaInicioGreaterThanEquals(session.empresa,fecha)
-                println "cont "+cont+" anio "+anio
+//                println "cont "+cont+" anio "+anio
                 def periodos = []
                 Periodo.findAllByContabilidadInList(cont).each {p->
                     if(p.fechaInicio.format("yyyy")==params.anio)
                         periodos.add(p)
                 }
-                println "periodos "+periodos
+//                println "periodos "+periodos
                 roles = RolPagos.findAllByMessAndPeriodoInList(mes,periodos)
-                println "roles "+roles
+//                println "roles "+roles
             }
 //            anio=periodo.fechaInicio.format("YYYY")
         }else{
@@ -251,7 +257,7 @@ class RubroController extends cratos.seguridad.Shield {
         }
         def datos=[]
         if(rol){
-            def sql ="SELECT e.empl__id,p.prsnnmbr || p.prsnapll ,c.crgodscr,t.tpctdscr ,sum(d.dtpgvlor) from rlpg r,dtpg d,empl e,prsn p,crgo c, tpct t where r.rlpg__id=${rol.id} and r.rlpg__id=d.rlpg__id and d.empl__id=e.empl__id and e.prsn__id=p.prsn__id and e.crgo__id=c.crgo__id and e.tpct__id=t.tpct__id  group by 1,2,3,4 order by 1;"
+            def sql ="SELECT e.empl__id,p.prsnnmbr || ' ' || p.prsnapll ,c.crgodscr,t.tpctdscr ,sum(d.dtpgvlor) from rlpg r,dtpg d,empl e,prsn p,crgo c, tpct t where r.rlpg__id=${rol.id} and r.rlpg__id=d.rlpg__id and d.empl__id=e.empl__id and e.prsn__id=p.prsn__id and e.crgo__id=c.crgo__id and e.tpct__id=t.tpct__id  group by 1,2,3,4 order by 2;"
             cn = dbConnectionService.getConnection()
             cn.eachRow(sql.toString()){r->
                 datos.add(r.toRowResult())
