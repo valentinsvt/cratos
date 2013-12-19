@@ -48,8 +48,7 @@ class ElementosTagLib {
         def value = attrs.remove("value")
         if (value.toString() == 'none') {
             value = null
-        }
-        else if (!value) {
+        } else if (!value) {
             value = null
         }
 
@@ -66,9 +65,18 @@ class ElementosTagLib {
         js += '$(function() {'
         js += '$("#' + id + '").datepicker({'
         js += 'dateFormat: "' + formatJs + '",'
+
         js += 'changeMonth: true,'
         js += 'changeYear: true,'
-        js += 'autoOpen: false,'
+        js += 'autoOpen: false'
+        if (attrs.minDate) {
+            js += ","
+            js += "minDate:" + attrs.minDate
+        }
+        if (attrs.maxDate) {
+            js += ","
+            js += "maxDate:" + attrs.maxDate
+        }
         js += '});'
         js += '});'
         js += "</script>"

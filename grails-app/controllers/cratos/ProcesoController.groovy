@@ -10,7 +10,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     /* todo acabar los dominios */
 
 
-
     def index = { redirect(action: "lsta") }
 
     def lsta = {
@@ -22,10 +21,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-            println "registro "+registro
+            println "registro " + registro
             render(view: "procesoForm", model: [proceso: proceso, registro: registro])
-        }
-        else
+        } else
             render(view: "procesoForm", model: [registro: false])
     }
 
@@ -39,16 +37,22 @@ class ProcesoController extends cratos.seguridad.Shield {
                 params.proveedor.id = null
             params.estado = "N"
             println "params " + params
-            if (!params.fecha){
+            if (!params.fecha) {
                 params.fecha = new Date()
-            }else {
-                params.fecha = Date.parse("yyyy-MM-dd",params.fecha);
+            } else {
+                params.fecha = Date.parse("yyyy-MM-dd", params.fecha);
             }
-            if(params.id)
-                p= Proceso.get(params.id)
+
+            params.valor = params.baseImponibleIva0 + params.baseImponibleIva + params.baseImponibleNoIva
+            params.impuesto = params.ivaGenerado + params.iceGenerado
+
+            params.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+
+            if (params.id)
+                p = Proceso.get(params.id)
             else
                 p = new Proceso()
-            p.properties=params
+            p.properties = params
             p.contabilidad = session.contabilidad
             p.save(flush: true)
             println "errores proceso " + p.errors
@@ -60,7 +64,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             redirect(controller: "shield", action: "ataques")
         }
     }
-
 
 
     def registrar = {
@@ -90,8 +93,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def asientos = []
         if (comprobantes)
             asientos += Asiento.findAllByComprobante(comprobantes)
-        if (asientos.size()>0){
-            asientos.sort{it.cuenta.numero}
+        if (asientos.size() > 0) {
+            asientos.sort { it.cuenta.numero }
         }
 
         //println "comp "+comprobantes+" as "+asientos
@@ -117,7 +120,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             //kerberosService.generarEntradaAuditoria(params,Asiento,"haber",vh,asiento.haber,session.perfil,session.usuario)
             asiento.debe = vd
             asiento.haber = vh
-            asiento.cuenta=Cuenta.get(params.cnta)
+            asiento.cuenta = Cuenta.get(params.cnta)
             if (asiento.save(flush: true))
                 render "ok"
             else
@@ -133,21 +136,21 @@ class ProcesoController extends cratos.seguridad.Shield {
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, 1])
             println "LOG: mayorizando por comprobante ${comprobante.id}" + msn["mayorizar"]
-            try{
+            try {
                 def log = new LogMayorizacion()
-                log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
-                log.comprobante=comprobante
-                log.tipo="M"
-                log.resultado= msn["mayorizar"].toString()
+                log.usuario = cratos.seguridad.Usro.get(session.usuario.id)
+                log.comprobante = comprobante
+                log.tipo = "M"
+                log.resultado = msn["mayorizar"].toString()
                 log.save(flush: true)
-            }catch (e){
-                println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+            } catch (e) {
+                println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
             }
-            if (msn["mayorizar"]=~ "Error") {
+            if (msn["mayorizar"] =~ "Error") {
 //                def asientos=Asiento.findAllByComprobante(comprobante)
 //                println "error al mayorizar "+msn
 //                render(view: "detalleProceso", model: [comprobante: comprobante, asientos: asientos, msn: msn])
-                render " "+msn["mayorizar"]
+                render " " + msn["mayorizar"]
             } else {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
@@ -164,25 +167,25 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def desmayorizar(){
-        println "demayo "+params
+    def desmayorizar() {
+        println "demayo " + params
         if (request.method == 'POST') {
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
             println "LOG: desmayorizando  comprobante ${comprobante.id} " + msn["mayorizar"]
-            try{
+            try {
                 def log = new LogMayorizacion()
-                log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
-                log.comprobante=comprobante
-                log.tipo="D"
-                log.resultado= msn["mayorizar"].toString()
+                log.usuario = cratos.seguridad.Usro.get(session.usuario.id)
+                log.comprobante = comprobante
+                log.tipo = "D"
+                log.resultado = msn["mayorizar"].toString()
                 log.save(flush: true)
-            }catch (e){
-                println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+            } catch (e) {
+                println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
             }
-            if (msn["mayorizar"]=~ "Error") {
+            if (msn["mayorizar"] =~ "Error") {
 
-                render " "+msn["mayorizar"]
+                render " " + msn["mayorizar"]
             } else {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
@@ -201,34 +204,38 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def listar = {
         //println "buscar proceso"
-        def closure = {estado ->
+        def closure = { estado ->
             if (estado == "R")
                 return "Registrado"
             else
                 return "No registrado"
         }
         def listaTitulos = ["Fecha", "Descripcion", "Registrado"]       /*Titulos de la tabla*/
-        def listaCampos = ["fecha", "descripcion", "estado"]           /*campos que van a mostrarse en la tabla, en el mismo orden que los titulos*/
-        def funciones = [["format": ["dd/MM/yyyy hh:mm"]], null, ["closure": [closure, "?"]]]   /*funciones para cada campo en caso de ser necesari. Cada campo debe tener un mapa (con el nombre de la funcion como key y los parametros como arreglo) o un null si no tiene funciones... si un parametro es ? sera sustituido por el valor del campo, si es & sera sustituido por el objeto */
+        def listaCampos = ["fecha", "descripcion", "estado"]
+        /*campos que van a mostrarse en la tabla, en el mismo orden que los titulos*/
+        def funciones = [["format": ["dd/MM/yyyy hh:mm"]], null, ["closure": [closure, "?"]]]
+        /*funciones para cada campo en caso de ser necesari. Cada campo debe tener un mapa (con el nombre de la funcion como key y los parametros como arreglo) o un null si no tiene funciones... si un parametro es ? sera sustituido por el valor del campo, si es & sera sustituido por el objeto */
         def link = "descripcion"                                      /*nombre del campo que va a llevar el link*/
-        def url=g.createLink(action: "listar",controller: "proceso")     /*link de esta accion ...  sive para la opcion de reporte*/
+        def url = g.createLink(action: "listar", controller: "proceso")
+        /*link de esta accion ...  sive para la opcion de reporte*/
 //        params.ordenado="fecha"
 //        params.orden="desc"
-        def listaSinFiltro = buscadorService.buscar(Proceso, "Proceso", "excluyente", params, true) /* Dominio, nombre del dominio , excluyente dejar asi,params tal cual llegan de la interfaz del buscador, ignore case */
+        def listaSinFiltro = buscadorService.buscar(Proceso, "Proceso", "excluyente", params, true)
+        /* Dominio, nombre del dominio , excluyente dejar asi,params tal cual llegan de la interfaz del buscador, ignore case */
         listaSinFiltro.pop()
-        def lista=[]
+        def lista = []
         listaSinFiltro.each {
-            if(it.estado!="B")
+            if (it.estado != "B")
                 lista.add(it)
         }
-        if (!params.reporte){
-            render(view: '../lstaTbla', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista,  link: link, funciones: funciones,url:url])
-        } else{
+        if (!params.reporte) {
+            render(view: '../lstaTbla', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, link: link, funciones: funciones, url: url])
+        } else {
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
-            session.dominio=Proceso
-            session.funciones=funciones
-            def anchos = [16,70,14] /*el ancho de las columnas en porcentajes*/
-            redirect(controller: "reportes2",action: "reporteBuscador",params: [listaCampos: listaCampos,listaTitulos: listaTitulos,tabla:"Proceso",orden:params.orden,ordenado:params.ordenado,criterios:params.criterios,operadores:params.operadores,campos: params.campos,titulo:"Transacciones contables",anchos:anchos])
+            session.dominio = Proceso
+            session.funciones = funciones
+            def anchos = [16, 70, 14] /*el ancho de las columnas en porcentajes*/
+            redirect(controller: "reportes2", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Proceso", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Transacciones contables", anchos: anchos])
         }
 
     }
@@ -241,7 +248,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
 //        println "registro "+registro
         if (registro)
-            [proceso: proceso, registro: registro, comprobante:  comprobante]
+            [proceso: proceso, registro: registro, comprobante: comprobante]
         else
             render(view: "procesoForm", model: [proceso: proceso, registro: registro, comprobante: comprobante])
     }
@@ -257,7 +264,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def  cargarAuxiliares = {
+    def cargarAuxiliares = {
         //println "cargar auxiliares "+params
         def msn = null
         def asiento = Asiento.get(params.id);
@@ -373,12 +380,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def prueba(){
+    def prueba() {
         render "prueba"
     }
 
 
-    def borrarProceso () {
+    def borrarProceso() {
 
         println("LOG: borrar proceso " + params)
 
@@ -388,101 +395,134 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def asiento
 
-        if (comprobante){
+        if (comprobante) {
 
             asiento = Asiento.findAllByComprobante(comprobante)
 
         }
 
 
-        if (comprobante){
+        if (comprobante) {
 
-            if (comprobante.registrado == 'N'){
+            if (comprobante.registrado == 'N') {
 
                 def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
                 println "LOG: desmayorizando  comprobante borrar proceso ${comprobante.id} " + msn["mayorizar"]
-                try{
+                try {
                     def log = new LogMayorizacion()
-                    log.usuario=cratos.seguridad.Usro.get(session.usuario.id)
-                    log.comprobante=comprobante
-                    log.tipo="B"
-                    log.resultado= msn["mayorizar"].toString()
+                    log.usuario = cratos.seguridad.Usro.get(session.usuario.id)
+                    log.comprobante = comprobante
+                    log.tipo = "B"
+                    log.resultado = msn["mayorizar"].toString()
                     log.save(flush: true)
-                }catch (e){
-                    println "LOG: error del login de mayorizar "+msn["mayorizar"].toString()
+                } catch (e) {
+                    println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
                 }
-                proceso.estado="B"
+                proceso.estado = "B"
                 proceso.save(flush: true)
-                comprobante.registrado="B"
+                comprobante.registrado = "B"
                 comprobante.save(flush: true)
-                flash.message="Proceso Borrado!"
+                flash.message = "Proceso Borrado!"
 
                 redirect(action: 'lsta')
 
-            }else {
+            } else {
 
-                flash.message="No se puede borrar el proceso!!"
+                flash.message = "No se puede borrar el proceso!!"
 
                 redirect(action: 'lsta')
-
 
 
             }
 
-        }else {
+        } else {
 
 
-            proceso.estado="B"
+            proceso.estado = "B"
             proceso.save(flush: true)
 
 
-            flash.message="Proceso Borrado!"
+            flash.message = "Proceso Borrado!"
 
             redirect(action: 'lsta')
 
 
-
         }
 
 
     }
 
 
-    def procesosAnulados(){
+    def procesosAnulados() {
 //        println "proc anulados "+params
         def contabilidad
-        if(!params.contabilidad){
-            contabilidad=Contabilidad.findAllByInstitucion(session.empresa,[sort:"fechaInicio",order:"asc"])
-            if(contabilidad){
-                contabilidad=contabilidad.pop()
-            }else{
+        if (!params.contabilidad) {
+            contabilidad = Contabilidad.findAllByInstitucion(session.empresa, [sort: "fechaInicio", order: "asc"])
+            if (contabilidad) {
+                contabilidad = contabilidad.pop()
+            } else {
                 render "no existen contabilidades creadeas en esta empresa"
                 return
             }
-        }else{
-            contabilidad=Contabilidad.get(params.contabilidad)
+        } else {
+            contabilidad = Contabilidad.get(params.contabilidad)
         }
 //        println "contabilidad "+contabilidad
-        def procesos = Proceso.findAllByEstadoAndContabilidad("B",contabilidad,[sort:"fecha"])
-        [procesos:procesos,contabilidad:contabilidad]
+        def procesos = Proceso.findAllByEstadoAndContabilidad("B", contabilidad, [sort: "fecha"])
+        [procesos: procesos, contabilidad: contabilidad]
     }
 
-    def verComprobante(){
+    def verComprobante() {
         def comp = Comprobante.get(params.id)
         def asientos = Asiento.findAllByComprobante(comp)
-        [asientos:asientos,comp:comp]
+        [asientos: asientos, comp: comp]
     }
 
 
-    def detalleSri () {
-
-
+    def detalleSri() {
         def proceso = Proceso.get(params.id)
+        def hoy = new Date()
+        def per = Periodo.withCriteria {
+            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
+            le("fechaFin", getLastDayOfMonth(hoy))
+            order("fechaInicio", "asc")
+        }
+        def periodos = []
+        per.each { p ->
+            periodos.add(fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase())
+        }
 
+        return [proceso: proceso, periodos: periodos]
+    }
 
-        return [proceso: proceso]
+    private String fechaConFormato(fecha, formato) {
+        def meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+        def meses2 = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        def strFecha
+        switch (formato) {
+            case "MMM-yy":
+                strFecha = meses[fecha.format("MM").toInteger()] + "-" + fecha.format("yy")
+                break;
+            case "MMMM-yy":
+                strFecha = meses2[fecha.format("MM").toInteger()] + "-" + fecha.format("yy")
+                break;
+            case "MMMM yyyy":
+                strFecha = meses2[fecha.format("MM").toInteger()] + " " + fecha.format("yyyy")
+                break;
+        }
+        return strFecha
+    }
 
+    def getLastDayOfMonth(fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
 
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.DATE, -1);
+
+        Date lastDayOfMonth = calendar.getTime();
+        return lastDayOfMonth
     }
 
 }

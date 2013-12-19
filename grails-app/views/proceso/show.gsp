@@ -30,11 +30,11 @@
 
 
                 <div style="height: 30px;margin-bottom: 10px;width: 600px;padding-left: 40px;">
-                   %{----}%
+                    %{----}%
                     %{--<g:link--}%
-                            %{--class="btn  ui-corner-all"--}%
-                            %{--action="pdfLink" controller="pdf" params="[url: g.createLink(action: 'comprobante', controller: 'reportes', id: proceso.id), filename: 'comprobante']">--}%
-                        %{--Imprimir--}%
+                    %{--class="btn  ui-corner-all"--}%
+                    %{--action="pdfLink" controller="pdf" params="[url: g.createLink(action: 'comprobante', controller: 'reportes', id: proceso.id), filename: 'comprobante']">--}%
+                    %{--Imprimir--}%
                     %{--</g:link>--}%
 
                     <g:link
@@ -44,19 +44,18 @@
                     </g:link>
 
 
-                   <g:link
-                           class="btn ui-corner-all"
-                           action="detalleSri" id="${proceso?.id}">
-                       SRI
-                   </g:link>
+                    <g:link
+                            class="btn ui-corner-all"
+                            action="detalleSri" id="${proceso?.id}">
+                        SRI
+                    </g:link>
 
 
-                   <g:if test="${comprobante.registrado!='S'}">
+                    <g:if test="${comprobante.registrado != 'S'}">
 
-                        <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
+                        <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso">Borrar Proceso</g:link>
 
-                   </g:if>
-
+                    </g:if>
 
                 </div>
 
@@ -77,20 +76,41 @@
                 <br>
 
                 <div class="span-28" style="margin-left: 40px;margin-top: 10px;margin-bottom: 15px;">
-                    <div style="float:left;padding-top: 3px;">
-                        <label>Valor:</label><input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all saved" validate="required number" disabled="true">
-                        <label>Impuestos:</label><input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number" disabled="true">
-                        <label>Documento:</label><input type="text" name="factura" style="width: 120px;" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all" disabled="true">
+                    %{--<div style="float:left;padding-top: 3px;">--}%
+                    %{--<label>Valor:</label>--}%
+                    %{--<input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all saved" validate="required number" disabled="true"/>--}%
+                    %{--<label>Impuestos:</label>--}%
+                    %{--<input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number" disabled="true"/>--}%
+                    %{--<label>Documento:</label>--}%
+                    %{--<input type="text" name="factura" style="width: 120px;" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all" disabled="true"/>--}%
+                    %{--</div>--}%
+
+                    <div style="/*float:left;*/padding-top: 3px;">
+                        <label>Base imponible IVA 0%:</label>
+                        ${proceso?.baseImponibleIva0}
+                        <label style="margin-left: 15px;">Base imponible IVA <g:formatNumber number="${cratos.ParametrosAuxiliares.list().first().iva}" maxFractionDigits="0" minFractionDigits="0"/>%:</label>
+                        ${proceso?.baseImponibleIva}
+                        <label style="margin-left: 15px;">Base imponible no aplica IVA:</label>
+                        ${proceso?.baseImponibleNoIva}
                     </div>
 
-                    <div class="span-9 last" style="float:left;padding-top: 12px; padding-left: 10px;"> <b>Tipo de pago: </b>${proceso?.tipoPago?.descripcion}</div>
+                    <div style="/*float:left;*/padding-top: 3px;">
+                        <label>IVA generado:</label>
+                        ${proceso?.ivaGenerado}
+                        <label style="margin-left: 15px;">ICE generado:</label>
+                        ${proceso?.iceGenerado}
+                        <label style="margin-left: 15px;">Documento:</label>
+                        ${proceso?.facturaEstablecimiento}-
+                        ${proceso?.facturaPuntoEmision}-
+                        ${proceso?.facturaSecuencial}
+
+                        <label style="margin-left: 15px;">Tipo de pago:</label>
+                        ${proceso?.tipoPago?.descripcion}
+                    </div>
                 </div>
-                <br>
 
                 <div id="registro" style="float:left; margin-left: 40px;border: black solid 1px; margin-bottom: 25px;padding: 10px;display: none;margin-top: 15px;" class="ui-corner-all">
-
                 </div>
-
             </div>
         </g:form>
         <script type="text/javascript">
@@ -113,11 +133,9 @@
 
             });
 
-
             $("#borrarProceso").click(function () {
 
-
-               console.log("entro")
+                console.log("entro")
 
             });
 

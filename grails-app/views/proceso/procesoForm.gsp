@@ -47,7 +47,7 @@
                         Cancelar
                     </g:link>
 
-                    <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
+                    <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso">Borrar Proceso</g:link>
 
                 </div>
                 <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
@@ -55,12 +55,13 @@
                 <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
 
                 <div id="contenido" style="width: 900px;padding-left: 30px;">
-                    <div class="etiqueta">Gestor:</div> <g:select class="ui-corner-all" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A',session.empresa,[sort:'nombre'])}" label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"></g:select>
+                    <div class="etiqueta">Gestor:</div> <g:select class="ui-corner-all" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A', session.empresa, [sort: 'nombre'])}" label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"></g:select>
                     <br>
 
                     %{--<div class="etiqueta">Fecha:</div> ${new java.util.Date().format("dd/MM/yyyy")}--}%
 
-                     <div class="etiqueta">Fecha: </div><elm:datePicker class="field ui-corner-all" name="fecha" title="fecha" style="width: 80px; margin-left: 5px" format="yyyy-MM-dd" value="${proceso?.fecha}"/>
+                    <div class="etiqueta">Fecha:</div>
+                    <elm:datePicker class="field ui-corner-all" name="fecha" title="fecha" style="width: 80px; margin-left: 5px" format="yyyy-MM-dd" value="${proceso?.fecha}"/>
 
                     <br>
 
@@ -72,15 +73,41 @@
 
                     <div class="etiqueta">Descripción:</div> <textArea style='height:40px;width: 700px;' name="descripcion" class="ui-corner-all">${proceso?.descripcion}</textArea>
                 </div>
-                <br>
-                <br>
 
                 <div class="span-28" style="margin-left: 40px;margin-top: 10px;margin-bottom: 15px;">
-                    <div style="float:left;padding-top: 3px;">
-                        <label>Valor:</label><input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all" validate="required number">
-                        <label style="margin-left: 40px;">Impuestos:</label><input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number">
-                        <label style="margin-left: 40px;">Documento:</label><input type="text" name="documento" style="width: 120px;margin-right: 5px" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all">
-                        <b>Tipo de pago:</b> <g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"></g:select>
+                    %{-- borrar desde aqui --}%
+                    %{--<div style="/*float:left;*/padding-top: 3px;">--}%
+                    %{--<label>Valor:</label>--}%
+                    %{--<input type="text" name="valor" size="7" value="${proceso?.valor}" class="required ui-widget-content ui-corner-all" validate="required number"/>--}%
+                    %{--<label style="margin-left: 40px;">Impuestos:</label>--}%
+                    %{--<input type="text" name="impuesto" size="7" value="${proceso?.impuesto}" class="required ui-widget-content ui-corner-all" validate="required number"/>--}%
+                    %{--<label style="margin-left: 40px;">Documento:</label>--}%
+                    %{--<input type="text" name="documento" style="width: 120px;margin-right: 5px" value="${proceso?.documento}" class=" ui-widget-content ui-corner-all"/>--}%
+                    %{--<b>Tipo de pago:</b>--}%
+                    %{--<g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"/>--}%
+                    %{--</div>--}%
+                    %{-- borrar hasta aqui --}%
+                    <div style="/*float:left;*/padding-top: 3px;">
+                        <label>Base imponible IVA 0%:</label>
+                        <input type="text" name="baseImponibleIva0" size="7" value="${proceso?.baseImponibleIva0}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <label style="margin-left: 15px;">Base imponible IVA <g:formatNumber number="${cratos.ParametrosAuxiliares.list().first().iva}" maxFractionDigits="0" minFractionDigits="0"/>%:</label>
+                        <input type="text" name="baseImponibleIva" size="7" value="${proceso?.baseImponibleIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <label style="margin-left: 15px;">Base imponible no aplica IVA:</label>
+                        <input type="text" name="baseImponibleNoIva" size="7" value="${proceso?.baseImponibleNoIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                    </div>
+
+                    <div style="/*float:left;*/padding-top: 3px;">
+                        <label>IVA generado:</label>
+                        <input type="text" name="ivaGenerado" size="7" value="${proceso?.ivaGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <label style="margin-left: 15px;">ICE generado:</label>
+                        <input type="text" name="iceGenerado" size="7" value="${proceso?.iceGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <label style="margin-left: 15px;">Documento:</label>
+                        <input type="text" name="facturaEstablecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="facturaPuntoEmision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="facturaSecuencial" size="10" maxlength="10" value="${proceso?.facturaSecuencial}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+
+                        <label style="margin-left: 15px;">Tipo de pago:</label>
+                        <g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"/>
                     </div>
 
                     <div class="span-9 last" style="margin-left: 40px;float: left;"></div>
