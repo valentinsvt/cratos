@@ -473,4 +473,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         [asientos:asientos,comp:comp]
     }
 
+
+    def detalleSri () {
+
+
+    }
+
 }

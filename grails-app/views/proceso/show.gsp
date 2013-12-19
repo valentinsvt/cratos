@@ -44,6 +44,13 @@
                     </g:link>
 
 
+                   <g:link
+                           class="btn ui-corner-all"
+                           action="detalleSri" id="${proceso?.id}">
+                       SRI
+                   </g:link>
+
+
                    <g:if test="${comprobante.registrado!='S'}">
 
                         <g:link class="btn ui-corner-all" id="${proceso?.id}" action="borrarProceso"> Borrar Proceso</g:link>
