@@ -1,4 +1,5 @@
 package cratos
+
 class Proceso implements Serializable {
     int padre
     double impuesto
@@ -42,8 +43,16 @@ class Proceso implements Serializable {
     String retencionSecuencial
     String retencionAutorizacion
 
-
     PagoAux pagoAux
+
+    SustentoTributario sustentoTributario
+    TipoComprobanteSri tipoComprobanteSri
+
+    Date fechaIngresoSistema
+
+    String facturaEstablecimiento
+    String facturaPuntoEmision
+    String facturaSecuencial
 
     static auditable = true
     static mapping = {
@@ -96,6 +105,15 @@ class Proceso implements Serializable {
             retencionAutorizacion column: 'prcsrtat'
 
             pagoAux column: 'pgax__id'
+
+            sustentoTributario column: 'sstr__id'
+            tipoComprobanteSri column: 'tpcp__id'
+
+            fechaIngresoSistema column: 'prcsfcis'
+
+            facturaEstablecimiento column: 'prcsfces'
+            facturaPuntoEmision column: 'prcsfcpe'
+            facturaSecuencial column: 'prcsfcsc'
         }
     }
     static constraints = {
@@ -142,5 +160,14 @@ class Proceso implements Serializable {
         retencionAutorizacion(blank: true, nullable: true)
 
         pagoAux(blank: true, nullable: true)
+
+        sustentoTributario(blank: true, nullable: true)
+        tipoComprobanteSri(blank: true, nullable: true)
+
+        fechaIngresoSistema(blank: true, nullable: true)
+
+        facturaEstablecimiento(blank: true, nullable: true)
+        facturaPuntoEmision(blank: true, nullable: true)
+        facturaSecuencial(blank: true, nullable: true)
     }
 }

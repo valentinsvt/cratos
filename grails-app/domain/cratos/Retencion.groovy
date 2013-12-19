@@ -1,4 +1,5 @@
 package cratos
+
 class Retencion implements Serializable {
 
     Proceso proceso
@@ -13,6 +14,9 @@ class Retencion implements Serializable {
     Proveedor proveedor
     String numeroComprobante
 
+    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
+    String numeroEstablecimiento
+    String numeroPuntoEmision
 
     static mapping = {
         table 'rtcn'
@@ -34,18 +38,24 @@ class Retencion implements Serializable {
             proveedor column: 'prve__id'
             numeroComprobante column: 'rtcnnmcp'
 
-
+            conceptoRetencionImpuestoRenta column: 'crir__id'
+            numeroEstablecimiento column: 'rtcnnmes'
+            numeroPuntoEmision column: 'rtcnnmpe'
         }
     }
     static constraints = {
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
-        ruc(blank: false,nullable: false,size:10..13)
+        ruc(blank: false, nullable: false, size: 10..13)
         direccion(size: 1..127, blank: true, nullable: true, attributes: [title: 'direccion'])
         telefono(size: 1..15, blank: true, nullable: true, attributes: [title: 'telefono'])
         persona(size: 1..63, blank: true, nullable: true, attributes: [title: 'persona'])
         numero(size: 1..15, blank: true, nullable: true, attributes: [title: 'numero'])
         empresa(blank: true, nullable: true, attributes: [title: 'empresa'])
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
-        numeroComprobante(size: 1..20,blank: true, nullable: true, attributes: [title: 'Número de comprobante'])
+        numeroComprobante(size: 1..20, blank: true, nullable: true, attributes: [title: 'Número de comprobante'])
+
+        conceptoRetencionImpuestoRenta(blank: true, nullable: true)
+        numeroEstablecimiento(blank: true, nullable: true)
+        numeroPuntoEmision(blank: true, nullable: true)
     }
 }
