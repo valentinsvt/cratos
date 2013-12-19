@@ -648,7 +648,7 @@ order by rplnnmro
         def paginas = [:]
         def activo = Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '1%' order by numero")
         def pasivo=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '2%' order by numero")
-        def patrimonio=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '3%' order by numero")
+        def patrimonio=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and  numero like '3%' order by numero")
         def ingresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '4%' order by numero")
         def egresos=Cuenta.findAll("from Cuenta where empresa = ${contabilidad.institucion.id} and nivel in (${niveles}) and numero like '5%' order by numero")
         def total4=0
