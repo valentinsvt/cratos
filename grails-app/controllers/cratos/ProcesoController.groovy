@@ -477,6 +477,12 @@ class ProcesoController extends cratos.seguridad.Shield {
     def detalleSri () {
 
 
+        def proceso = Proceso.get(params.id)
+
+
+        return [proceso: proceso]
+
+
     }
 
 }
