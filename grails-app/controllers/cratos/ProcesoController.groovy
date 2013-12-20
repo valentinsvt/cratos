@@ -492,7 +492,11 @@ class ProcesoController extends cratos.seguridad.Shield {
             periodos.add(fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase())
         }
 
-        return [proceso: proceso, periodos: periodos]
+
+        def sustento = SustentoTributario.list()
+
+
+        return [proceso: proceso, periodos: periodos, sustento: sustento]
     }
 
     private String fechaConFormato(fecha, formato) {

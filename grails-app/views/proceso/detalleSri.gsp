@@ -26,8 +26,89 @@
                     <elm:datePicker class="field ui-corner-all" name="fechaIngresoSistema" title="fecha"
                                     minDate="'-1m'" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px" format="yyyy-MM-dd" value="${proceso?.fechaIngresoSistema}"/>
-                    <label>Sustento Tributario</label>
+                    <label>Sustento Tributario</label> <g:select name="sustento" from="${sustento}" style="width: 250px"/>
                 </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+            <label>Tipo de ID del Proveedor </label><g:select name="tipoIdentificacion" from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"/>
+
+
+            </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                <label>Aplica Crédito Tributario </label><g:select name="credito" from="${['SI', 'NO']}"/>
+                <label style="margin-left: 360px">Base Retención</label>
+                <label style="margin-left: 15px"> % Ret</label>
+                <label style="margin-left: 25px">Valor Retenido</label>
+            </div>
+
+
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                    <label>Base Imponible no Objeto de IVA </label><g:textField name="noObjetoIva" style="margin-left: 5px; margin-right: 150px" />
+                    <label>ICE</label><g:textField name="ice"/><g:select name="porcentajeIce" from="" style="width: 60px"/><g:textField name="valorRetenidoIce"/>
+            </div>
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                    <label>Base Imponible IVA 0% </label><g:textField name="biIva0" style="margin-left: 70px; margin-right: 85px"/>
+                    <label>IVA(1) Bienes</label><g:textField name="bienes"/><g:select name="porcentajeIvaBienes" from="" style="width: 60px"/><g:textField name="valorRetenidoBienes"/>
+            </div>
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                    <label>Base Imponible IVA 12% </label><g:textField name="biIva12" style="margin-left: 60px; margin-right: 25px"/>
+                    <label>IVA(2) Servicios y 100%</label><g:textField name="servicios"/><g:select name="porcentajeServicios" from="" style="width: 60px"/><g:textField name="valorRetenidoServicios"/>
+            </div>
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                    <label>IVA </label><g:textField name="iva12" style="margin-left: 195px"/>
+            </div>
+
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: -5px">
+            <label>N° Establecimiento</label>
+            <label style="margin-left: 15px">N° Emisión</label>
+            <label style="margin-left: 35px">N° Autorización del Comprobante</label>
+            </div>
+
+                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                    <g:textField name="numEsta" value="${proceso?.facturaEstablecimiento}" style="width: 100px"/>
+                    <g:textField name="numEmis" value="${proceso?.facturaPuntoEmision}" style="width: 100px"/>
+                    <g:textField name="numSerial" value="${proceso?.autorizacionSRI}" style="width: 250px"/>
+                </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+
+            </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+            <label>Pago Local o Exterior</label><g:select name="pago" from="${['LOCAL', 'EXTERIOR']}"/>
+            <label style="margin-left: 300px">Base Imponible</label>
+            <label style="margin-left: 25px">%RBI</label>
+            <label style="margin-left: 15px">Valor Retenido IR</label>
+            </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                <label>Concepto de la Retención del IR</label><g:select name="retencionIR" from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="descripcion" style="width: 300px"/>
+                <g:textField name="baseImpo"/>
+                <g:select name="porcentajeRBI" from="" style="width: 50px"/>
+                <g:textField name="valorRetenido" readonly="true"/>
+
+            </div>
+
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px; margin-right: 25px">
+                <fieldset>
+
+                    <legend>Datos del Comprobante de Retención</legend>
+
+                </fieldset>
+
+
+            </div>
+
+
+
+
+
+
+
+
             </div>
         </g:form>
         <script type="text/javascript">
