@@ -116,7 +116,7 @@
         <script type="text/javascript">
 
             $(function () {
-                $(".btn").button()
+                $(".btn").button();
 
                 <g:if test="${registro}">
 
