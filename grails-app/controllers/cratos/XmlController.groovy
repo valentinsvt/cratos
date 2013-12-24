@@ -207,7 +207,7 @@ class XmlController extends cratos.seguridad.Shield {
     }
 
     def downloadFile() {
-        println "DownloadFile: " + params
+//        println "DownloadFile: " + params
         def mes = params.mes
         def anio = params.anio
 
@@ -245,11 +245,12 @@ class XmlController extends cratos.seguridad.Shield {
             def anio = parts[2]
             m.mes = mes
             m.anio = anio
+            m.fecha = new Date().parse("dd-MM-yyyy", "01-" + mes + "-" + anio)
             m.modified = new Date(file.lastModified()).format('dd-MM-yyyy hh:mm:ss')
             list << m
         }
 
-        list = list.sort { it.modified }
+        list = list.sort { it.fecha }
         return [list: list, empresa: empresa]
     }
 

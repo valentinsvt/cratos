@@ -11,25 +11,37 @@
     <head>
         <meta name="layout" content="main"/>
         <title>SRI (XML)</title>
+
+        <style type="text/css">
+        .container {
+            padding : 5px;
+        }
+        </style>
     </head>
 
     <body>
+    <div class="container entero ui-widget-content ui-corner-all">
+        <h1 class="titulo center ui-widget-header ui-corner-all" style="margin-bottom: 5px; margin-left: 8px;height: 30px;line-height: 30px;padding-left: 30px;margin-bottom: 20px;">
+            XML del Anexo Transaccional SRI
+        </h1>
+
+        <div style="margin-bottom: 10px;">
+            <g:link action="downloads" class="btn">
+                Archivos
+            </g:link>
+        </div>
+
         <g:form name="sriForm">
-            <div class="container entero ui-widget-content ui-corner-all">
-                <h1 class="titulo center ui-widget-header ui-corner-all" style="margin-bottom: 5px; margin-left: 8px;height: 30px;line-height: 30px;padding-left: 30px;margin-bottom: 20px;">
-                    XML del Anexo Transaccional SRI
-                </h1>
+            <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
+                <label>Año</label>
+                <g:select name="anio" from="${anios}"/>
+                <label style="margin-left: 15px;">Mes</label>
+                <span id="spMes">
+                    <g:select name="mes" from="${periodos}" optionKey="id" optionValue="val"/>
+                </span>
 
-                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Año</label>
-                    <g:select name="anio" from="${anios}"/>
-                    <label style="margin-left: 15px;">Mes</label>
-                    <span id="spMes">
-                        <g:select name="mes" from="${periodos}" optionKey="id" optionValue="val"/>
-                    </span>
-
-                    <a href="#" class="btn ui-corner-all" style="margin-left: 15px;" id="btnPrint">Generar</a>
-                </div>
+                <a href="#" class="btn ui-corner-all" style="margin-left: 15px;" id="btnPrint">Generar</a>
+            </div>
             </div>
         </g:form>
 
