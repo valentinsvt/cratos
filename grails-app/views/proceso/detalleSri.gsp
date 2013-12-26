@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Tipo de ID del Proveedor</label><g:select name="tipoIdentificacion" from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"/>
+                    <label>Tipo de ID del Proveedor</label><g:select name="tipoIdentificacion" from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion" value="${proceso?.proveedor?.tipoIdentificacion?.descripcion}"/>
 
                 </div>
 
@@ -42,23 +42,23 @@
                 </div>
 
 
-                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Base Imponible no Objeto de IVA</label><g:textField name="noObjetoIva" style="margin-left: 5px; margin-right: 150px"/>
-                    <label>ICE</label><g:textField name="ice"/><g:select name="porcentajeIce" from="" style="width: 60px"/><g:textField name="valorRetenidoIce"/>
+                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 3px">
+                    <label>Base Imponible no Objeto de IVA</label><g:textField name="noObjetoIva" style="margin-left: 5px; margin-right: 150px" value="${proceso?.baseImponibleNoIva}"/>
+                    <label>ICE</label><g:textField name="ice"  value="${proceso?.iceGenerado}"/><g:select name="porcentajeIce" from="" style="width: 60px"/><g:textField name="valorRetenidoIce"/>
+                </div>
+
+                <div class="span-28" style="margin-left: 40px; margin-top: 3px; margin-bottom: 3px">
+                    <label>Base Imponible IVA 0%</label><g:textField name="biIva0" style="margin-left: 70px; margin-right: 85px" value="${proceso?.baseImponibleIva0}"/>
+                    <label>IVA(1) Bienes</label><g:textField name="bienes" value="${proceso?.retencionIvaBienes}"/><g:select name="porcentajeIvaBienes" from="" style="width: 60px"/><g:textField name="valorRetenidoBienes"/>
+                </div>
+
+                <div class="span-28" style="margin-left: 40px; margin-top: 3px; margin-bottom: 3px">
+                    <label>Base Imponible IVA 12%</label><g:textField name="biIva12" style="margin-left: 60px; margin-right: 25px" value="${proceso?.baseImponibleIva}"/>
+                    <label>IVA(2) Servicios y 100%</label><g:textField name="servicios" value="${proceso?.retencionIvaServicios}"/><g:select name="porcentajeServicios" from="" style="width: 60px"/><g:textField name="valorRetenidoServicios"/>
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Base Imponible IVA 0%</label><g:textField name="biIva0" style="margin-left: 70px; margin-right: 85px"/>
-                    <label>IVA(1) Bienes</label><g:textField name="bienes"/><g:select name="porcentajeIvaBienes" from="" style="width: 60px"/><g:textField name="valorRetenidoBienes"/>
-                </div>
-
-                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Base Imponible IVA 12%</label><g:textField name="biIva12" style="margin-left: 60px; margin-right: 25px"/>
-                    <label>IVA(2) Servicios y 100%</label><g:textField name="servicios"/><g:select name="porcentajeServicios" from="" style="width: 60px"/><g:textField name="valorRetenidoServicios"/>
-                </div>
-
-                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>IVA</label><g:textField name="iva12" style="margin-left: 195px"/>
+                    <label>IVA</label><g:textField name="iva12" style="margin-left: 195px" value="${proceso?.ivaGenerado}"/>
                 </div>
 
 
@@ -97,6 +97,28 @@
                     <fieldset>
 
                         <legend>Datos del Comprobante de Retención</legend>
+
+                        <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px; margin-right: 25px">
+                            <label style="margin-left: 10px">Fecha Emisión</label>
+                            <label style="margin-left: 10px">N° Esta.</label>
+                            <label style="margin-left: 10px">N° Emisión</label>
+                            <label style="margin-left: 10px">N° Secuencial</label>
+                            <label style="margin-left: 10px">N° Autorización del Comprobante</label>
+                        </div>
+
+                        <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px; margin-right: 25px">
+
+                            <elm:datePicker class="field ui-corner-all" name="fechaEmision" title="fecha"
+                                            minDate="'-1m'" maxDate="new Date()"
+                                            style="width: 80px; margin-left: 5px" format="yyyy-MM-dd"/>
+                            <g:textField name="retEsta" style="width: 60px" value="${proceso?.retencionSerie1}"/>
+                            <g:textField name="retEmision" style="width: 60px" value="${proceso?.retencionSerie2}"/>
+                            <g:textField name="retSecu"  style="width: 100px" value="${proceso?.retencionSecuencial}"/>
+                            <g:textField name="retAutorizacion" value="${proceso?.retencionAutorizacion}"/>
+                        </div>
+
+
+
 
                     </fieldset>
 
