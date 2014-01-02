@@ -318,7 +318,7 @@
                     modal    : true,
                     autoOpen : false,
                     width    : 500,
-                    height   : 380,
+                    height   : 440,
                     buttons  : {
                         "Guardar"  : function () {
                             if ($(".form-cuenta").valid()) {

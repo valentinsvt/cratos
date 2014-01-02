@@ -43,7 +43,7 @@
                         <g:textField name="numero" id="numero"
                                      title="${Cuenta.constraints.numero.attributes.title}"
                                      class="field required ui-widget-content ui-corner-all" minlenght="1" maxlenght="15"
-                                     value="${cuentaInstance?.numero}" />
+                                     value="${cuentaInstance?.numero}"/>
                     </g:if>
                     <g:else>
                         ${cuentaInstance?.numero}
@@ -76,12 +76,12 @@
                 <td class="" valign="middle">
                     <g:if test="${hijos == 0}">
                         <select name='auxiliar' class="required ui-widget-content ui-corner-all">
-                            <option value="N" ${(cuentaInstance?.auxiliar== "N") ? 'selected' : ''}>No</option>
-                            <option value="S" ${(cuentaInstance?.auxiliar== "S") ? 'selected' : ''}>Si</option>
+                            <option value="N" ${(cuentaInstance?.auxiliar == "N") ? 'selected' : ''}>No</option>
+                            <option value="S" ${(cuentaInstance?.auxiliar == "S") ? 'selected' : ''}>Si</option>
                         </select>
                     </g:if>
                     <g:else>
-                        ${(cuentaInstance?.auxiliar== 'N') ? 'NO' : 'SI'}
+                        ${(cuentaInstance?.auxiliar == 'N') ? 'NO' : 'SI'}
                     </g:else>
                 </td>
 
@@ -108,6 +108,18 @@
                 <td></td>
             </tr>
 
+            <tr>
+                <td class="label " valign="middle">
+                    Impuesto:
+                </td>
+                <td>
+                    <g:if test="${hijos == 0}">
+                        <g:select name="impuesto.id" from="${cratos.Impuesto.list()}" optionKey="id"
+                                  optionValue="${{it.nombre+' ('+it.porcentaje+'%, ret. '+it.retencion+'%)'}}" value="${cuentaInstance?.impuestoId}"/>
+                    </g:if>
+                    <g:else></g:else>
+                </td>
+            </tr>
         </tbody>
     </table>
 </g:form>

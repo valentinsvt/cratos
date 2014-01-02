@@ -30,8 +30,9 @@
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <label>Tipo de ID del Proveedor</label><g:select name="tipoIdentificacion" from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion" value="${proceso?.proveedor?.tipoIdentificacion?.descripcion}"/>
-
+                    <label>Tipo de ID del Proveedor</label>
+                    ${proceso.proveedor?.tipoIdentificacion?.descripcion}
+                    %{--<g:select name="tipoIdentificacion" from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion" value="${proceso?.proveedor?.tipoIdentificacion?.descripcion}"/>--}%
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
@@ -44,7 +45,7 @@
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 3px">
                     <label>Base Imponible no Objeto de IVA</label><g:textField name="noObjetoIva" style="margin-left: 5px; margin-right: 150px" value="${proceso?.baseImponibleNoIva}"/>
-                    <label>ICE</label><g:textField name="ice"  value="${proceso?.iceGenerado}"/><g:select name="porcentajeIce" from="" style="width: 60px"/><g:textField name="valorRetenidoIce"/>
+                    <label>ICE</label><g:textField name="ice" value="${proceso?.iceGenerado}"/><g:select name="porcentajeIce" from="" style="width: 60px"/><g:textField name="valorRetenidoIce"/>
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 3px; margin-bottom: 3px">
@@ -63,15 +64,20 @@
 
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: -5px">
-                    <label>N° Establecimiento</label>
-                    <label style="margin-left: 15px">N° Emisión</label>
-                    <label style="margin-left: 35px">N° Autorización del Comprobante</label>
+                    <label style="width:110px;">N° Establecimiento</label>
+                    <label style="width:60px; margin-left: 15px;">N° Emisión</label>
+                    <label style="width:60px; margin-left: 15px">Secuencial</label>
+                    <label style="width:180px; margin-left: 35px">N° Autorización del Comprobante</label>
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
-                    <g:textField name="numEsta" value="${proceso?.facturaEstablecimiento}" style="width: 100px"/>
-                    <g:textField name="numEmis" value="${proceso?.facturaPuntoEmision}" style="width: 100px"/>
-                    <g:textField name="numSerial" value="${proceso?.autorizacionSRI}" style="width: 250px"/>
+                    <label style="width:110px;">${proceso?.facturaEstablecimiento}</label>
+                    <label style="width:60px; margin-left: 15px;">${proceso?.facturaEstablecimiento}</label>
+                    <label style="width:60px; margin-left: 15px">${proceso?.facturaSecuencial}</label>
+                    <label style="width:180px; margin-left: 35px">${proceso?.proveedor?.autorizacionSri}</label>
+                    %{--<g:textField name="numEsta" value="${proceso?.facturaEstablecimiento}" style="width: 100px"/>--}%
+                    %{--<g:textField name="numEmis" value="${proceso?.facturaPuntoEmision}" style="width: 100px"/>--}%
+                    %{--<g:textField name="numSerial" value="${proceso?.autorizacionSRI}" style="width: 250px"/>--}%
                 </div>
 
                 <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">
@@ -113,12 +119,9 @@
                                             style="width: 80px; margin-left: 5px" format="yyyy-MM-dd"/>
                             <g:textField name="retEsta" style="width: 60px" value="${proceso?.retencionSerie1}"/>
                             <g:textField name="retEmision" style="width: 60px" value="${proceso?.retencionSerie2}"/>
-                            <g:textField name="retSecu"  style="width: 100px" value="${proceso?.retencionSecuencial}"/>
+                            <g:textField name="retSecu" style="width: 100px" value="${proceso?.retencionSecuencial}"/>
                             <g:textField name="retAutorizacion" value="${proceso?.retencionAutorizacion}"/>
                         </div>
-
-
-
 
                     </fieldset>
 

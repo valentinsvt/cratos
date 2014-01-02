@@ -10,23 +10,23 @@ class CuentaController extends cratos.seguridad.Shield {
         redirect(action: "list", params: params)
     }
 
-    def cuentaResultados(){
-        def cuentas = Cuenta.findAllByNumeroLikeAndMovimiento("3%","1",[sort: "numero"])
+    def cuentaResultados() {
+        def cuentas = Cuenta.findAllByNumeroLikeAndMovimiento("3%", "1", [sort: "numero"])
         Cuenta.findAll("from Cuenta where numero like '3%' and movimiento='1' order by numero ")
-        def cuentaS= Cuenta.findByResultadoAndEmpresa("S",session.empresa)
-        def cuentaD= Cuenta.findByResultado("D",session.empresa)
-        [cuentas:cuentas,cuentaS:cuentaS,cuentaD:cuentaD]
+        def cuentaS = Cuenta.findByResultadoAndEmpresa("S", session.empresa)
+        def cuentaD = Cuenta.findByResultado("D", session.empresa)
+        [cuentas: cuentas, cuentaS: cuentaS, cuentaD: cuentaD]
     }
 
-    def grabarCuentaResultado(){
-        println "grabar cuentas resultado "+params
+    def grabarCuentaResultado() {
+        println "grabar cuentas resultado " + params
         def sup = Cuenta.get(params.super)
         def deficit = Cuenta.get(params.deficit)
-        sup.resultado="S"
-        deficit.resultado="D"
+        sup.resultado = "S"
+        deficit.resultado = "D"
         sup.save(flush: true)
         deficit.save(flush: true)
-        flash.message="Datos guardados"
+        flash.message = "Datos guardados"
         redirect(action: 'cuentaResultados')
     }
 
@@ -226,6 +226,13 @@ class CuentaController extends cratos.seguridad.Shield {
         if (!params.estado) {
             params.estado = 'A'
         }
+
+        println "***" + params
+
+        if (params.impuesto.id) {
+            params.retencion = "S"
+        }
+
         def cuentaInstance = new Cuenta(params)
 
         if (params.id) {

@@ -88,17 +88,20 @@
                     %{--</div>--}%
                     %{-- borrar hasta aqui --}%
                     <div style="/*float:left;*/padding-top: 3px;">
+
+                        <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
+
                         <label>Base imponible IVA 0%:</label>
                         <input type="text" name="baseImponibleIva0" size="7" value="${proceso?.baseImponibleIva0}" class="required ui-widget-content ui-corner-all" validate="required number"/>
-                        <label style="margin-left: 15px;">Base imponible IVA <g:formatNumber number="${cratos.ParametrosAuxiliares.list().first().iva}" maxFractionDigits="0" minFractionDigits="0"/>%:</label>
-                        <input type="text" name="baseImponibleIva" size="7" value="${proceso?.baseImponibleIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <label style="margin-left: 15px;">Base imponible IVA <g:formatNumber number="${iva}" maxFractionDigits="0" minFractionDigits="0"/>%:</label>
+                        <input type="text" name="baseImponibleIva" id="baseImponibleIva" size="7" value="${proceso?.baseImponibleIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">Base imponible no aplica IVA:</label>
                         <input type="text" name="baseImponibleNoIva" size="7" value="${proceso?.baseImponibleNoIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
                     </div>
 
                     <div style="/*float:left;*/padding-top: 3px;">
                         <label>IVA generado:</label>
-                        <input type="text" name="ivaGenerado" size="7" value="${proceso?.ivaGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="ivaGenerado" id="ivaGenerado" size="7" value="${proceso?.ivaGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">ICE generado:</label>
                         <input type="text" name="iceGenerado" size="7" value="${proceso?.iceGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">Documento:</label>
@@ -137,9 +140,24 @@
         </g:form>
 
         <script type="text/javascript">
-            $(function () {
 
-                $(".btn").button()
+            function calculaIva() {
+                var iva = ${iva};
+                var val = parseFloat($("#baseImponibleIva").val());
+
+                var total = (iva / 100) * val;
+
+                $("#baseImponibleIva").val(number_format(val, 2, ".", ""));
+                $("#ivaGenerado").val(number_format(total, 2, ".", ""));
+            }
+
+            $(function () {
+                calculaIva();
+                $(".btn").button();
+
+                $("#baseImponibleIva").keyup(function () {
+                    calculaIva();
+                });
 
                 $("#guardarProceso").click(function () {
                     $.box({
