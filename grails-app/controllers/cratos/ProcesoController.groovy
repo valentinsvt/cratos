@@ -482,6 +482,14 @@ class ProcesoController extends cratos.seguridad.Shield {
     def detalleSri() {
         def proceso = Proceso.get(params.id)
         def hoy = new Date()
+        def anioFin = hoy.format("yyyy").toInteger()
+        def anios = []
+        3.times {
+            def p = getPeriodosByAnio(anioFin - it)
+            if (p.size() > 0) {
+                anios.add(anioFin - it)
+            }
+        }
         def per = Periodo.withCriteria {
             ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
             le("fechaFin", getLastDayOfMonth(hoy))
@@ -489,14 +497,53 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         def periodos = []
         per.each { p ->
-            periodos.add(fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase())
+            def key = p.fechaInicio.format("MM")
+            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
+            def m = [:]
+            m.id = key
+            m.val = val
+            periodos.add(m)
         }
 
 
         def sustento = SustentoTributario.list()
 
+        def porIce = Impuesto.findAllBySri('ICE')
+        def porBns = Impuesto.findAllBySri('BNS')
+        def porSrv = Impuesto.findAllBySri('SRV')
 
-        return [proceso: proceso, periodos: periodos, sustento: sustento]
+        def comprobante = Comprobante.findByProceso(proceso)
+        def asiento = Asiento.findAllByComprobante(comprobante)
+
+        println("-->>>" + asiento)
+
+
+        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios]
+    }
+
+    def getPeriodosByAnio(anio) {
+        def per = Periodo.withCriteria {
+            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + anio))
+            le("fechaFin", new Date().parse("dd-MM-yyyy", "31-12-" + anio))
+            order("fechaInicio", "asc")
+        }
+        def periodos = []
+        per.each { p ->
+            def key = p.fechaInicio.format("MM")
+            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
+            def m = [:]
+            m.id = key
+            m.val = val
+            periodos.add(m)
+        }
+        return periodos
+    }
+
+
+    def getPeriodos() {
+//        println "getPeriodos " + params
+        def periodos = getPeriodosByAnio(params.anio)
+        render g.select(name: "mes", from: periodos, optionKey: "id", optionValue: "val")
     }
 
     private String fechaConFormato(fecha, formato) {

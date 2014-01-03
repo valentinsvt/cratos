@@ -6,6 +6,8 @@ class Impuesto implements Serializable {
     double porcentaje
     double retencion
 
+    String sri
+
     static mapping = {
         table 'impt'
         cache usage: 'read-write', include: 'non-lazy'
@@ -17,11 +19,13 @@ class Impuesto implements Serializable {
             codigo column: 'imptcdgo'
             porcentaje column: 'imptpctj'
             retencion column: 'imptrtcn'
+            sri column: 'impt_sri'
         }
     }
     static constraints = {
         nombre(size: 1..40, blank: false, attributes: [title: 'descripcion'])
         codigo(size: 1..4, blank: false, attributes: [title: 'codigo'])
+        sri(maxSize: 3, blank: true, nullable: true)
 
     }
 }
