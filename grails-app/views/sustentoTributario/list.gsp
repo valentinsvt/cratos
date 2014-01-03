@@ -1,4 +1,3 @@
-
 <%@ page import="cratos.SustentoTributario" %>
 <!doctype html>
 <html>
@@ -13,6 +12,7 @@
         <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
 
     </head>
+
     <body>
         <div class="ui-widget-content ui-corner-all cont">
             <div class="ui-widget-header ui-corner-all titulo">
@@ -29,28 +29,28 @@
                 <table id="tbl-sustentoTributario">
                     <thead>
                         <tr>
-                            
-                            <g:sortableColumn property="descripcion" title="${message(code: 'sustentoTributario.descripcion.label', default: 'Descripcion')}" />
-                            
-                            <g:sortableColumn property="codigo" title="${message(code: 'sustentoTributario.codigo.label', default: 'Codigo')}" />
-                            
+
+                            <g:sortableColumn property="codigo" title="${message(code: 'sustentoTributario.codigo.label', default: 'Codigo')}"/>
+
+                            <g:sortableColumn property="descripcion" title="${message(code: 'sustentoTributario.descripcion.label', default: 'Descripcion')}"/>
+
                         </tr>
                     </thead>
                     <tbody id="tb-sustentoTributario">
                         <g:each in="${sustentoTributarioInstanceList}" status="i" var="sustentoTributarioInstance">
                             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}" id="${sustentoTributarioInstance.id}">
-                                
+
+                                <td>${sustentoTributarioInstance.codigo.toString().padLeft(2, '0')}</td>
+
                                 <td>${fieldValue(bean: sustentoTributarioInstance, field: "descripcion")}</td>
-                                
-                                <td>${fieldValue(bean: sustentoTributarioInstance, field: "codigo")}</td>
-                                
+
                             </tr>
                         </g:each>
                     </tbody>
                 </table>
                 <g:if test="${sustentoTributarioInstanceList.size() < sustentoTributarioInstanceTotal}">
                     <div class="pagination">
-                        <g:paginate total="${sustentoTributarioInstanceTotal}"  prev="Ant." next="Sig." />
+                        <g:paginate total="${sustentoTributarioInstanceTotal}" prev="Ant." next="Sig."/>
                     </div>
                 </g:if>
             </div>
@@ -78,15 +78,15 @@
         <script type="text/javascript">
             function openDlg(url, id, cont, ajax, title, buttons) {
                 if (ajax) {
-                $("#dlgLoad").dialog("open");
+                    $("#dlgLoad").dialog("open");
                     $.ajax({
-                        async   : false,
-                        type    : "POST",
-                        url     : url,
-                        data    : {
+                        async    : false,
+                        type     : "POST",
+                        url      : url,
+                        data     : {
                             id : id
                         },
-                        success : function (msg) {
+                        success  : function (msg) {
                             $("#dlg-sustentoTributario").html(msg);
                         },
                         complete : function () {
@@ -95,7 +95,7 @@
                     });
                     $("#dlg-sustentoTributario").dialog("option", "width", 420);
                 } else {
-                $("#dlg-sustentoTributario").html(cont);
+                    $("#dlg-sustentoTributario").html(cont);
                 }
                 $("#dlg-sustentoTributario").dialog("option", "title", title);
                 $("#dlg-sustentoTributario").dialog("option", "buttons", buttons);

@@ -43,10 +43,12 @@ class ProcesoController extends cratos.seguridad.Shield {
                 params.fecha = Date.parse("yyyy-MM-dd", params.fecha);
             }
 
-            params.valor = params.baseImponibleIva0 + params.baseImponibleIva + params.baseImponibleNoIva
-            params.impuesto = params.ivaGenerado + params.iceGenerado
+            params.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
+            params.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
 
             params.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+
+            params.fechaIngresoSistema = new Date()
 
             if (params.id)
                 p = Proceso.get(params.id)

@@ -1,3 +1,4 @@
+<%@ page import="cratos.TipoComprobanteSri; cratos.SustentoTributario" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -24,6 +25,7 @@
                 <g:renderErrors bean="${gestorContableInstance}" as="list"/>
             </div>
         </g:hasErrors>
+
         <g:form name="procesoForm" action="save" method="post" class="frmProceso">
             <div class="container entero ui-widget-content ui-corner-all">
                 <h1 class="titulo center ui-widget-header ui-corner-all" style="margin-bottom: 15px; margin-left: 8px;padding-left: 10px;height: 30px;line-height: 30px">${(proceso) ? 'Editar transaccion' : 'Nueva transacción'}</h1>
@@ -55,23 +57,50 @@
                 <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
 
                 <div id="contenido" style="width: 900px;padding-left: 30px;">
-                    <div class="etiqueta">Gestor:</div> <g:select class="ui-corner-all" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A', session.empresa, [sort: 'nombre'])}" label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"></g:select>
+
+                    <div style="padding: 0.7em; margin-top:5px; display: none;" class="ui-state-error ui-corner-all"
+                         id="divErrores">
+                        <span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>
+                        <span style="font-weight: solid;" id="spanError">Se encontraron los siguientes errores:</span>
+
+                        <ul id="listaErrores"></ul>
+                    </div>
+
+                    <div class="etiqueta">Gestor:</div>
+                    <g:select class="ui-corner-all required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A', session.empresa, [sort: 'nombre'])}"
+                              label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="El gestor es obligatorio"/>
                     <br>
 
                     %{--<div class="etiqueta">Fecha:</div> ${new java.util.Date().format("dd/MM/yyyy")}--}%
 
                     <div class="etiqueta">Fecha:</div>
-                    <elm:datePicker class="field ui-corner-all" name="fecha" title="fecha" style="width: 80px; margin-left: 5px" format="yyyy-MM-dd" value="${proceso?.fecha}"/>
+                    <elm:datePicker class="field ui-corner-all required" name="fecha" style="width: 80px; margin-left: 5px"
+                                    maxDate="new Date()" title="La fecha es obligatoria"
+                                    format="yyyy-MM-dd" value="${proceso?.fecha}"/>
 
                     <br>
 
+                    <div class="etiqueta">Sustento Tributario</div>
+                    <g:select class=" required" name="sustentoTributario.id" from="${SustentoTributario.list()}" optionKey="id" optionValue="descripcion" style="width: 550px"
+                              title="El sustento tributario es obligatorio"/>
+
+                    <br/>
+
+                    <div class="etiqueta">Tipo comprobante</div>
+                    <g:select class=" required" name="tipoComprobanteSri.id" from="${TipoComprobanteSri.list()}" optionKey="id" optionValue="descripcion" style="width: 300px"
+                              title="El tipo de comprobante es obligatorio"/>
+
+                    <br/>
+
                     <div class="etiqueta">Proveedor:</div>
-                    <input type="text" name="proveedor.ruc" class="ui-corner-all" id="prov" disabled="true" value="${proceso?.proveedor?.ruc}">
+                    <input type="text" name="proveedor.ruc" class="ui-corner-all required" id="prov" disabled="true" value="${proceso?.proveedor?.ruc}"
+                           title="El proveedor es obligatorio"/>
                     <a href="#" id="btn_buscar" class="btn">Buscar</a>
                     <input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">
                     <br>
 
-                    <div class="etiqueta">Descripción:</div> <textArea style='height:40px;width: 700px;' name="descripcion" class="ui-corner-all">${proceso?.descripcion}</textArea>
+                    <div class="etiqueta">Descripción:</div>
+                    <textArea style='height:40px;width: 700px;' name="descripcion" title="La descripción es obligatoria" class="ui-corner-all required">${proceso?.descripcion}</textArea>
                 </div>
 
                 <div class="span-28" style="margin-left: 40px;margin-top: 10px;margin-bottom: 15px;">
@@ -92,25 +121,28 @@
                         <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
 
                         <label>Base imponible IVA 0%:</label>
-                        <input type="text" name="baseImponibleIva0" size="7" value="${proceso?.baseImponibleIva0}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="baseImponibleIva0" size="7" value="${proceso?.baseImponibleIva0 ?: 0.00}" class="required number ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">Base imponible IVA <g:formatNumber number="${iva}" maxFractionDigits="0" minFractionDigits="0"/>%:</label>
-                        <input type="text" name="baseImponibleIva" id="baseImponibleIva" size="7" value="${proceso?.baseImponibleIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="baseImponibleIva" id="baseImponibleIva" size="7" value="${proceso?.baseImponibleIva ?: 0.00}" class="required ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">Base imponible no aplica IVA:</label>
-                        <input type="text" name="baseImponibleNoIva" size="7" value="${proceso?.baseImponibleNoIva}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="baseImponibleNoIva" size="7" value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number ui-widget-content ui-corner-all" validate="required number"/>
                     </div>
 
                     <div style="/*float:left;*/padding-top: 3px;">
                         <label>IVA generado:</label>
-                        <input type="text" name="ivaGenerado" id="ivaGenerado" size="7" value="${proceso?.ivaGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="ivaGenerado" id="ivaGenerado" size="7" value="${proceso?.ivaGenerado}" class="required number ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">ICE generado:</label>
-                        <input type="text" name="iceGenerado" size="7" value="${proceso?.iceGenerado}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="iceGenerado" size="7" value="${proceso?.iceGenerado ?: 0.00}" class="required number ui-widget-content ui-corner-all" validate="required number"/>
                         <label style="margin-left: 15px;">Documento:</label>
-                        <input type="text" name="facturaEstablecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class="required ui-widget-content ui-corner-all" validate="required number"/>
-                        <input type="text" name="facturaPuntoEmision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class="required ui-widget-content ui-corner-all" validate="required number"/>
-                        <input type="text" name="facturaSecuencial" size="10" maxlength="10" value="${proceso?.facturaSecuencial}" class="required ui-widget-content ui-corner-all" validate="required number"/>
+                        <input type="text" name="facturaEstablecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class="required digits ui-widget-content ui-corner-all" validate="required number"
+                               title="El número de establecimiento de la factura es obligatorio"/>
+                        <input type="text" name="facturaPuntoEmision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class="required digits ui-widget-content ui-corner-all" validate="required number"
+                               title="El número de punto de emisión de la factura es obligatorio"/>
+                        <input type="text" name="facturaSecuencial" size="10" maxlength="10" value="${proceso?.facturaSecuencial}" class="required digits ui-widget-content ui-corner-all" validate="required number"
+                               title="El número de secuencia de la factura es obligatorio"/>
 
                         <label style="margin-left: 15px;">Tipo de pago:</label>
-                        <g:select name="tipoPago.id" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"/>
+                        <g:select name="tipoPago.id" class=" required" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"/>
                     </div>
 
                     <div class="span-9 last" style="margin-left: 40px;float: left;"></div>
@@ -141,13 +173,21 @@
 
         <script type="text/javascript">
 
+            function validateNum($elm) {
+                var val = parseFloat($elm.val());
+                $elm.val(number_format(val, 2, ".", ""));
+            }
+            function validateInt($elm) {
+                var val = parseInt($elm.val());
+                $elm.val(val);
+            }
+
             function calculaIva() {
                 var iva = ${iva};
                 var val = parseFloat($("#baseImponibleIva").val());
 
                 var total = (iva / 100) * val;
 
-                $("#baseImponibleIva").val(number_format(val, 2, ".", ""));
                 $("#ivaGenerado").val(number_format(total, 2, ".", ""));
             }
 
@@ -159,19 +199,49 @@
                     calculaIva();
                 });
 
-                $("#guardarProceso").click(function () {
-                    $.box({
-                        imageClass : "box_info",
-                        text       : "Por favor espere",
-                        title      : "Procesando",
-                        iconClose  : false,
-                        dialog     : {
-                            resizable     : false,
-                            draggable     : false,
-                            closeOnEscape : false,
-                            buttons       : { }
+//                $(".digits").keyup(function () {
+//                    validateInt($(this));
+//                });
+
+                $(".number").keyup(function () {
+                    validateNum($(this));
+                });
+
+                $("#procesoForm").validate({
+                    errorLabelContainer : "#listaErrores",
+                    wrapper             : "li",
+                    invalidHandler      : function (form, validator) {
+                        var errors = validator.numberOfInvalids();
+//                        console.log("**" + errors);
+                        if (errors) {
+                            var message = errors == 1
+                                    ? 'Se encontró 1 error.'
+                                    : 'Se encontraron ' + errors + ' errores';
+                            $("#divErrores").show();
+                            $("#spanError").html(message);
+
+                        } else {
+                            $("#divErrores").hide();
+
                         }
-                    });
+                    }
+                });
+
+                $("#guardarProceso").click(function () {
+                    if ($("#procesoForm").valid()) {
+                        $.box({
+                            imageClass : "box_info",
+                            text       : "Por favor espere",
+                            title      : "Procesando",
+                            iconClose  : false,
+                            dialog     : {
+                                resizable     : false,
+                                draggable     : false,
+                                closeOnEscape : false,
+                                buttons       : { }
+                            }
+                        });
+                    }
                 });
 
                 $("#btn_buscar").click(function () {

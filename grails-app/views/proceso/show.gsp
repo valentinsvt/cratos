@@ -58,11 +58,22 @@
                     <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
 
                     <div class="etiqueta">Fecha:</div>${proceso.fecha.format("dd/MM/yyyy")}<br>
+                </div>
 
+                <div id="contenido3" class="span-20 " style="padding-left: 40px;">
+                    <div class="etiqueta">Sust. tributario:</div> ${proceso?.sustentoTributario?.descripcion} <br>
+                </div>
+
+                <div id="contenido4" class="span-20 " style="padding-left: 40px;">
+                    <div class="etiqueta">Tipo comprobante:</div> ${proceso?.tipoComprobanteSri?.descripcion} <br>
                 </div>
 
                 <div id="contenido2" class="span-20 " style="padding-left: 40px;">
                     <div class="etiqueta">Proceso:</div> ${proceso?.descripcion} <br>
+                </div>
+
+                <div id="contenido5" class="span-20 " style="padding-left: 40px;">
+                    <div class="etiqueta">Documento:</div> ${proceso?.facturaEstablecimiento}-${proceso?.facturaPuntoEmision}-${proceso?.facturaSecuencial}
                 </div>
                 <br>
                 <br>
@@ -91,13 +102,8 @@
                         ${proceso?.ivaGenerado}
                         <label style="margin-left: 15px;">ICE generado:</label>
                         ${proceso?.iceGenerado}
-                        <label style="margin-left: 15px;">Documento:</label>
-                        ${proceso?.facturaEstablecimiento}-
-                        ${proceso?.facturaPuntoEmision}-
-                        ${proceso?.facturaSecuencial}
-
-                        <label style="margin-left: 15px;">Tipo de pago:</label>
-                        ${proceso?.tipoPago?.descripcion}
+                        %{--<label style="margin-left: 15px;">Tipo de pago:</label>--}%
+                        %{--${proceso?.tipoPago?.descripcion}--}%
                     </div>
                 </div>
 

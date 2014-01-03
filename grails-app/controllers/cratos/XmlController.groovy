@@ -146,7 +146,7 @@ class XmlController extends cratos.seguridad.Shield {
                 procesos.each { proceso ->
                     detalleCompras() {
                         codSustento(proceso.sustentoTributario?.codigo)
-                        tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigo)
+                        tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
                         idProv(proceso.proveedor?.ruc)
                         tipoComprobante(proceso.tipoComprobanteSri?.codigo)
                         fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))

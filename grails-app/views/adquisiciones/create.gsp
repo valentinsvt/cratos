@@ -977,7 +977,7 @@
                     wrapper             : "li",
                     invalidHandler      : function (form, validator) {
                         var errors = validator.numberOfInvalids();
-                        console.log("**" + errors);
+//                        console.log("**" + errors);
                         if (errors) {
                             var message = errors == 1
                                     ? 'Se encontró 1 error.'
