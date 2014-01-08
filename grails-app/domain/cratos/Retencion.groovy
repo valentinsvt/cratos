@@ -23,6 +23,10 @@ class Retencion implements Serializable {
     String tipoPago
     Date fechaEmision
 
+//    String pais
+    String convenio
+    String normaLegal
+
     static mapping = {
         table 'rtcn'
         cache usage: 'read-write', include: 'non-lazy'
@@ -51,6 +55,9 @@ class Retencion implements Serializable {
             creditoTributario column: 'rtcncrtr'
             tipoPago column: 'rtcnpago'
             fechaEmision column: 'rtcnfcem'
+//            pais column: 'rtcnpais'
+            convenio column: 'rtcncnvn'
+            normaLegal column: 'rtcnnmlg'
 
         }
     }
@@ -73,5 +80,8 @@ class Retencion implements Serializable {
         creditoTributario (size: 1..2, blank: true, nullable: true)
         tipoPago (blank: true, nullable: true)
         fechaEmision (blank: true, nullable: true)
+        convenio (blank: true, nullable: true)
+        normaLegal(blank: true, nullable: true)
+
     }
 }

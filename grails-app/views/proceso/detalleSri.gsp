@@ -77,11 +77,11 @@
                         </div>
 
                         <div style="margin-top: 20px">
-                            <label>Aplica convenio de doble tributación?</label><g:radioGroup labels="['SI', 'NO']" values="[1, 2]" name="convenio">${it?.label} ${it?.radio}</g:radioGroup>
+                            <label>Aplica convenio de doble tributación?</label><g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio" value="">${it?.label} ${it?.radio}</g:radioGroup>
                         </div>
 
                         <div style="margin-top: 20px">
-                            <label>Pago sujeto a retención en aplicación de la norma legal</label><g:radioGroup labels="['SI', 'NO']" values="[1, 2]" name="norma">${it?.label} ${it?.radio}</g:radioGroup>
+                            <label>Pago sujeto a retención en aplicación de la norma legal</label><g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma" value="">${it?.label} ${it?.radio}</g:radioGroup>
                         </div>
                     </fieldset>
 
@@ -176,12 +176,26 @@
                 <div class="span-28" style="margin-left: 40px; margin-top: 5px; margin-bottom: 35px">
                     <label>Concepto de la Retención del IR</label>
                     <g:select class="ui-corner-all  " name="conceptoRetencionImpuestoRenta" from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="descripcion" style="width: 250px"/>
+                     <g:each in="${detalleRetencion}" var="detalle">
+                         <g:if test="${detalle?.impuesto?.sri == 'RNT'}">
 
-                    <g:textField class="ui-corner-all required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>
-                    %{--<g:textField name="porcentajeIR" value="" style="width: 50px"/>--}%
-                    <g:textField class="ui-corner-all required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}" style="width: 50px"/>
+                             <g:textField class="ui-corner-all required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>
+                             <g:textField class="ui-corner-all required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}" style="width: 50px"/>
+                             <g:textField class="ui-corner-all required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
 
-                    <g:textField class="ui-corner-all required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
+
+                         </g:if>
+                         <g:else>
+
+                             <g:textField class="ui-corner-all required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${0}"/>
+                             <g:textField class="ui-corner-all required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${0}" style="width: 50px"/>
+                             <g:textField class="ui-corner-all required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
+
+                         </g:else>
+
+
+
+                     </g:each>
 
                 </div>
 
@@ -370,9 +384,11 @@
                         });
 
                 $("#grabar").click(function () {
+
                     if ($("#sriForm").valid()) {
                         var id = ${proceso?.id};
-                        console.log("entro grabar");
+//                        console.log("entro grabar");
+
                         $.ajax({
                             type    : "POST",
                             url     : "${createLink(controller:'proceso' ,action: 'guardarSri')}",
@@ -397,7 +413,10 @@
                                 valorRetenidoBienes    : $("#valorRetenidoBienes").val(),
                                 serviciosBase          : $("#serviciosBase").val(),
                                 serviciosPorcentaje    : $("#serviciosPorcentaje").val(),
-                                valorRetenidoServicios : $("#valorRetenidoServicios").val()
+                                valorRetenidoServicios : $("#valorRetenidoServicios").val(),
+                                convenio               : getConvenio(),
+                                normaLegal             : getNorma(),
+                                pais                    :$("#pais").val()
                             },
                             success : function (msg) {
                                 if (msg == "ok") {
@@ -419,8 +438,39 @@
                         $(".exterior").attr("hidden", false)
                     } else {
                         $(".exterior").attr("hidden", true)
+                        $(".norma").attr("checked", false)
+                        $(".convenio").attr("checked", false)
                     }
                 });
+
+
+                function getNorma () {
+                    var result;
+                    var radioButtons = $(".norma");
+                    for (var i = 0; i < radioButtons.length; i++) {
+                        if (radioButtons[i].checked) {
+                            result = radioButtons[i].value;
+                        }
+                    }
+
+                    return result
+                }
+
+
+                function getConvenio () {
+                    var result;
+                    var radioButtons = $(".convenio");
+                    for (var i = 0; i < radioButtons.length; i++) {
+                        if (radioButtons[i].checked) {
+                            result = radioButtons[i].value;
+                        }
+                    }
+
+                    return result
+                }
+
+
+
 
             });
         </script>

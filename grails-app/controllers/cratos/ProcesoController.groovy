@@ -485,19 +485,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
         def detalleRetencion
+
         if (retencion){
-            detalleRetencion = DetalleRetencion.findByRetencion(retencion)
-
-
-//            println("imp:" + detalleRetencion?.impuesto?.sri)
-
+            detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
         }else {
-
             detalleRetencion = []
         }
-
-
-
 
         def hoy = new Date()
         def anioFin = hoy.format("yyyy").toInteger()
@@ -624,6 +617,15 @@ class ProcesoController extends cratos.seguridad.Shield {
             retencion.tipoPago = params.pago
             retencion.numeroSecuencial = params.numeroSecuencial
             retencion.creditoTributario = params.credito
+
+            if (params.pago == 'EXTERIOR'){
+                retencion.normaLegal = params.normaLegal
+                retencion.convenio = params.convenio
+            }else {
+                retencion.normaLegal = ''
+                retencion.convenio = ''
+            }
+
             if (fecha){
                 retencion.fechaEmision = new Date().parse("yyyy-MM-dd", fecha)
             }else {}
