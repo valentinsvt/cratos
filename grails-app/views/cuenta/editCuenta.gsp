@@ -114,8 +114,10 @@
                 </td>
                 <td>
                     <g:if test="${hijos == 0}">
-                        <g:select name="impuesto.id" from="${cratos.Impuesto.list()}" optionKey="id"
-                                  optionValue="${{it.nombre+' ('+it.porcentaje+'%, ret. '+it.retencion+'%)'}}" value="${cuentaInstance?.impuestoId}"/>
+                        <g:select name="impuesto.id" from="${cratos.Impuesto.list([sort: 'codigo'])}" optionKey="id"
+                                  optionValue="${{
+                                      it.nombre + ' (' + it.porcentaje + '%, ret. ' + it.retencion + '%' + (it.sri == 'BNS' ? ', bienes' : it.sri == 'SRV' ? ', servicios' : '') + ')'
+                                  }}" value="${cuentaInstance?.impuestoId}"/>
                     </g:if>
                     <g:else></g:else>
                 </td>

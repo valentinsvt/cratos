@@ -17,11 +17,20 @@
                 Desmayorizar
             </a>
         </g:else>
-        <g:link
-                class="btn ui-corner-all"
-                action="detalleSri" id="${comp?.proceso?.id}">
-            SRI
-        </g:link>
+        <g:if test="${cratos.Retencion.countByProceso(comp?.proceso) > 0}">
+            <g:link
+                    class="btn ui-corner-all"
+                    action="detalleSri" id="${comp?.proceso?.id}">
+                SRI
+            </g:link>
+            <g:if test="${cratos.Retencion.findByProceso(comp?.proceso).numeroSecuencial}">
+                <g:link
+                        class="btn ui-corner-all"
+                        action="detalleSri" id="${comp?.proceso?.id}">
+                    Imprimir retención
+                </g:link>
+            </g:if>
+        </g:if>
         <br>
 
         <div class="etiqueta">Número:</div> ${comp?.prefijo}${comp?.numero}<br>
