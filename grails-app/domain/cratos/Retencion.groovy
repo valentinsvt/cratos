@@ -14,9 +14,14 @@ class Retencion implements Serializable {
     Proveedor proveedor
     String numeroComprobante
 
-    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
+//    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
     String numeroEstablecimiento
     String numeroPuntoEmision
+    String numeroSecuencial
+    String numeroAutorizacionComprobante
+    String creditoTributario
+    String tipoPago
+    Date fechaEmision
 
     static mapping = {
         table 'rtcn'
@@ -38,9 +43,15 @@ class Retencion implements Serializable {
             proveedor column: 'prve__id'
             numeroComprobante column: 'rtcnnmcp'
 
-            conceptoRetencionImpuestoRenta column: 'crir__id'
+//            conceptoRetencionImpuestoRenta column: 'crir__id'
             numeroEstablecimiento column: 'rtcnnmes'
             numeroPuntoEmision column: 'rtcnnmpe'
+            numeroSecuencial column: 'rtcnnmsc'
+            numeroAutorizacionComprobante column: 'rtcnnmac'
+            creditoTributario column: 'rtcncrtr'
+            tipoPago column: 'rtcnpago'
+            fechaEmision column: 'rtcnfcem'
+
         }
     }
     static constraints = {
@@ -54,8 +65,13 @@ class Retencion implements Serializable {
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
         numeroComprobante(size: 1..20, blank: true, nullable: true, attributes: [title: 'Número de comprobante'])
 
-        conceptoRetencionImpuestoRenta(blank: true, nullable: true)
+//        conceptoRetencionImpuestoRenta(blank: true, nullable: true)
         numeroEstablecimiento(blank: true, nullable: true)
         numeroPuntoEmision(blank: true, nullable: true)
+        numeroSecuencial (blank: true, nullable: true)
+        numeroAutorizacionComprobante (blank: true, nullable: true)
+        creditoTributario (size: 1..2, blank: true, nullable: true)
+        tipoPago (blank: true, nullable: true)
+        fechaEmision (blank: true, nullable: true)
     }
 }

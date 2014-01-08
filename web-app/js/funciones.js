@@ -71,6 +71,9 @@ var normalize = function (term) {
 };
 
 
+
+
+
 function trim(str, charlist) {
     // Strips whitespace from the beginning and end of a string
     //

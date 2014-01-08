@@ -144,6 +144,22 @@ class XmlController extends cratos.seguridad.Shield {
             codigoOperativo("IVA")
             compras() {
                 procesos.each { proceso ->
+                    def retencion = Retencion.findByProceso(proceso)
+                    def detalleRetencion= []
+                    def ice = null, bns = null, srv = null
+                    if (retencion){
+                        detalleRetencion = DetalleRetencion.findByRetencion(retencion)
+                        detalleRetencion.each { dr ->
+                            if(dr.impuesto?.sri == 'ICE') {
+                                ice = dr
+                            } else if(dr.impuesto?.sri == 'BNS') {
+                                bns = dr
+                            } else if(dr.impuesto?.sri == 'SRV') {
+                                srv = dr
+                            }
+                        }
+                    }
+
                     detalleCompras() {
                         codSustento(proceso.sustentoTributario?.codigo)
                         tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
@@ -153,26 +169,27 @@ class XmlController extends cratos.seguridad.Shield {
                         establecimiento(proceso.facturaEstablecimiento)
                         puntoEmision(proceso.facturaPuntoEmision)
                         secuencial(proceso.facturaSecuencial)
-                        fechaEmision(fechaConFormato(proceso.fechaEmision))
+                        fechaEmision(fechaConFormato(proceso.fecha))
                         autorizacion(proceso.proveedor?.autorizacionSri)
                         baseNoGraIva(numero(proceso.baseImponibleNoIva))
                         baseImponible(numero(proceso.baseImponibleIva0))
                         baseImpGrav(numero(proceso.baseImponibleIva))
-                        montoIce(numero(proceso.iceGenerado))
-                        montoIva(numero(proceso.ivaGenerado))
-                        valorRetBienes()
-                        valorRetServicios()
-                        valorRetServ100()
+                        montoIce(numero(ice?.total?:0))
+                        montoIva(numero(proceso?.ivaGenerado?:0))
+                        valorRetBienes(numero(bns?.total))
+                        valorRetServicios(srv?.porcentaje == 100 ? numero(0): numero(srv?.total?:0))
+                        valorRetServ100(srv?.porcentaje == 100 ? numero(srv?.total?:0): numero(0))
                         pagoExterior() {
                             pagoLocExt(01)
                             paisEfecPago("NA")
                             aplicConvDobTrib("NA")
                             pagExtSujRetNorLeg("NA")
                         }
-                        establecimientoRetencion1()
-                        ptoEmiRetencion1()
-                        autRetencion1()
-                        fechaEmiRet1()
+                        establecimientoRetencion1(retencion?.numeroEstablecimiento)
+                        ptoEmiRetencion1(retencion?.numeroPuntoEmision)
+                        secRetencion1(retencion?.numeroSecuencial)
+                        autRetencion1(retencion?.numeroAutorizacionComprobante)
+                        fechaEmiRet1(fechaConFormato(retencion?.fechaEmision))
                     }
                 }
             }
@@ -196,7 +213,8 @@ class XmlController extends cratos.seguridad.Shield {
 //            redirect(action: "errores", params: [tipo: 1, periodo: periodo.toString(), mes: params.mes, anio: params.anio])
             render "NO_1"
         } else {
-            file.append(writer.toString())
+//            file.append(writer.toString())
+            file.write(writer.toString())
             render "OK"
 //            def output = response.getOutputStream()
 //            def header = "attachment; filename=" + fileName;

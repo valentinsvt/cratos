@@ -483,6 +483,22 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def detalleSri() {
         def proceso = Proceso.get(params.id)
+        def retencion = Retencion.findByProceso(proceso)
+        def detalleRetencion
+        if (retencion){
+            detalleRetencion = DetalleRetencion.findByRetencion(retencion)
+
+
+//            println("imp:" + detalleRetencion?.impuesto?.sri)
+
+        }else {
+
+            detalleRetencion = []
+        }
+
+
+
+
         def hoy = new Date()
         def anioFin = hoy.format("yyyy").toInteger()
         def anios = []
@@ -517,10 +533,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def comprobante = Comprobante.findByProceso(proceso)
         def asiento = Asiento.findAllByComprobante(comprobante)
 
-        println("-->>>" + asiento)
+//        println("-->>>" + asiento)
 
 
-        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios]
+        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios, detalleRetencion: detalleRetencion, retencion: retencion]
     }
 
     def getPeriodosByAnio(anio) {
@@ -546,6 +562,14 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "getPeriodos " + params
         def periodos = getPeriodosByAnio(params.anio)
         render g.select(name: "mes", from: periodos, optionKey: "id", optionValue: "val")
+    }
+
+
+    def getPorcentajes () {
+
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
+        render g.textField(name: "porcentajeIR", value: concepto?.porcentaje, style: "width: 50px")
+
     }
 
     private String fechaConFormato(fecha, formato) {
@@ -577,5 +601,102 @@ class ProcesoController extends cratos.seguridad.Shield {
         Date lastDayOfMonth = calendar.getTime();
         return lastDayOfMonth
     }
+
+
+    def guardarSri () {
+
+        println("guardarSri:" + params)
+
+        def fecha = params.remove("fechaEmision")
+
+        def proceso = Proceso.get(params.id)
+
+        def retencion = Retencion.findByProceso(proceso)
+
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.concepto)
+
+
+        if (retencion.save(flush: true)){
+
+            retencion.numeroEstablecimiento = params.numeroEstablecimiento
+            retencion.numeroPuntoEmision = params.numeroEmision
+            retencion.numeroAutorizacionComprobante = params.numeroAutorizacion
+            retencion.tipoPago = params.pago
+            retencion.numeroSecuencial = params.numeroSecuencial
+            retencion.creditoTributario = params.credito
+            if (fecha){
+                retencion.fechaEmision = new Date().parse("yyyy-MM-dd", fecha)
+            }else {}
+
+            //detalle
+
+            def detalle = DetalleRetencion.findAllByRetencion(retencion)
+
+
+            detalle.each { det->
+
+               if(det.cuenta.impuesto.sri == 'RNT'){
+
+//                   println("entro RNT!")
+
+                   det.porcentaje = params.porcentaje
+                   det.conceptoRetencionImpuestoRenta = params.concepto
+                   det.base = params.base
+                   det.total = params.valorRetenido
+
+               }
+               if(det.cuenta.impuesto.sri == 'ICE') {
+
+//                   println("entro ICE!")
+
+                   det.porcentaje = params.icePorcentaje.toDouble()
+                   det.base = params.iceBase.toDouble()
+                   det.total = params.valorRetenidoIce.toDouble()
+
+               }
+               if (det.cuenta.impuesto.sri == 'BNS'){
+
+//                   println("entro BNS!")
+
+                   det.porcentaje = params.bienesPorcentaje.toDouble()
+                   det.base = params.bienesBase.toDouble()
+                   det.total = params.valorRetenidoBienes.toDouble()
+               }
+               if(det.cuenta.impuesto.sri == 'SRV'){
+
+//                   println("entro SRV!")
+
+                   det.porcentaje = params.serviciosPorcentaje.toDouble()
+                   det.base = params.serviciosBase.toDouble()
+                   det.total = params.valorRetenidoServicios.toDouble()
+
+
+
+               }
+
+               else {
+
+//                   println("NO entro!")
+                }
+
+            }
+
+            render "ok"
+
+        }else {
+
+//            println("error al grabar la retencion" + retencion.errors)
+            render "Error al grabar!"
+        }
+
+
+
+
+
+
+
+
+    }
+
 
 }

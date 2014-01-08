@@ -6,6 +6,8 @@ class DetalleRetencion implements Serializable {
     Impuesto impuesto
     double porcentaje
     double base
+    double total = 0
+    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
 
 
     static mapping = {
@@ -21,7 +23,17 @@ class DetalleRetencion implements Serializable {
             cuenta column: 'cnta__id'
             porcentaje column: 'dtrtpctj'
             base column: 'dtrtbase'
+            total column: 'dtrttotl'
+            conceptoRetencionImpuestoRenta column: 'crir__id'
         }
+    }
+
+
+    static constraints = {
+
+        conceptoRetencionImpuestoRenta(blank: true, nullable: true, attributes: [title: 'concepto'])
+
+
     }
 
 }

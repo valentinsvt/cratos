@@ -3,6 +3,7 @@ package cratos
 class ConceptoRetencionImpuestoRenta implements Serializable {
     String codigo
     String descripcion
+    double porcentaje
 
     static auditable = true
     static mapping = {
@@ -14,10 +15,12 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
         columns {
             codigo column: 'crircdgo'
             descripcion column: 'crirdscr'
+            porcentaje column: 'crirpctj'
         }
     }
     static constraints = {
         codigo(size: 1..4, blank: false, attributes: [title: 'codigo'])
         descripcion(blank: false, maxSize: 63, attributes: [title: 'descripcion'])
+        porcentaje(blank: true, nullable:true, attributes: [title: 'porcentaje'])
     }
 }

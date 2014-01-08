@@ -236,6 +236,7 @@ class ProcesoService {
                         detalle.cuenta = cuenta
                         detalle.porcentaje = dr.porcentaje
                         detalle.impuesto = cuenta.impuesto
+                        detalle.total = (detalle.porcentaje/100)*detalle.base
                         if (!detalle.save(flush: true))
                             println "error detalle retencion " + detalle.errors
                     }
