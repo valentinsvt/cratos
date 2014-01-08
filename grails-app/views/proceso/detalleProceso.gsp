@@ -24,9 +24,8 @@
                 SRI
             </g:link>
             <g:if test="${cratos.Retencion.findByProceso(comp?.proceso).numeroSecuencial}">
-                <g:link
-                        class="btn ui-corner-all"
-                        action="detalleSri" id="${comp?.proceso?.id}">
+                <g:link controller="reportes3" action="imprimirRetencion"
+                        class="btn ui-corner-all btnRetencion" id="${comp?.proceso?.id}" params="[empresa: session.empresa.id]">
                     Imprimir retención
                 </g:link>
             </g:if>
@@ -247,7 +246,15 @@
 
     }
     $(function () {
-        $(".btn").button()
+        $(".btn").button();
+
+        $(".btnRetencion").click(function () {
+            var file = "retencion.pdf";
+            var url = $(this).attr("href");
+            var actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=" + file + "&url=" + url;
+            location.href = actionUrl;
+            return false;
+        });
 
         $("#imprimir").click(function () {
 

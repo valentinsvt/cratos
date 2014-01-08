@@ -155,7 +155,7 @@ class Reportes3Controller {
                         "          and x.prve__id = r.prve__id\n" +
                         "          and u.empr__id = ${params.emp}\n" +
                         "          and c.cmprrgst = 'S'"
-                        "          and\n" +
+                "          and\n" +
                         "          c.cmprfcha >=\n" +
                         "                  (select prdofcin from prdo where prdo__id = ${params.per})\n" +
                         "          and\n" +
@@ -436,6 +436,16 @@ class Reportes3Controller {
             println "HAY MAS DE 1 SALDO INICIAL PARA " + nivel
             return 0
         }
+    }
+
+    def imprimirRetencion() {
+        def empresa = Empresa.get(params.empresa)
+        def proceso = Proceso.get(params.id)
+        def retencion = Retencion.findByProceso(proceso)
+
+        def meses = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+
+        [empresa: empresa, retencion: retencion, meses: meses, proceso: proceso]
     }
 
 }
