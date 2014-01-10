@@ -486,8 +486,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         def retencion = Retencion.findByProceso(proceso)
         def detalleRetencion
 
+
+
         if (retencion){
+
             detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
+
         }else {
             detalleRetencion = []
         }
