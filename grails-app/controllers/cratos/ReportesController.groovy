@@ -239,7 +239,7 @@ class ReportesController {
 
             def cont =
 
-                comp[numero].items.add(c)
+                    comp[numero].items.add(c)
 
 
         }
@@ -406,16 +406,17 @@ order by rplnnmro
 //        params.cont = 1
 //        params.per = 10
 //        params.cnta = 1108
-
-        println("paramsCont:" + params)
-        println("periodoCont:" + params.per)
-        println("cuenta-->>" + params.cnta)
+        // println "aux contables"
+        // println("paramsCont:" + params)
+        // println("periodoCont:" + params.per)
+        // println("cuenta-->>" + params.cnta)
 
 
         def contabilidad = Contabilidad.get(params.cont);
         def fini
         def fin
         def periodo
+        def perIni
         if(params.per!="-1"){
             periodo = Periodo.get(params.per);
             fini = periodo.fechaInicio
@@ -423,19 +424,15 @@ order by rplnnmro
         }else{
 //            println "else"
             def periodos = Periodo.findAllByContabilidad(contabilidad,[sort:"fechaInicio"]);
+            perIni=periodos[0]
 //            println "periodos "     +periodos
             fini = periodos[0].fechaInicio
             periodo=periodos.last()
             fin = periodo.fechaFin
-//            println " "+fini+" "+fin+"  "+periodo
+            println " inicio: "+fini+" fin: "+fin+"  periodo "+periodo+"  params "+params
         }
-
-
-
-
-        println(fini);
-
-        println(fin);
+        //println "inicio "+fini;
+        // println "fin "+ fin;
 
 
         def proceso = Proceso.findAllByContabilidadAndFechaBetween(contabilidad, fini, fin)
@@ -490,12 +487,12 @@ order by rplnnmro
 
             cuenta = Cuenta.get(params.cnta);
 
-//            println("cuentaC: " + cuenta.id)
+            println("cuentaC: " + cuenta.id)
 
 
 
             def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuenta, periodo)?.refresh()
-            println "saldos 1 "+saldoMensual
+            println "saldos 1 "+saldoMensual.debe+"  "+saldoMensual.haber+"  "+saldoMensual.saldoInicial
             if(!saldoMensual){
                 saldoMensual=SaldoMensual.findAllByCuenta(cuenta)
                 saldoMensual.sort{it.periodo.fechaInicio}
@@ -519,18 +516,27 @@ order by rplnnmro
 
             def saldoInicial
 
+            if(params.per=="-1"){
+                def si=SaldoMensual.findByCuentaAndPeriodo(cuenta, perIni)?.refresh()
+                if (si != null) {
+                    saldoInicial = si.saldoInicial;
+                } else {
 
-            if (saldoMensual != null) {
+                    saldoInicial = 0;
 
+                }
+            }else{
+                if (saldoMensual != null) {
+                    saldoInicial = saldoMensual.saldoInicial;
+                } else {
 
-                saldoInicial = saldoMensual.saldoInicial;
-            } else {
+                    saldoInicial = 0;
 
-                saldoInicial = 0;
-//            println("ENTRO:" + saldoInicial)
+                }
             }
 
-
+            def saldoInicialMostrar=saldoInicial
+            println "saldo inicial:" + saldoInicial
 
             asiento.each { v ->
 
@@ -566,7 +572,7 @@ order by rplnnmro
             }
 
             return [contabilidad: contabilidad, periodo: periodo, proceso: proceso, cuenta: cuenta, asiento:
-                    asiento, saldo: saldo, saldoMensual: saldoMensual, saldoInicial: saldoInicial]
+                    asiento, saldo: saldo, saldoMensual: saldoMensual, saldoInicial: saldoInicial,saldoInicialMostrar:saldoInicialMostrar]
         }
 
 

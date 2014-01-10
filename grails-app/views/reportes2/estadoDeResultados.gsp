@@ -57,81 +57,25 @@
         background : #efefef;
     }
 
-    .Uno {
-        background : #DDDDC0;
-        /*color      : #FFF;*/
-    }
 
-    .Dos {
-        background : #DDDDD0;
-    }
-
-    .Tres {
-        background : #EDEDE0;
-    }
-
-    .Cuatro {
-        background : #DDDDF0;
-    }
-
-    .Cinco {
-        background : #DDEDFF;
-    }
-
-    .Seis {
-        background : #EDDDFF;
-    }
-
-    .saldo {
+    .numero {
         text-align : right;
     }
 
-    .Uno .saldo {
-        margin-right : 0;
+    .Uno {
+        padding-right : ${((maxLvl-1)*60)+5}px;
     }
-
-    .Dos .saldo {
-        padding-right : 20px;
+    .Dos {
+        padding-right : ${((maxLvl-2)*60)+5}px;
     }
-
-    .Tres .saldo {
-        padding-right : 40px;
+    .Tres  {
+        padding-right :${((maxLvl-3)*60)+5}px;
     }
-
-    .Cuatro .saldo {
-        padding-right : 60px;
+    .Cuatro  {
+        padding-right : ${((maxLvl-4)*60)+5}px;
     }
-
-    .Cinco .saldo {
-        padding-right : 80px;
-    }
-
-    .Seis .saldo {
-        padding-right : 100px;
-    }
-
-    .Uno .numero {
-        margin-left : 0;
-    }
-
-    .Dos .numero {
-        padding-left : 20px;
-    }
-
-    .Tres .numero {
-        padding-left : 40px;
-    }
-
-    .Cuatro .numero {
-        padding-left : 60px;
-    }
-
-    .Cinco .numero {
-        padding-left : 80px;
-    }
-
-    .Seis .numero {
-        padding-left : 100px;
+    .Cinco  {
+        padding-right : ${((maxLvl-5)*60)+5}px;
     }
     </style>
 
@@ -140,185 +84,83 @@
 <body>
 <div class="hoja">
     %{--<h1>Periodo ${periodo.numero}</h1>--}%
-
+    <h1 style="margin-bottom: 5px">${empresa.nombre}</h1>
     <h2>Estado de resultados</h2>
 
     <h3>Periodo del ${periodo.fechaInicio.format('dd-MM-yyyy')} a ${periodo.fechaFin.format('dd-MM-yyyy')}</h3>
 
-    <table border="1">
-
+    <table border="1" style="width: 630px !important;">
+        <thead>
         <tr>
-
-        <td style="font-size: 12px; font-weight: bold; text-align: center">Cuenta</td>
-        <td style="font-size: 12px; font-weight: bold; text-align: center">Nombre de la Cuenta</td>
-            <td> </td>
-        <td style="font-size: 12px; font-weight: bold; text-align: center">Saldos</td>
-
-            <td> </td>
-            <td> </td>
-
+            <td colspan="3">INGRESOS</td>
         </tr>
-
-
         <tr>
-
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Cuenta</td>
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Nombre de la Cuenta</td>
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Saldo </td>
         </tr>
-
-
-
-
+        </thead>
+        <tbody>
         <g:each in="${cuenta4}" var="i">
             <tr>
                 <td class="numero">
-
                     ${i?.numero}
                 </td>
                 <td class="nombre">
-                     ${i?.descripcion}
+                    ${i?.descripcion}
                 </td>
-
-                <g:if test="${i.nivel.id == 1}">
-
-                <td class="valor1 valor">
-                    <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.haber  }"
-                                    type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
+                <td class="${i.nivel.descripcion} numero">
+                    <g:formatNumber number="${saldo4[i.id.toString()]}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
                 </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                </g:if>
-                <g:if test="${i.nivel.id == 2}">
-                    <td></td>
-                    <td class="valor2 valor">
-                    <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.haber  }"
-                                    type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                    </td>
-                    <td></td>
-                    <td></td>
-                </g:if>
-                <g:if test="${i.nivel.id == 3}">
-                    <td></td>
-                    <td></td>
-                    <td class="valor1 valor">
-                        <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.haber  }"
-                                        type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                    </td>
-                    <td></td>
-
-                </g:if>
-                <g:if test="${i.nivel.id == 4}">
-                    <td></td>
-                    <td></td>
-                    <td class="valor2 valor">
-                        <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.haber  }"
-                                        type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                    </td>
-                </g:if>
-
-
             </tr>
         </g:each>
-
-            <g:each in="${cuenta5}" var="j">
-                 <tr>
-                    <td class="numero">
-
-                        ${j?.numero}
-
-                    </td>
-                    <td class="nombre">
-                        ${j?.descripcion}
-
-                    </td>
-                     <g:if test="${j.nivel.id == 1}">
-
-                         <td class="valor1 valor">
-                             <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.haber  }"
-                                             type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                         </td>
-                         <td></td>
-                         <td></td>
-                         <td></td>
-
-                     </g:if>
-                     <g:if test="${j.nivel.id == 2}">
-                         <td></td>
-                         <td class="valor2 valor">
-                             <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.haber  }"
-                                             type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                         </td>
-                         <td></td>
-                         <td></td>
-                     </g:if>
-                     <g:if test="${j.nivel.id == 3}">
-                         <td></td>
-                         <td></td>
-                         <td class="valor1 valor">
-                             <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.haber  }"
-                                             type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                         </td>
-                         <td></td>
-
-                     </g:if>
-                     <g:if test="${j.nivel.id == 4}">
-                         <td></td>
-                         <td></td>
-                         <td class="valor2 valor">
-                             <g:formatNumber number="${cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.refresh()?.saldoInicial + cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.debe - cratos.SaldoMensual.findAllByCuentaAndPeriodo(j,periodo)[0]?.haber  }"
-                                             type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-                         </td>
-                     </g:if>
-                </tr>
-
-
+        <tr>
+            <td style="font-weight: bolder">TOTAL INGRESOS</td>
+            <td colspan="2" class="numero"><g:formatNumber number="${total4}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="1" style="width: 630px !important;margin-top: 20px;">
+        <thead>
+        <tr>
+            <td colspan="3">EGRESOS</td>
+        </tr>
+        <tr>
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Cuenta</td>
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Nombre de la Cuenta</td>
+            <td style="font-size: 12px; font-weight: bold; text-align: center">Saldo </td>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${cuenta5}" var="i">
+            <tr>
+                <td class="numero">
+                    ${i?.numero}
+                </td>
+                <td class="nombre">
+                    ${i?.descripcion}
+                </td>
+                <td class="${i.nivel.descripcion} numero">
+                    <g:formatNumber number="${saldo5[i.id.toString()]}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+                </td>
+            </tr>
         </g:each>
-
-
         <tr>
-
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-
+            <td style="font-weight: bolder">TOTAL EGRESOS</td>
+            <td colspan="2" class="numero"><g:formatNumber number="${total5}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
         </tr>
-
-        <tr>
-
-            <td>TOTAL</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-
-            <td class="valor">
-
-                <g:formatNumber number="${totalResultados}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-
-            </td>
-            <td> </td>
-        </tr>
-
-
+        </tbody>
     </table>
 
+    <div style="margin-top: 30px">
+        <g:if test="${(total4+total5)>0}">
+            Resultado del ejercicio:  <b>DEFICIT <g:formatNumber number="${Math.abs(total4+total5)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
+        </g:if>
+        <g:else>
+            Resultado del ejercicio:  <b>SUPERAVIT <g:formatNumber number="${Math.abs(total4+total5)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
+        </g:else>
+
+    </div>
 
 
 </div>

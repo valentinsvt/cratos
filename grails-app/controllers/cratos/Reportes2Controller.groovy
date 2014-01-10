@@ -396,97 +396,56 @@ class Reportes2Controller {
 
 
     def estadoDeResultados = {
-        println "estado de resultados " + params
+
 
 
 //        def contabilidad = Contabilidad.get(params.cont);
 
         def sp = kerberosoldService.ejecutarProcedure("saldos",params.cont)
-
+        println "estado de resultados aaaaa " + params
         def periodo = Periodo.get(params.per);
 
 
         def empresa = Empresa.get(params.emp)
-
-        def cuenta4 = Cuenta.findAllByNumeroIlikeAndEmpresa("4%", empresa)
-
-        def cuenta5 = Cuenta.findAllByNumeroIlikeAndEmpresa("5%", empresa)
-
-        def saldo4
-
-        def saldoMensual4  = []
-
-        def total4
-
-        def total6=0
-
-        def saldo5
-
-        def saldoMensual5 = []
-
-        def total5
-
-        def total7 =0
-
-        def totalResultados
-
+        def cuenta4 = Cuenta.findAllByNumeroIlikeAndEmpresa("4%", empresa,[sort: "numero"])
+        def cuenta5 = Cuenta.findAllByNumeroIlikeAndEmpresa("5%", empresa,[sort: "numero"])
+        def saldo4=[:]
+        def saldo5=[:]
+        def total4=0
+        def total5 =0
+        def maxLvl=1
 
 
         if(cuenta4){
-
-            cuenta4.each {i->
-
-
-//            saldo4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
-//
-//            saldoMensual4+=saldo4
-
-                total4 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
-
-                total6+=total4
-
-
+            cuenta4.eachWithIndex {i,j->
+                //println "each "+i+" j "+j
+                def saldo=SaldoMensual.findByCuentaAndPeriodo(i,periodo).refresh()
+                if(saldo)
+                    saldo4.put(i.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+                else
+                    saldo4.put(i.id.toString(),0)
+                if(j==0)
+                    total4=saldo4[i.id.toString()]
+                if(i.nivel.id>maxLvl)
+                    maxLvl=i.nivel.id
             }
-
-
         }
         if(cuenta5){
-            cuenta5.each {i->
-
-//            saldo5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)
-//
-//            saldoMensual5+=saldo5
-//
-
-                total5 = SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.saldoInicial + SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.debe - SaldoMensual.findAllByCuentaAndPeriodo(i,periodo)[0]?.refresh()?.haber
-
-                total7+=total5
-
-
-
+            cuenta5.eachWithIndex {i,j->
+                def saldo=SaldoMensual.findByCuentaAndPeriodo(i,periodo).refresh()
+                if(saldo)
+                    saldo5.put(i.id.toString(),saldo.saldoInicial+saldo.debe-saldo.haber)
+                else
+                    saldo5.put(i.id.toString(),0)
+                if(j==0)
+                    total5=saldo5[i.id.toString()]
+                if(i.nivel.id>maxLvl)
+                    maxLvl=i.nivel.id
             }
 
         }
-
-        totalResultados = total7 - total6
-
-//        println("TOTAL6" + total6)
-//
-//        println("TOTAL7" + total7)
-//        println(totalResultados)
-
-
-        return[periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, totalResultados: totalResultados]
-
-
-//        println("periodo: " + periodo)
-//        println("contabilidad: " + contabilidad)
-//        println("empresa: " + empresa)
-//        println("cuenta: " + cuenta4)
-//        println("saldo mensual 4" + saldoMensual4)
-//        println("saldo mensual 5" + saldoMensual5)
-
-
+        //println "saldo4 "+cuenta4
+        return[periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, saldo4:saldo4,saldo5:saldo5,total4:total4,total5:total5,maxLvl:maxLvl]
     }
 
 
@@ -516,7 +475,7 @@ class Reportes2Controller {
         auxiliar.each {i->
 
 
-          pago = PagoAux.findAllByAuxiliar(i)
+            pago = PagoAux.findAllByAuxiliar(i)
 
 //          println("pagos" + pago.id)
 

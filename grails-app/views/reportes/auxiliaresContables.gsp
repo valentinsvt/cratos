@@ -66,7 +66,7 @@
 
     <table>
         <g:if test="${saldoMensual != null}">
-            <td>  Saldo Inicial:<g:formatNumber number="${saldoMensual.saldoInicial}" minFractionDigits="2" maxFractionDigits="2" type="number"/> </td>
+            <td>  Saldo Inicial:<g:formatNumber number="${saldoInicialMostrar}" minFractionDigits="2" maxFractionDigits="2" type="number"/> </td>
             <td> Saldo Final: <g:formatNumber number="${saldoInicial}" maxFractionDigits="2" minFractionDigits="2" type="number"/> </td>
         </g:if>
         <g:else>
