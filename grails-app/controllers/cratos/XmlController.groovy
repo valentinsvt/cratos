@@ -145,21 +145,22 @@ class XmlController extends cratos.seguridad.Shield {
             compras() {
                 procesos.each { proceso ->
                     def retencion = Retencion.findByProceso(proceso)
-                    def detalleRetencion= []
+                    def detalleRetencion = []
                     def ice = null, bns = null, srv = null
-                    if (retencion){
+                    def local = "01"
+                    if (retencion) {
                         detalleRetencion = DetalleRetencion.findByRetencion(retencion)
                         detalleRetencion.each { dr ->
-                            if(dr.impuesto?.sri == 'ICE') {
+                            if (dr.impuesto?.sri == 'ICE') {
                                 ice = dr
-                            } else if(dr.impuesto?.sri == 'BNS') {
+                            } else if (dr.impuesto?.sri == 'BNS') {
                                 bns = dr
-                            } else if(dr.impuesto?.sri == 'SRV') {
+                            } else if (dr.impuesto?.sri == 'SRV') {
                                 srv = dr
                             }
                         }
+                        local = retencion.tipoPago
                     }
-
                     detalleCompras() {
                         codSustento(proceso.sustentoTributario?.codigo)
                         tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
@@ -174,16 +175,22 @@ class XmlController extends cratos.seguridad.Shield {
                         baseNoGraIva(numero(proceso.baseImponibleNoIva))
                         baseImponible(numero(proceso.baseImponibleIva0))
                         baseImpGrav(numero(proceso.baseImponibleIva))
-                        montoIce(numero(ice?.total?:0))
-                        montoIva(numero(proceso?.ivaGenerado?:0))
+                        montoIce(numero(ice?.total ?: 0))
+                        montoIva(numero(proceso?.ivaGenerado ?: 0))
                         valorRetBienes(numero(bns?.total))
-                        valorRetServicios(srv?.porcentaje == 100 ? numero(0): numero(srv?.total?:0))
-                        valorRetServ100(srv?.porcentaje == 100 ? numero(srv?.total?:0): numero(0))
+                        valorRetServicios(srv?.porcentaje == 100 ? numero(0) : numero(srv?.total ?: 0))
+                        valorRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
                         pagoExterior() {
-                            pagoLocExt(01)
-                            paisEfecPago("NA")
-                            aplicConvDobTrib("NA")
-                            pagExtSujRetNorLeg("NA")
+                            pagoLocExt(local)
+                            if (local == "01") {
+                                paisEfecPago("NA")
+                                aplicConvDobTrib("NA")
+                                pagExtSujRetNorLeg("NA")
+                            } else {
+                                paisEfecPago(retencion.pais?.codigo)
+                                aplicConvDobTrib(retencion.convenio)
+                                pagExtSujRetNorLeg(retencion.normaLegal)
+                            }
                         }
                         establecimientoRetencion1(retencion?.numeroEstablecimiento)
                         ptoEmiRetencion1(retencion?.numeroPuntoEmision)

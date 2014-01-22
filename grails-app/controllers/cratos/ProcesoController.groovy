@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.Pais
+
 class ProcesoController extends cratos.seguridad.Shield {
 
     def buscadorService
@@ -485,15 +487,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
         def detalleRetencion
-
-
-
-
-        if (retencion){
-
+        if (retencion) {
             detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
-
-        }else {
+        } else {
             detalleRetencion = []
         }
 
@@ -563,7 +559,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
 
-    def getPorcentajes () {
+    def getPorcentajes() {
 
         def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
         render g.textField(name: "porcentajeIR", value: concepto?.porcentaje, style: "width: 50px")
@@ -601,7 +597,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
 
-    def guardarSri () {
+    def guardarSri() {
 
         println("guardarSri:" + params)
 
@@ -614,74 +610,73 @@ class ProcesoController extends cratos.seguridad.Shield {
         def concepto = ConceptoRetencionImpuestoRenta.get(params.concepto)
 
 
-        if (retencion.save(flush: true)){
+        if (retencion.save(flush: true)) {
 
             retencion.numeroEstablecimiento = params.numeroEstablecimiento
             retencion.numeroPuntoEmision = params.numeroEmision
             retencion.numeroAutorizacionComprobante = params.numeroAutorizacion
             retencion.tipoPago = params.pago
+            retencion.pais = Pais.get(params.pais)
             retencion.numeroSecuencial = params.numeroSecuencial
             retencion.creditoTributario = params.credito
 
-            if (params.pago == 'EXTERIOR'){
+            if (params.pago == '02') {
                 retencion.normaLegal = params.normaLegal
                 retencion.convenio = params.convenio
-            }else {
+            } else {
                 retencion.normaLegal = ''
                 retencion.convenio = ''
             }
 
-            if (fecha){
+            if (fecha) {
                 retencion.fechaEmision = new Date().parse("yyyy-MM-dd", fecha)
-            }else {}
+            } else {
+            }
 
             //detalle
 
             def detalle = DetalleRetencion.findAllByRetencion(retencion)
 
 
-            detalle.each { det->
+            detalle.each { det ->
 
-               if(det.cuenta.impuesto.sri == 'RNT'){
+                if (det.cuenta.impuesto.sri == 'RNT') {
 
 //                   println("entro RNT!")
 
-                   det.porcentaje = params.porcentaje
-                   det.conceptoRetencionImpuestoRenta = params.concepto
-                   det.base = params.base
-                   det.total = params.valorRetenido
+                    det.porcentaje = params.porcentaje
+                    det.conceptoRetencionImpuestoRenta = params.concepto
+                    det.base = params.base
+                    det.total = params.valorRetenido
 
-               }
-               if(det.cuenta.impuesto.sri == 'ICE') {
+                }
+                if (det.cuenta.impuesto.sri == 'ICE') {
 
 //                   println("entro ICE!")
 
-                   det.porcentaje = params.icePorcentaje.toDouble()
-                   det.base = params.iceBase.toDouble()
-                   det.total = params.valorRetenidoIce.toDouble()
+                    det.porcentaje = params.icePorcentaje.toDouble()
+                    det.base = params.iceBase.toDouble()
+                    det.total = params.valorRetenidoIce.toDouble()
 
-               }
-               if (det.cuenta.impuesto.sri == 'BNS'){
+                }
+                if (det.cuenta.impuesto.sri == 'BNS') {
 
 //                   println("entro BNS!")
 
-                   det.porcentaje = params.bienesPorcentaje.toDouble()
-                   det.base = params.bienesBase.toDouble()
-                   det.total = params.valorRetenidoBienes.toDouble()
-               }
-               if(det.cuenta.impuesto.sri == 'SRV'){
+                    det.porcentaje = params.bienesPorcentaje.toDouble()
+                    det.base = params.bienesBase.toDouble()
+                    det.total = params.valorRetenidoBienes.toDouble()
+                }
+                if (det.cuenta.impuesto.sri == 'SRV') {
 
 //                   println("entro SRV!")
 
-                   det.porcentaje = params.serviciosPorcentaje.toDouble()
-                   det.base = params.serviciosBase.toDouble()
-                   det.total = params.valorRetenidoServicios.toDouble()
+                    det.porcentaje = params.serviciosPorcentaje.toDouble()
+                    det.base = params.serviciosBase.toDouble()
+                    det.total = params.valorRetenidoServicios.toDouble()
 
 
-
-               }
-
-               else {
+                } else {
 
 //                   println("NO entro!")
                 }
@@ -690,17 +685,11 @@ class ProcesoController extends cratos.seguridad.Shield {
 
             render "ok"
 
-        }else {
+        } else {
 
 //            println("error al grabar la retencion" + retencion.errors)
             render "Error al grabar!"
         }
-
-
-
-
-
-
 
 
     }

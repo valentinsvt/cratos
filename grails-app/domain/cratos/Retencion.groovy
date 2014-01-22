@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.Pais
+
 class Retencion implements Serializable {
 
     Proceso proceso
@@ -23,7 +25,7 @@ class Retencion implements Serializable {
     String tipoPago
     Date fechaEmision
 
-//    String pais
+    Pais pais
     String convenio
     String normaLegal
 
@@ -55,7 +57,7 @@ class Retencion implements Serializable {
             creditoTributario column: 'rtcncrtr'
             tipoPago column: 'rtcnpago'
             fechaEmision column: 'rtcnfcem'
-//            pais column: 'rtcnpais'
+            pais column: 'pais__id'
             convenio column: 'rtcncnvn'
             normaLegal column: 'rtcnnmlg'
 
@@ -82,6 +84,8 @@ class Retencion implements Serializable {
         fechaEmision (blank: true, nullable: true)
         convenio (blank: true, nullable: true)
         normaLegal(blank: true, nullable: true)
+
+        pais(blank: true, nullable: true)
 
     }
 }

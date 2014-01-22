@@ -81,13 +81,13 @@
                     <br>
 
                     <div class="etiqueta">Sustento Tributario</div>
-                    <g:select class=" required" name="sustentoTributario.id" from="${SustentoTributario.list()}" optionKey="id" optionValue="descripcion" style="width: 550px"
+                    <g:select class=" required" name="sustentoTributario.id" from="${SustentoTributario.list([sort:'codigo'])}" optionKey="id" optionValue="descripcion" style="width: 550px"
                               title="El sustento tributario es obligatorio"/>
 
                     <br/>
 
                     <div class="etiqueta">Tipo comprobante</div>
-                    <g:select class=" required" name="tipoComprobanteSri.id" from="${TipoComprobanteSri.list()}" optionKey="id" optionValue="descripcion" style="width: 300px"
+                    <g:select class=" required" name="tipoComprobanteSri.id" from="${TipoComprobanteSri.list([sort:'codigo'])}" optionKey="id" optionValue="descripcion" style="width: 300px"
                               title="El tipo de comprobante es obligatorio"/>
 
                     <br/>

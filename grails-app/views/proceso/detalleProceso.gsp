@@ -114,8 +114,12 @@
             <td></td>
             <td><b>TOTAL COMPROBANTE:</b></td>
 
-            <td style="background-color: ${(val.toFloat().round(2) == valH.toFloat().round(2)) ? '#d0ffd0' : '#ffd0d0'}; text-align: right" id="total_debe">${val.toFloat().round(2)}</td>
-            <td style="background-color: ${(val.toFloat().round(2) == valH.toFloat().round(2)) ? '#d0ffd0' : '#ffd0d0'}; text-align: right" id="total_haber">${valH.toFloat().round(2)}</td>
+            <td style="background-color: ${(val.toFloat().round(2) == valH.toFloat().round(2)) ? '#d0ffd0' : '#ffd0d0'}; text-align: right" id="total_debe">
+                <g:formatNumber number="${val.toFloat().round(2)}" minFractionDigits="2" maxFractionDigits="2"/>
+            </td>
+            <td style="background-color: ${(val.toFloat().round(2) == valH.toFloat().round(2)) ? '#d0ffd0' : '#ffd0d0'}; text-align: right" id="total_haber">
+                <g:formatNumber number="${valH.toFloat().round(2)}" minFractionDigits="2" maxFractionDigits="2"/>
+            </td>
             <td>&nbsp;</td>
         </tr>
         </tbody>

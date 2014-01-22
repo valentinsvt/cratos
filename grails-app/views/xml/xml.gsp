@@ -52,7 +52,22 @@
 
 
         <script type="text/javascript">
+            function getPeriodos() {
+                var anio = $("#anio").val();
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'getPeriodos')}",
+                    data    : {
+                        anio : anio
+                    },
+                    success : function (msg) {
+                        $("#spMes").html(msg);
+                    }
+                });
+            }
             $(function () {
+                $("#anio").val("${new Date().format('yyyy')}");
+                getPeriodos();
                 var $dlg = $("#dialog-exists");
 
                 $(".btn").button();
@@ -136,18 +151,8 @@
                     crearXML(mes, anio, 0);
                 });
 
-                $("#anio").val("${new Date().format('yyyy')}").change(function () {
-                    var anio = $(this).val();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'getPeriodos')}",
-                        data    : {
-                            anio : anio
-                        },
-                        success : function (msg) {
-                            $("#spMes").html(msg);
-                        }
-                    });
+                $("#anio").change(function () {
+                    getPeriodos();
                 });
             })
             ;
