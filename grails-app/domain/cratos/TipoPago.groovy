@@ -18,7 +18,7 @@ class TipoPago implements Serializable {
         }
     }
     static constraints = {
-        codigo(size: 1..1, blank: false, attributes: [title: 'codigo'])
+        codigo(maxSize: 4, blank: false, attributes: [title: 'codigo'])
         descripcion(blank: true, nullable: true, size: 1..40, attributes: [title: 'descripción'])
     }
 }

@@ -1,4 +1,4 @@
-package cratos
+package cratos.sri
 class TipoDePagoSri implements Serializable {
     String codigo
     String descripcion

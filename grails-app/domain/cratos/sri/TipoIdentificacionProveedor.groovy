@@ -1,4 +1,4 @@
-package cratos
+package cratos.sri
 class IdentificacionProveedor implements Serializable {
     String codigo
     String descripcion

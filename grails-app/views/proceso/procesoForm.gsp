@@ -142,7 +142,8 @@
                                title="El número de secuencia de la factura es obligatorio"/>
 
                         <label style="margin-left: 15px;">Tipo de pago:</label>
-                        <g:select name="tipoPago.id" class=" required" from="${cratos.TipoPago.list()}" label="Tipo de pago: " value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion"/>
+                        <g:select name="tipoPago.id" class=" required" from="${cratos.TipoPago.list()}" label="Tipo de pago: "
+                                  value="${proceso?.tipoPago?.id}" optionKey="id" validate="required " optionValue="descripcion" style="max-width:230px;"/>
                     </div>
 
                     <div class="span-9 last" style="margin-left: 40px;float: left;"></div>

@@ -2,7 +2,7 @@ package cratos
 
 class SustentoTributario implements Serializable {
 
-    Integer codigo
+    String codigo
     String descripcion
 
     static mapping = {
