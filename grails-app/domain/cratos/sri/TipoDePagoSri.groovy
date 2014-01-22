@@ -1,23 +1,24 @@
 package cratos
-class IdentificacionProveedor implements Serializable {
+class TipoDePagoSri implements Serializable {
     String codigo
     String descripcion
 
     static mapping = {
-        table 'tpip'
+        table 'tpge'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'tpip__id'
+        id column: 'tpge__id'
         id generator: 'identity'
         version false
         columns {
-            codigo column: 'tpipcdgo'
-            descripcion column: 'tpipdscr'
+            codigo column: 'tpgecdgo'
+            descripcion column: 'tpgedscr'
         }
     }
     static constraints = {
         codigo(blank:true,nullable: true,size: 1..4)
         descripcion(blank:true,nullable: true,size: 1..120)
     }
+
     String toString() {
 
     }

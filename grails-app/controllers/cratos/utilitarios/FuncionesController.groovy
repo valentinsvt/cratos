@@ -1,5 +1,7 @@
 package cratos.utilitarios
 
+import cratos.TipoComprobanteSri
+
 class FuncionesController extends cratos.seguridad.Shield{
 
 
@@ -73,6 +75,24 @@ class FuncionesController extends cratos.seguridad.Shield{
 
     }
 
+
+    def cargaDatosCsv(){
+        def file = new File("C:\\Users\\svt\\Desktop\\csv.csv")
+        file.eachLine {l->
+            println l
+            def datos= l.split(",")
+            def tp = TipoComprobanteSri.findByDescripcion(datos[1])
+            if(!tp){
+                tp=new TipoComprobanteSri()
+            }
+            tp.codigo=datos[0]
+            tp.secuenciales=datos[2]?.replaceAll("&",",")
+            tp.sustento=datos[4]?.replaceAll("&",",")
+            tp.descripcion=datos[1]
+            if(!tp.save(flush: true))
+                println "no save "+datos+"  "+tp.errors
+        }
+    }
 
 
 }
