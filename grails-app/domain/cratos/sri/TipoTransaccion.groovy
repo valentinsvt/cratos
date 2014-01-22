@@ -1,4 +1,4 @@
-package cratos
+package cratos.sri
 class TipoTransaccion implements Serializable {
 
     String descripcion
