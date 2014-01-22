@@ -488,6 +488,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
 
+
         if (retencion){
 
             detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)

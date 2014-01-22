@@ -127,7 +127,7 @@
         <legend>Exterior</legend>
 
         <div>
-            <label>País</label><g:select class="ui-corner-all " name="pais" from="${['ECUADOR']}" style="margin-left: 10px; width: 150px"/>
+            <label>País</label><g:select class="ui-corner-all " name="pais" from="${cratos.sri.Pais.list()}" optionKey="id" optionValue="nombre" style="margin-left: 10px; width: 150px"/>
         </div>
 
         <div style="margin-top: 20px">
