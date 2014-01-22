@@ -138,7 +138,7 @@
                                title="El número de establecimiento de la factura es obligatorio"/>
                         <input type="text" name="facturaPuntoEmision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class="required digits ui-widget-content ui-corner-all" validate="required number"
                                title="El número de punto de emisión de la factura es obligatorio"/>
-                        <input type="text" name="facturaSecuencial" size="10" maxlength="10" value="${proceso?.facturaSecuencial}" class="required digits ui-widget-content ui-corner-all" validate="required number"
+                        <input type="text" name="facturaSecuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class="required digits ui-widget-content ui-corner-all" validate="required number"
                                title="El número de secuencia de la factura es obligatorio"/>
 
                         <label style="margin-left: 15px;">Tipo de pago:</label>

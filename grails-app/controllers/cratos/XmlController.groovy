@@ -179,7 +179,7 @@ class XmlController extends cratos.seguridad.Shield {
                         montoIva(numero(proceso?.ivaGenerado ?: 0))
                         valorRetBienes(numero(bns?.total))
                         valorRetServicios(srv?.porcentaje == 100 ? numero(0) : numero(srv?.total ?: 0))
-                        valorRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
+                        valRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
                         pagoExterior() {
                             pagoLocExt(local)
                             if (local == "01") {
@@ -192,7 +192,7 @@ class XmlController extends cratos.seguridad.Shield {
                                 pagExtSujRetNorLeg(retencion.normaLegal)
                             }
                         }
-                        establecimientoRetencion1(retencion?.numeroEstablecimiento)
+                        estabRetencion1(retencion?.numeroEstablecimiento)
                         ptoEmiRetencion1(retencion?.numeroPuntoEmision)
                         secRetencion1(retencion?.numeroSecuencial)
                         autRetencion1(retencion?.numeroAutorizacionComprobante)

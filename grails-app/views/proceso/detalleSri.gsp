@@ -26,7 +26,7 @@
             height : 30px;
         }
 
-        .uno, .dos, .tres, .cuatro {
+        .uno, .dos, .tres, .cuatro, .fac1, .fac2 {
             float : left;
         }
 
@@ -73,15 +73,20 @@
         }
 
         .seis {
-
             width         : 55px;
             padding-top   : 10px;
             padding-right : 5px;
             height        : 20px;
             text-align    : right;
-
         }
 
+        .fac1 {
+            width : 125px;
+        }
+
+        .fac2 {
+            width : 80px;
+        }
         </style>
     </head>
 
@@ -355,7 +360,9 @@
 
                     <div class="dos">
                         <g:select class="ui-corner-all  " name="conceptoRetencionImpuestoRenta"
-                                  from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo+' - '+it.descripcion}}"/>
+                                  from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{
+                            it.codigo + ' - ' + it.descripcion
+                        }}"/>
                     </div>
 
                     <div class="tres" style="width: 55px !important; margin-left: 110px"></div>
@@ -396,23 +403,50 @@
 
                 </div>
 
-                <div class="span-28" style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px; margin-right: 25px">
-                    <label style="">Fecha Emisión</label>
-                    <label style="margin-left: 12px">N° Esta.</label>
-                    <label style="margin-left: 10px">N° Emisión</label>
-                    <label style="margin-left: 10px">N° Secuencial</label>
-                    <label style="margin-left: 10px">N° Autorización del Comprobante</label>
+                <div class="fila span-28" style="min-height: 15px;height: 15px;">
+                    <div class="fac1">
+                        <label style="">Fecha Emisión</label>
+                    </div>
+
+                    <div class="fac2">
+                        <label>N° Esta.</label>
+                    </div>
+
+                    <div class="fac2">
+                        <label>N° Emisión</label>
+                    </div>
+
+                    <div class="fac1">
+                        <label>N° Secuencial</label>
+                    </div>
+
+                    <div class="fac1" style="width: 200px;">
+                        <label>N° Autorización del Comprobante</label>
+                    </div>
                 </div>
 
-                <div class="span-28" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px; margin-right: 25px">
+                <div class="fila span-28">
+                    <div class="fac1">
+                        <elm:datePicker class=" ui-corner-all required date" name="fechaEmision" title="La fecha de emisión del comprobante de rentención es obligatoria."
+                                        minDate="'-1m'" maxDate="new Date()"
+                                        style="width: 80px;" format="yyyy-MM-dd" value="${retencion?.fechaEmision}"/>
+                    </div>
 
-                    <elm:datePicker class=" ui-corner-all required date" name="fechaEmision" title="La fecha de emisión del comprobante de rentención es obligatoria."
-                                    minDate="'-1m'" maxDate="new Date()"
-                                    style="width: 80px;" format="yyyy-MM-dd" value="${retencion?.fechaEmision}"/>
-                    <g:textField class=" ui-corner-all required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>
-                    <g:textField class=" ui-corner-all required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>
-                    <g:textField class=" ui-corner-all required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="10" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>
-                    <g:textField class=" ui-corner-all required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>
+                    <div class="fac2">
+                        <g:textField class=" ui-corner-all required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>
+                    </div>
+
+                    <div class="fac2">
+                        <g:textField class=" ui-corner-all required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>
+                    </div>
+
+                    <div class="fac1">
+                        <g:textField class=" ui-corner-all required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>
+                    </div>
+
+                    <div class="fac1">
+                        <g:textField class=" ui-corner-all required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>
+                    </div>
                 </div>
 
 
