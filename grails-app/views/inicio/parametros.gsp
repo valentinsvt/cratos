@@ -79,6 +79,9 @@
                     <g:link controller="tipoComprobanteId" action="list">Tipo de Comprobante que se aplica al tipo de
                     identificación</g:link> para cada tipo de identificación se aceptan sólo ciertos tipos de comprobantes.
                 </div><br>
+                <div class="item" texto="crear">
+                    <g:link controller="contabilidad" action="list">Períodos Contables</g:link>
+                </div><br>
             </div>
 
             <div id="emprtb" class="ui-widget-content" style="height: 440px">

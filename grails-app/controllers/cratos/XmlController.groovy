@@ -33,7 +33,7 @@ class XmlController extends cratos.seguridad.Shield {
         def hoy = new Date()
         def anioFin = hoy.format("yyyy").toInteger()
         def anios = []
-        3.times {
+        5.times {
             def p = getPeriodosByAnio(anioFin - it)
             if (p.size() > 0) {
                 anios.add(anioFin - it)

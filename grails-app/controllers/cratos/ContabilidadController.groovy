@@ -56,8 +56,40 @@ class ContabilidadController extends cratos.seguridad.Shield  {
             flash.clase = "success"
             flash.ico = "ss_accept"
         }
+
+        12.times {
+            def ini = new Date().parse("dd-MM-yyyy", "01-"+((it+1).toString().padLeft(2,'0'))+"-"+contabilidadInstance.fechaInicio.format("yyyy"))
+            def fin = getLastDayOfMonth(ini)
+            def periodoInstance = new Periodo()
+
+            if(periodoInstance.save(flush: true)){
+
+                periodoInstance.contabilidad = contabilidadInstance
+                periodoInstance.fechaInicio = ini
+                periodoInstance.fechaFin = fin
+                periodoInstance.numero = it+1
+            }
+            else {
+
+                 render "Error al grabar períodos"
+            }
+        }
+
         redirect(action: "show", id: contabilidadInstance.id)
     }
+
+    def getLastDayOfMonth(fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.DATE, -1);
+
+        Date lastDayOfMonth = calendar.getTime();
+        return lastDayOfMonth
+    }
+
 
     def show() {
         def contabilidadInstance = Contabilidad.get(params.id)
