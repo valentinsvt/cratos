@@ -5,7 +5,7 @@
     <head>
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'persona.label', default: 'Persona')}"/>
-        <title>Lista de Persona</title>
+        <title>Lista de Personas</title>
     </head>
 
     <body>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="contenedor">
-                <h1>Lista de Persona</h1>
+                <h1>Lista de Personas</h1>
                 <g:if test="${flash.message}">
                     <div class="message ${flash.clase}" role="status"><span class="ss_sprite ${flash.ico}">&nbsp;</span>${flash.message}
                     </div>
@@ -29,36 +29,41 @@
                     <thead>
                         <tr>
                             
+
+                            <g:sortableColumn property="cedula" title="Cédula"/>
+
+                            <g:sortableColumn property="nombre" title="Nombre"/>
+                            
+                            <g:sortableColumn property="telefono" title="Teléfono"/>
+
+                            <g:sortableColumn property="direccion" title="Dirección"/>
+
+                            <g:sortableColumn property="profesion" title="Profesión"/>
+
                             <g:sortableColumn property="email" title="Email"/>
                             
-                            <g:sortableColumn property="telefono" title="Telefono"/>
-                            
-                            <g:sortableColumn property="direccionReferencia" title="Direccion Referencia"/>
-                            
-                            <g:sortableColumn property="barrio" title="Barrio"/>
-                            
-                            <g:sortableColumn property="direccion" title="Direccion"/>
-                            
-                            <g:sortableColumn property="fechaNacimiento" title="Fecha Nacimiento"/>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
                         <g:each in="${personaInstanceList}" status="i" var="personaInstance">
                             <tr>
                                 
-                                <td><g:link action="show" id="${personaInstance.id}">${fieldValue(bean: personaInstance, field: "email")}</g:link></td>
+
+                                <td>${fieldValue(bean: personaInstance, field: 'cedula')}</td>
+
+                                <td><g:link action="show" id="${personaInstance?.id}"> ${personaInstance?.nombre + " " + personaInstance?.apellido}</g:link> </td>
                                 
                                 <td>${fieldValue(bean: personaInstance, field: "telefono")}</td>
-                                
-                                <td>${fieldValue(bean: personaInstance, field: "direccionReferencia")}</td>
-                                
-                                <td>${fieldValue(bean: personaInstance, field: "barrio")}</td>
+
                                 
                                 <td>${fieldValue(bean: personaInstance, field: "direccion")}</td>
+
+                                <td>${fieldValue(bean: personaInstance, field: 'profesion')}</td>
+
+                                <td>${fieldValue(bean: personaInstance, field: 'email')}</td>
                                 
-                                <td><g:formatDate date="${personaInstance.fechaNacimiento}"/></td>
-                                
+
                             </tr>
                         </g:each>
                     </tbody>

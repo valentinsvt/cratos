@@ -6,7 +6,28 @@
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'persona.label', default: 'Persona')}"/>
         <title>Ver Persona</title>
+
+        <style type="text/css">
+
+         .margen-top {
+
+             margin-top: 10px;
+
+         }
+
+         .texto{
+
+             font-weight: bolder;
+         }
+
+
+
+
+        </style>
+
+
     </head>
+
 
     <body>
         <a href="#show-persona" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -27,10 +48,82 @@
                 </g:if>
 
                 <div class="container">
-                    
-                    <g:if test="${personaInstance?.email}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+
+                <g:if test="${personaInstance?.cedula}">
+                    <div class="span-24 margen-top">
+                        <div class="span-3 prepend-1 texto">
+                            Cédula
+                        </div>
+
+                        <div class="span-19">
+
+                            <g:fieldValue bean="${personaInstance}" field="cedula"/>
+
+                        </div>
+                    </div>
+                </g:if>
+
+                <g:if test="${personaInstance?.nombre}">
+                    <div class="span-24 margen-top">
+                        <div class="span-3 prepend-1 texto">
+                            Nombre
+                        </div>
+
+                        <div class="span-19">
+
+                            <g:fieldValue bean="${personaInstance}" field="nombre"/>
+
+                        </div>
+                    </div>
+                </g:if>
+                <g:if test="${personaInstance?.apellido}">
+                    <div class="span-24 margen-top">
+                        <div class="span-3 prepend-1 texto">
+                            Apellido
+                        </div>
+
+                        <div class="span-19">
+
+                            <g:fieldValue bean="${personaInstance}" field="apellido"/>
+
+                        </div>
+                    </div>
+                </g:if>
+
+                <g:if test="${personaInstance?.direccion}">
+                    <div class="span-24 margen-top">
+                        <div class="span-3 prepend-1 texto">
+                            Dirección
+                        </div>
+
+                        <div class="span-19">
+
+                            <g:fieldValue bean="${personaInstance}" field="direccion"/>
+
+                        </div>
+                    </div>
+                </g:if>
+
+
+                <g:if test="${personaInstance?.telefono}">
+                    <div class="span-24 margen-top">
+                        <div class="span-3 prepend-1 texto">
+                            Teléfono
+                        </div>
+
+                        <div class="span-19">
+
+                            <g:fieldValue bean="${personaInstance}" field="telefono"/>
+
+                        </div>
+                    </div>
+                </g:if>
+
+
+
+                <g:if test="${personaInstance?.email}">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Email
                             </div>
 
@@ -42,24 +135,11 @@
                         </div>
                     </g:if>
                     
-                    <g:if test="${personaInstance?.telefono}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Telefono
-                            </div>
 
-                            <div class="span-19">
-                                
-                                <g:fieldValue bean="${personaInstance}" field="telefono"/>
-                                
-                            </div>
-                        </div>
-                    </g:if>
-                    
                     <g:if test="${personaInstance?.direccionReferencia}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Direccion Referencia
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
+                                Dirección Referencia
                             </div>
 
                             <div class="span-19">
@@ -71,8 +151,8 @@
                     </g:if>
                     
                     <g:if test="${personaInstance?.barrio}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Barrio
                             </div>
 
@@ -84,24 +164,11 @@
                         </div>
                     </g:if>
                     
-                    <g:if test="${personaInstance?.direccion}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Direccion
-                            </div>
 
-                            <div class="span-19">
-                                
-                                <g:fieldValue bean="${personaInstance}" field="direccion"/>
-                                
-                            </div>
-                        </div>
-                    </g:if>
-                    
                     <g:if test="${personaInstance?.fechaNacimiento}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Fecha Nacimiento
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
+                                Fecha de Nacimiento
                             </div>
 
                             <div class="span-19">
@@ -113,8 +180,8 @@
                     </g:if>
                     
                     <g:if test="${personaInstance?.discapacitado}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Discapacitado
                             </div>
 
@@ -127,93 +194,70 @@
                     </g:if>
                     
                     <g:if test="${personaInstance?.sexo}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Sexo
                             </div>
 
                             <div class="span-19">
+
+                                <g:if test="${personaInstance?.sexo == 'M'}">
+
+                                    ${'Masculino'}
+
+                                </g:if>
+                                <g:elseif test="${personaInstance?.sexo == 'F'}">
+
+                                    ${"Femenino"}
+
+                                </g:elseif>
+
+
                                 
-                                <g:fieldValue bean="${personaInstance}" field="sexo"/>
+                                %{--<g:fieldValue bean="${personaInstance}" field="sexo"/>--}%
                                 
                             </div>
                         </div>
                     </g:if>
                     
-                    <g:if test="${personaInstance?.apellido}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Apellido
-                            </div>
 
-                            <div class="span-19">
-                                
-                                <g:fieldValue bean="${personaInstance}" field="apellido"/>
-                                
-                            </div>
-                        </div>
-                    </g:if>
-                    
-                    <g:if test="${personaInstance?.nombre}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Nombre
-                            </div>
-
-                            <div class="span-19">
-                                
-                                <g:fieldValue bean="${personaInstance}" field="nombre"/>
-                                
-                            </div>
-                        </div>
-                    </g:if>
-                    
-                    <g:if test="${personaInstance?.cedula}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Cedula
-                            </div>
-
-                            <div class="span-19">
-                                
-                                <g:fieldValue bean="${personaInstance}" field="cedula"/>
-                                
-                            </div>
-                        </div>
-                    </g:if>
                     
                     <g:if test="${personaInstance?.empresa}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Empresa
                             </div>
 
                             <div class="span-19">
                                 
-                                <g:link controller="empresa" action="show" id="${personaInstance?.empresa?.id}">${personaInstance?.empresa?.encodeAsHTML()}</g:link>
+                                %{--<g:link controller="empresa" action="show" id="${personaInstance?.empresa?.id}">${personaInstance?.empresa?.encodeAsHTML()}</g:link>--}%
+
+                                ${personaInstance?.empresa?.nombre.encodeAsHTML()}
                                 
                             </div>
                         </div>
                     </g:if>
                     
                     <g:if test="${personaInstance?.nacionalidad}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Nacionalidad
                             </div>
 
                             <div class="span-19">
                                 
-                                <g:link controller="nacionalidad" action="show" id="${personaInstance?.nacionalidad?.id}">${personaInstance?.nacionalidad?.encodeAsHTML()}</g:link>
+                                %{--<g:link controller="nacionalidad" action="show" id="${personaInstance?.nacionalidad?.id}">${personaInstance?.nacionalidad?.encodeAsHTML()}</g:link>--}%
+
+                                ${personaInstance?.nacionalidad?.encodeAsHTML()}
                                 
                             </div>
                         </div>
                     </g:if>
                     
                     <g:if test="${personaInstance?.profesion}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Profesion
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
+                                Profesión
                             </div>
 
                             <div class="span-19">
@@ -225,8 +269,8 @@
                     </g:if>
                     
                     <g:if test="${personaInstance?.estadoCivil}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Estado Civil
                             </div>
 
@@ -239,8 +283,8 @@
                     </g:if>
                     
                     <g:if test="${personaInstance?.observaciones}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
+                        <div class="span-24 margen-top">
+                            <div class="span-3 prepend-1 texto">
                                 Observaciones
                             </div>
 
