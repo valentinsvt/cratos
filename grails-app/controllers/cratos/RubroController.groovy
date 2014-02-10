@@ -200,6 +200,7 @@ class RubroController extends cratos.seguridad.Shield {
 
         }else{
             msg="Error: Ya ha sido generado un rol de pagos para el mes seleccionado"
+            render msg
         }
 
 

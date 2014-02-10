@@ -190,8 +190,11 @@
                         url     : "${g.createLink(controller: 'rubro',action: 'generarRol')}",
                         data    : "mes="+$("#mes").val()+"&periodo="+$("#periodos").val(),
                         success : function (msg) {
+                            console.log("msg")
                            if(msg=="ok"){
                                location.href="${g.createLink(controller: 'rubro',action: 'verRol')}/?mes="+$("#mes").val()+"&periodo="+$("#periodos").val()
+                           }else{
+                               alert(msg)
                            }
                         }
                     });

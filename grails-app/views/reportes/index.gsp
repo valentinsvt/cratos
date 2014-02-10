@@ -198,6 +198,13 @@
                             </g:link>
                             Balance General
                         </li>
+                        <li text="balg">
+                            <g:link controller="reportes" action="balanceCierre" file="balanceCierre.pdf" class="link"
+                                    dialog="balanceCierre">
+                                Balance de cierre
+                            </g:link>
+                            Balance General de cierre
+                        </li>
 
 
 
@@ -512,6 +519,38 @@
                 </div>
                 <div>
                     Firma: <input type="text" id="firma2">
+                </div>
+            </div>
+            <div id="balanceCierre" class="ui-helper-hidden">
+                <div style="margin-bottom: 10px;">
+                    Antes de generar este reporte asegurese de configurar las cuentas para el cálculo de resultados <a href="${g.createLink(controller: 'cuenta',action: 'cuentaResultados')}" style="color: blue">Aquí</a>
+                </div>
+                <div>
+                    Contabilidad:
+                    <g:select name="contP6" id="contP6Cierre"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion"
+                              class="ui-widget-content ui-corner-all"/>
+                </div>
+
+
+                <div>
+                    Nivel:
+                    <select id="nivelCierre">
+                        <option value="1,2">DOS</option>
+                        <option value="1,2,3">TRES</option>
+                        <option value="1,2,3,4">CUATRO</option>
+                        <option value="1,2,3,4,5">CINCO</option>
+                    </select>
+                </div>
+                <div>
+                    Mostrar cuentas con saldo cero? <input type="checkbox" id="ceroCierre" value="1" checked="true">
+                </div>
+                <div>
+                    Firma: <input type="text" id="firma1Cierre">
+                </div>
+                <div>
+                    Firma: <input type="text" id="firma2Cierre">
                 </div>
             </div>
 
@@ -927,7 +966,37 @@
 
 
 
+                $("#balanceCierre").dialog({
+                    modal     : true,
+                    resizable : false,
+                    autoOpen  : false,
+                    width     : 400,
+                    buttons   : {
+                        "Aceptar"  : function () {
+                            var cont = $("#contP6Cierre").val();
 
+                            var ceros = "1"
+                            var firma1=$("#firma1Cierre").val()
+                            var firma2=$("#firma2Cierre").val()
+                            firma1=$.trim(firma1)
+                            firma1=firma1.replace(new RegExp(" ","g"),"_");
+                            firma2=$.trim(firma2)
+                            firma2=firma2.replace(new RegExp(" ","g"),"_");
+//                            console.log(firma1,firma2)
+                            if($("#ceroCierre").attr("checked")!="checked"){
+                                ceros="0"
+                            }
+                            url = "${g.createLink(controller:'reportes' , action: 'balanceCierre')}?contabilidad=" + cont  + "Wempresa=${session.empresa.id}Wnivel="+$("#nivelCierre").val()+"Wceros="+ceros+"Wfirma1="+firma1+"Wfirma2="+firma2;
+//                            console.log(url)
+                            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=BalanceCierre.pdf"
+
+
+                        },
+                        "Cancelar" : function () {
+                            $("#balanceDialog").dialog("close");
+                        }
+                    }
+                });
 
                 $("#balanceDialog").dialog({
                     modal     : true,

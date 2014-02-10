@@ -17,7 +17,6 @@ class Persona implements Serializable {
     Profesion profesion
     EstadoCivil estadoCivil
     String observaciones
-
     String libretaMilitar
 
     static mapping = {
